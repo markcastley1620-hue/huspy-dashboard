@@ -17,8 +17,8 @@
       "market_avg_price": 483957
     },
     "rent|5": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 12,
+      "market_avg_price": 1678333
     }
   },
   "Dubai Creek Harbour|Harbour Gate": {
@@ -143,8 +143,8 @@
       "market_avg_price": 104041
     },
     "sale|2": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 274,
+      "market_avg_price": 1774630
     },
     "rent|1": {
       "market_count": 882,
@@ -205,8 +205,8 @@
   },
   "Downtown Dubai|29 Boulevard": {
     "rent|1": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 122,
+      "market_avg_price": 108287
     },
     "rent|2": {
       "market_count": 63,
@@ -695,8 +695,8 @@
       "market_avg_price": 100666
     },
     "sale|2": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 43,
+      "market_avg_price": 2679291
     }
   },
   "Al Furjan|Millennium Talia Residences": {
@@ -775,8 +775,8 @@
   },
   "Arabian Ranches 3|Caya": {
     "sale|5": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 21,
+      "market_avg_price": 11316428
     },
     "rent|3": {
       "market_count": 33,
@@ -1107,8 +1107,8 @@
   },
   "Downtown Dubai|Imperial Avenue": {
     "rent|1": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 31,
+      "market_avg_price": 151249
     }
   },
   "The Springs|The Springs 14": {
@@ -1379,8 +1379,8 @@
   },
   "Dubai Hills Estate|Ellington House": {
     "sale|3": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 9,
+      "market_avg_price": 6355444
     },
     "sale|1": {
       "market_count": 36,
@@ -1715,8 +1715,8 @@
       "market_avg_price": 91958
     },
     "sale|3": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 32,
+      "market_avg_price": 1499166
     }
   },
   "Dubai Marina|Al Majara": {
@@ -2067,8 +2067,8 @@
   },
   "Dubai Sports City|Victory Heights": {
     "sale|5": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 52,
+      "market_avg_price": 14981041
     }
   },
   "Palm Jumeirah|Jumeirah Islands": {
@@ -2455,8 +2455,8 @@
   },
   "Al Furjan|Quortaj": {
     "rent|3": {
-      "market_count": 0,
-      "market_avg_price": 0
+      "market_count": 47,
+      "market_avg_price": 227708
     }
   },
   "Downtown Dubai|Vida Residence Downtown": {
