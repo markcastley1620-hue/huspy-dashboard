@@ -582,6 +582,10 @@
                   <span class="text-muted">Peer count</span>
                   <span class="font-medium" x-text="advisorResult.market.count + ' listings'"></span>
                 </div>
+                <div class="flex justify-between">
+                  <span class="text-muted">With spend</span>
+                  <span class="font-medium" :class="advisorResult.market.promoted > 0 ? 'text-amber-500' : 'text-up'" x-text="advisorResult.market.promoted + ' of ' + advisorResult.market.count + (advisorResult.market.promoted === 0 ? ' — opportunity' : ' promoted')"></span>
+                </div>
                 <div class="h-px bg-border"></div>
                 <div class="flex justify-between items-center">
                   <span class="text-muted">vs Peer median</span>
@@ -1337,47 +1341,74 @@ function dashboard() {
         
         const bedLabel = beds === 0 ? 'studio' : beds + ' bedroom';
         
+        // Count promoted peers
+        let promotedPeers = 0;
+        peerDoc.querySelectorAll('[aria-label="Listing"]').forEach(card => {
+          const txt = card.textContent || '';
+          if (/Signature|Hot|Featured|Premium/i.test(txt)) promotedPeers++;
+        });
+        
+        // Rank percentile
+        const rankPctile = marketCount > 0 ? Math.round((1 - (priceRank - 1) / marketCount) * 100) : 50;
+        
         // Build flags
         const flags = [];
-        if (gapPct != null && gapPct < -10) flags.push({ type: 'positive', text: `Priced ${Math.abs(gapPct)}% below peer median — strong spend candidate` });
-        if (gapPct != null && gapPct < -5 && gapPct >= -10) flags.push({ type: 'positive', text: `Priced ${Math.abs(gapPct)}% below peers — competitive pricing` });
-        if (gapPct != null && gapPct > 10) flags.push({ type: 'negative', text: `Priced ${gapPct}% above peers — spend may not generate ROI at this price` });
-        if (gapPct != null && gapPct > 0 && gapPct <= 10) flags.push({ type: 'warning', text: `Slightly above peer median — moderate spend potential` });
-        if (dom != null && dom < 7) flags.push({ type: 'positive', text: `Fresh listing (${dom} days) — highest promotion ROI window` });
-        if (dom != null && dom >= 7 && dom < 21) flags.push({ type: 'positive', text: `${dom} days on market — still in prime window` });
-        if (dom != null && dom >= 30) flags.push({ type: 'warning', text: `${dom} days on market — investigate before spending` });
-        if (dom != null && dom >= 60) flags.push({ type: 'negative', text: `Stale at ${dom} days — likely needs price cut, not spend` });
-        if (marketCount < 5) flags.push({ type: 'warning', text: `Thin peer set (${marketCount} comparables) — lower confidence` });
-        if (marketCount >= 15) flags.push({ type: 'positive', text: `Strong peer set (${marketCount} comparables) — high confidence` });
-        if (furnishing && furnishing.toLowerCase().includes('furnished')) flags.push({ type: 'positive', text: 'Furnished — commands premium vs unfurnished peers' });
-        if (priceRank <= 3 && marketCount >= 5) flags.push({ type: 'positive', text: `Ranked #${priceRank} cheapest of ${marketCount} — best value in this peer set` });
+        if (priceRank === 1 && marketCount >= 3) flags.push({ type: 'positive', text: `🏆 Cheapest listing in peer set — strongest value proposition` });
+        else if (priceRank <= 3 && marketCount >= 5) flags.push({ type: 'positive', text: `Ranked #${priceRank} of ${marketCount} — top value in peer set` });
+        if (gapPct != null && gapPct < -15) flags.push({ type: 'positive', text: `${Math.abs(gapPct)}% below peer median — significant underpricing` });
+        else if (gapPct != null && gapPct < -5) flags.push({ type: 'positive', text: `${Math.abs(gapPct)}% below peer median — competitive` });
+        if (gapPct != null && gapPct > 10) flags.push({ type: 'negative', text: `${gapPct}% above peers — spend unlikely to generate ROI` });
+        else if (gapPct != null && gapPct > 0 && gapPct <= 10) flags.push({ type: 'warning', text: `Slightly above peer median (+${gapPct}%)` });
+        if (dom != null && dom < 7) flags.push({ type: 'positive', text: `Fresh listing (${dom}d) — highest promotion ROI window` });
+        else if (dom != null && dom < 21) flags.push({ type: 'positive', text: `${dom} days — still in prime window` });
+        if (dom != null && dom >= 30 && dom < 60) flags.push({ type: 'warning', text: `${dom} days on market — investigate before spending` });
+        if (dom != null && dom >= 60) flags.push({ type: 'negative', text: `Stale at ${dom}d — needs price cut, not spend` });
+        if (marketCount < 5) flags.push({ type: 'warning', text: `Thin peer set (${marketCount}) — lower confidence` });
+        if (marketCount >= 15) flags.push({ type: 'positive', text: `Strong peer set (${marketCount}) — high confidence` });
+        if (furnishing && furnishing.toLowerCase().includes('furnished')) flags.push({ type: 'positive', text: 'Furnished — premium vs unfurnished peers' });
+        if (promotedPeers > 0) flags.push({ type: 'warning', text: `${promotedPeers} of ${marketCount} peers already have promoted spend — competitive` });
+        if (promotedPeers === 0 && marketCount >= 3) flags.push({ type: 'positive', text: `No promoted listings in peer set — opportunity to stand out` });
         
-        // Score: 0-100
+        // Score: 0-100 (rewritten)
         let score = 50;
-        if (gapPct != null) score += Math.min(Math.abs(gapPct) * (gapPct < 0 ? 1.2 : -0.7), 35);
-        if (dom != null && dom < 7) score += 15;
-        else if (dom != null && dom < 21) score += 8;
+        // Rank position (biggest weight)
+        if (priceRank === 1 && marketCount >= 3) score += 25;
+        else if (rankPctile >= 80) score += 20;
+        else if (rankPctile >= 60) score += 10;
+        else if (rankPctile <= 30) score -= 15;
+        // Gap from median
+        if (gapPct != null && gapPct < 0) score += Math.min(Math.abs(gapPct) * 0.8, 15);
+        if (gapPct != null && gapPct > 10) score -= Math.min(gapPct * 0.8, 20);
+        // DOM
+        if (dom != null && dom < 7) score += 12;
+        else if (dom != null && dom < 21) score += 6;
         if (dom != null && dom > 30) score -= 10;
         if (dom != null && dom > 60) score -= 15;
-        if (marketCount >= 10) score += 5;
-        if (marketCount < 5) score -= 5;
-        if (priceRank <= 3 && marketCount >= 5) score += 5;
+        // Peer quality
+        if (marketCount >= 10) score += 3;
+        if (marketCount < 3) score -= 8;
+        // Competition
+        if (promotedPeers === 0 && marketCount >= 3) score += 5;
         score = Math.max(0, Math.min(100, Math.round(score)));
         
-        // Verdict
+        // Verdict (rewritten — rank-aware)
         let verdict = 'Monitor';
-        if (score >= 75 && gapPct < -10) verdict = 'Signature';
-        else if (score >= 60 && gapPct < -5) verdict = 'Hot';
-        else if (gapPct > 10) verdict = 'Price first';
-        else if (score >= 50 && gapPct <= 5) verdict = 'Hot';
-        if (dom != null && dom > 45 && gapPct > 0) verdict = 'Price first';
+        if (score >= 80 || (priceRank === 1 && marketCount >= 3 && score >= 65)) verdict = 'Signature';
+        else if (score >= 65 || (priceRank <= 3 && marketCount >= 5 && score >= 55)) verdict = 'Signature';
+        else if (score >= 55) verdict = 'Hot';
+        else if (gapPct > 10 && (dom || 0) > 14) verdict = 'Price first';
+        else if (score >= 45) verdict = 'Hot';
+        if (dom != null && dom > 45 && gapPct > 5) verdict = 'Price first';
+        if (gapPct > 20) verdict = 'Price first';
         
         // Reason
         let reason = '';
-        if (verdict === 'Signature') reason = `Priced ${Math.abs(gapPct)}% below the ${bedLabel} peer median in ${peerLocation}. Rank #${priceRank} of ${marketCount}.${dom != null && dom < 14 ? ' Fresh listing — maximum ROI from Signature spend.' : ''}`;
-        else if (verdict === 'Hot') reason = `${gapPct < 0 ? Math.abs(gapPct) + '% below' : 'At'} peer median for ${bedLabel}s in ${peerLocation}.${dom != null && dom < 21 ? ' Active window — Hot promotion recommended.' : ' Hot spend would increase visibility.'}`;
-        else if (verdict === 'Price first') reason = `Priced ${gapPct}% above ${bedLabel} peers in ${peerLocation}.${dom != null && dom > 30 ? ` At ${dom} days, ` : ' '}Promotion unlikely to generate ROI. Price reduction conversation first.`;
-        else reason = `Market position is neutral for ${bedLabel}s in ${peerLocation}. Monitor before committing spend.`;
+        const rankStr = priceRank === 1 ? 'the cheapest' : `#${priceRank} of ${marketCount}`;
+        const promoStr = promotedPeers > 0 ? ` ${promotedPeers} peers have promoted spend.` : ' No peers currently promoted — first-mover advantage.';
+        if (verdict === 'Signature') reason = `${rankStr} ${bedLabel} in ${peerLocation}. ${gapPct < 0 ? Math.abs(gapPct) + '% below peer median. ' : ''}${dom != null && dom < 14 ? 'Fresh listing — ' : ''}Maximum ROI from Signature spend.${promoStr}`;
+        else if (verdict === 'Hot') reason = `Ranked ${rankStr} for ${bedLabel}s in ${peerLocation}. ${gapPct < 0 ? Math.abs(gapPct) + '% below median. ' : ''}Hot promotion would increase visibility.${promoStr}`;
+        else if (verdict === 'Price first') reason = `Priced ${gapPct}% above ${bedLabel} peers in ${peerLocation}. ${dom != null && dom > 30 ? `At ${dom} days, p` : 'P'}romotion unlikely to generate ROI. Price reduction first.`;
+        else reason = `Neutral position among ${bedLabel}s in ${peerLocation}. Monitor before committing spend.`;
         
         clearInterval(progressTimer);
         this.advisorProgress = 100;
@@ -1388,7 +1419,7 @@ function dashboard() {
           peers: displayPeers,
           price_rank: priceRank, price_rank_pct: priceRankPct,
           listing: { price, beds, baths, sqft, psqft, type, location, agent, furnishing, dom, buildingName, purpose },
-          market: { avg_price: peerAvg, peer_median: peerMedian, count: marketCount, peer_location: peerLocation, community },
+          market: { avg_price: peerAvg, peer_median: peerMedian, count: marketCount, promoted: promotedPeers, peer_location: peerLocation, community },
         };
       } catch(e) {
         this.advisorError = 'Failed to analyze listing: ' + e.message;
