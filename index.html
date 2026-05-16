@@ -343,7 +343,9 @@
               <th class="text-left px-5 py-2.5 font-semibold">Name</th>
               <th class="text-left px-3 py-2.5 font-semibold">Bedrooms</th>
               <th class="text-right px-3 py-2.5 font-semibold">Listings</th>
-              <th class="text-right px-5 py-2.5 font-semibold" x-text="selectedBed != null ? (selectedBed === '0' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Avg price'"></th>
+              <th class="text-right px-3 py-2.5 font-semibold" x-text="selectedBed != null ? (selectedBed === '0' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Huspy avg'"></th>
+              <th class="text-right px-3 py-2.5 font-semibold">Market avg</th>
+              <th class="text-right px-5 py-2.5 font-semibold">Market</th>
             </tr>
           </thead>
           <tbody>
@@ -358,7 +360,9 @@
                   </div>
                 </td>
                 <td class="px-3 py-2.5 text-right font-semibold" x-text="s.count"></td>
-                <td class="px-5 py-2.5 text-right text-heading font-medium" x-text="fmtAed(s.avg_price)"></td>
+                <td class="px-3 py-2.5 text-right text-heading font-medium" x-text="fmtAed(s.avg_price)"></td>
+                <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(s.market_avg_price)"></td>
+                <td class="px-5 py-2.5 text-right text-muted" x-text="s.market_count != null ? fmt(s.market_count) : '—'"></td>
               </tr>
             </template>
           </tbody>
@@ -812,7 +816,7 @@ function dashboard() {
             count = bd.count ?? count;
           }
         }
-        return { name, count, avg_price: avgPrice, bedBadges, beds, fullCount: s.count||0 };
+        return { name, count, avg_price: avgPrice, market_avg_price: s.market_avg_price ?? null, market_count: s.market_count ?? null, bedBadges, beds, fullCount: s.count||0 };
       }).sort((a,b) => b.count - a.count);
       if (bed != null) {
         rows = rows.filter(r => {
