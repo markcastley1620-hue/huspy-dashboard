@@ -66,12 +66,16 @@ def transform_snapshot(snapshot: dict) -> dict:
         for comm, comm_listings in sorted(communities.items(), key=lambda x: -len(x[1])):
             count = len(comm_listings)
 
-            # Beds breakdown
+            # Beds breakdown with avg price per bed count
             beds = defaultdict(int)
+            beds_prices = defaultdict(list)
             for l in comm_listings:
                 b = l.get("bedrooms")
                 if b is not None:
-                    beds[str(b) if b > 0 else "Studio"] += 1
+                    key = str(b) if b > 0 else "Studio"
+                    beds[key] += 1
+                    if l.get("price_num"):
+                        beds_prices[key].append(l["price_num"])
 
             # Agents breakdown
             agent_counts = defaultdict(int)
@@ -130,9 +134,18 @@ def transform_snapshot(snapshot: dict) -> dict:
                 type_counts[t]["total"] += 1
             by_type = dict(sorted(type_counts.items(), key=lambda x: -x[1]["total"]))
 
+            # Beds with avg price
+            beds_with_price = {}
+            for bk in sorted(beds.keys()):
+                bp = beds_prices.get(bk, [])
+                beds_with_price[bk] = {
+                    "count": beds[bk],
+                    "avg_price": int(sum(bp) / len(bp)) if bp else None,
+                }
+
             result[comm] = {
                 "count": count,
-                "beds": dict(sorted(beds.items())),
+                "beds": beds_with_price,
                 "agents": agents[:10],  # Top 10 agents per community
                 "avg_price": avg_price,
                 "share_pct": round(count / total * 100, 2) if total else 0,
