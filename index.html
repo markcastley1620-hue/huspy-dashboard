@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,22 +11,25 @@
   <script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js" defer></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
         extend: {
           colors: {
-            bg: '#09090b',
-            card: '#111113',
-            'card-hover': '#18181b',
-            border: '#1c1c22',
-            'border-subtle': '#151518',
-            accent: '#6366f1',
-            'accent-dim': '#4f46e5',
-            up: '#10b981',
-            down: '#ef4444',
-            muted: '#63636e',
-            'muted-2': '#3f3f46',
+            bg: '#ffffff',
+            'bg-sub': '#f9fafb',
+            card: '#ffffff',
+            'card-hover': '#f9fafb',
+            border: '#e5e7eb',
+            'border-subtle': '#f3f4f6',
+            accent: '#2563eb',
+            'accent-soft': '#eff6ff',
+            up: '#059669',
+            'up-bg': '#ecfdf5',
+            down: '#dc2626',
+            'down-bg': '#fef2f2',
+            muted: '#6b7280',
+            'muted-2': '#9ca3af',
+            heading: '#111827',
           }
         }
       }
@@ -34,97 +37,99 @@
   </script>
   <style>
     * { font-feature-settings: 'tnum' on, 'lnum' on; }
-    body { background: #09090b; }
+    body { background: #f9fafb; }
     [x-cloak] { display: none !important; }
     .bar-anim { transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-    .fade-in { animation: fadeIn 0.2s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #6366f1; cursor: pointer; border: 2px solid #09090b; }
-    input[type="range"] { -webkit-appearance: none; background: #1c1c22; height: 4px; border-radius: 2px; }
-    @media (max-width: 767px) { .mobile-cards { display: flex; flex-direction: column; gap: 8px; } .mobile-cards thead { display: none; } .mobile-cards tbody tr { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; padding: 12px 16px; border: 1px solid #1c1c22; border-radius: 12px; background: #111113; } .mobile-cards tbody td { padding: 2px 0 !important; text-align: left !important; } .mobile-cards tbody td:first-child { grid-column: 1 / -1; font-size: 13px; } .mobile-cards tbody td::before { content: attr(data-label); display: block; font-size: 10px; color: #63636e; text-transform: uppercase; letter-spacing: 0.05em; } }
+    .fade-in { animation: fadeIn 0.15s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #2563eb; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 1px #e5e7eb; }
+    input[type="range"] { -webkit-appearance: none; background: #e5e7eb; height: 4px; border-radius: 2px; }
+    @media (max-width: 767px) {
+      .mobile-cards { display: flex; flex-direction: column; gap: 8px; }
+      .mobile-cards thead { display: none; }
+      .mobile-cards tbody tr { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; padding: 14px 16px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; }
+      .mobile-cards tbody td { padding: 2px 0 !important; text-align: left !important; }
+      .mobile-cards tbody td:first-child { grid-column: 1 / -1; font-size: 13px; }
+      .mobile-cards tbody td::before { content: attr(data-label); display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+    }
   </style>
 </head>
-<body class="text-zinc-100 min-h-screen antialiased" x-data="dashboard()" x-init="init()" @keydown.slash.prevent.window="$refs.searchInput?.focus()">
+<body class="text-gray-900 min-h-screen antialiased" x-data="dashboard()" x-init="init()" @keydown.slash.prevent.window="$refs.searchInput?.focus()">
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-xl border-b border-border">
-    <div class="max-w-[1400px] mx-auto px-5 sm:px-8 h-12 flex items-center justify-between">
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
+    <div class="max-w-[1400px] mx-auto px-5 sm:px-8 h-14 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
-        <div class="text-[13px] font-semibold tracking-tight">Huspy Market Intel</div>
-        <span class="text-[10px] text-muted font-medium tracking-wide uppercase">Dubai</span>
+        <div class="text-[13px] font-semibold tracking-tight text-heading">Huspy Market Intel</div>
+        <span class="text-[10px] text-muted-2 font-medium tracking-wide uppercase bg-gray-100 px-1.5 py-0.5 rounded">Dubai</span>
       </div>
       <div class="flex items-center gap-1.5">
         <template x-for="v in ['overview','communities','agents']" :key="v">
-          <button @click="navigate(v)" :class="view===v || (view==='community-detail' && v==='communities') ? 'bg-zinc-800 text-white' : 'text-muted hover:text-zinc-300'" class="px-3 py-1 rounded-md text-[12px] font-medium transition-colors" x-text="v.charAt(0).toUpperCase()+v.slice(1)"></button>
+          <button @click="navigate(v)" :class="view===v || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all" x-text="v.charAt(0).toUpperCase()+v.slice(1)"></button>
         </template>
-        <div class="w-px h-4 bg-border mx-1"></div>
-        <div class="flex rounded-md border border-border bg-card p-0.5">
+        <div class="w-px h-5 bg-border mx-1.5"></div>
+        <div class="flex rounded-lg border border-border p-0.5 bg-gray-50">
           <template x-for="m in ['sale','rent']" :key="m">
-            <button @click="setMode(m)" :class="mode===m ? 'bg-accent text-white shadow-sm' : 'text-muted hover:text-zinc-300'" class="px-2.5 py-1 rounded text-[11px] font-medium transition-all capitalize" x-text="m"></button>
+            <button @click="setMode(m)" :class="mode===m ? 'bg-accent text-white shadow-sm' : 'text-muted hover:text-gray-700'" class="px-3 py-1 rounded-md text-[11px] font-semibold transition-all uppercase tracking-wide" x-text="m"></button>
           </template>
         </div>
       </div>
     </div>
   </header>
 
-  <main class="max-w-[1400px] mx-auto px-5 sm:px-8 py-6">
+  <main class="max-w-[1400px] mx-auto px-5 sm:px-8 py-8">
 
-    <!-- Loading -->
     <div x-show="loading" x-cloak class="flex items-center justify-center py-32">
       <div class="text-[13px] text-muted">Loading…</div>
     </div>
 
     <!-- ==================== OVERVIEW ==================== -->
-    <div x-show="!loading && view==='overview'" x-cloak class="space-y-5 fade-in">
+    <div x-show="!loading && view==='overview'" x-cloak class="space-y-6 fade-in">
       <div>
-        <h1 class="text-[18px] font-semibold tracking-tight">Market Overview</h1>
-        <p class="text-[11px] text-muted mt-0.5" x-text="'Snapshot ' + (latest?.snapshot_date || '—') + (previous ? '  ·  vs ' + previous.snapshot_date : '')"></p>
+        <h1 class="text-[22px] font-bold tracking-tight text-heading">Market Overview</h1>
+        <p class="text-[12px] text-muted mt-1" x-text="'Snapshot ' + (latest?.snapshot_date || '—') + (previous ? '  ·  vs ' + previous.snapshot_date : '')"></p>
       </div>
 
       <!-- KPIs -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <!-- Sale Share -->
-        <div class="rounded-xl border border-border bg-card p-4">
-          <div class="text-[10px] uppercase tracking-widest text-muted font-medium">Sale share</div>
-          <div class="text-[28px] font-bold mt-1 leading-none" x-text="marketShare('sale')"></div>
-          <div class="text-[11px] text-muted mt-1.5" x-text="marketShareSub('sale')"></div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Sale share</div>
+          <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="marketShare('sale')"></div>
+          <div class="text-[11px] text-muted mt-2" x-text="marketShareSub('sale')"></div>
         </div>
-        <!-- Rent Share -->
-        <div class="rounded-xl border border-border bg-card p-4">
-          <div class="text-[10px] uppercase tracking-widest text-muted font-medium">Rent share</div>
-          <div class="text-[28px] font-bold mt-1 leading-none" x-text="marketShare('rent')"></div>
-          <div class="text-[11px] text-muted mt-1.5" x-text="marketShareSub('rent')"></div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Rent share</div>
+          <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="marketShare('rent')"></div>
+          <div class="text-[11px] text-muted mt-2" x-text="marketShareSub('rent')"></div>
         </div>
-        <!-- Listings -->
-        <div class="rounded-xl border border-border bg-card p-4">
-          <div class="text-[10px] uppercase tracking-widest text-muted font-medium" x-text="mode + ' listings'"></div>
-          <div class="text-[28px] font-bold mt-1 leading-none" x-text="fmt(block()?.total)"></div>
-          <div class="flex items-center gap-1 mt-1.5" x-show="prevBlock()">
-            <span :class="(block()?.total - prevBlock()?.total) >= 0 ? 'text-up' : 'text-down'" class="text-[11px] font-medium" x-text="deltaStr(block()?.total, prevBlock()?.total)"></span>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold" x-text="mode + ' listings'"></div>
+          <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="fmt(block()?.total)"></div>
+          <div class="flex items-center gap-1 mt-2" x-show="prevBlock()">
+            <span :class="(block()?.total - prevBlock()?.total) >= 0 ? 'text-up' : 'text-down'" class="text-[11px] font-semibold" x-text="deltaStr(block()?.total, prevBlock()?.total)"></span>
             <span class="text-[11px] text-muted">vs prev</span>
           </div>
         </div>
-        <!-- Gaining share -->
-        <div class="rounded-xl border border-border bg-card p-4">
-          <div class="text-[10px] uppercase tracking-widest text-muted font-medium">Gaining share</div>
-          <div class="text-[28px] font-bold mt-1 leading-none" x-text="movers().up.length"></div>
-          <div class="text-[11px] text-muted mt-1.5">communities with positive Δ</div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Gaining share</div>
+          <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="movers().up.length"></div>
+          <div class="text-[11px] text-muted mt-2">communities with positive Δ</div>
         </div>
       </div>
 
       <!-- Property Types -->
-      <div class="rounded-xl border border-border bg-card p-4">
-        <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-3">Property mix — <span class="text-zinc-300" x-text="mode"></span></div>
-        <div class="flex rounded-full overflow-hidden h-2 mb-3">
+      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Property mix — <span class="text-heading" x-text="mode"></span></div>
+        <div class="flex rounded-full overflow-hidden h-2.5 mb-4 bg-gray-100">
           <template x-for="(t, i) in typeData()" :key="t.name">
             <div :class="typeColors[i % typeColors.length]" :style="'width:' + t.pct + '%'" class="bar-anim first:rounded-l-full last:rounded-r-full"></div>
           </template>
         </div>
-        <div class="flex flex-wrap gap-x-5 gap-y-1">
+        <div class="flex flex-wrap gap-x-5 gap-y-1.5">
           <template x-for="(t, i) in typeData()" :key="t.name">
-            <div class="flex items-center gap-1.5 text-[11px]">
-              <div :class="typeColors[i % typeColors.length]" class="w-2 h-2 rounded-full"></div>
-              <span class="text-zinc-300" x-text="t.name"></span>
+            <div class="flex items-center gap-1.5 text-[12px]">
+              <div :class="typeColors[i % typeColors.length]" class="w-2.5 h-2.5 rounded-full"></div>
+              <span class="text-heading font-medium" x-text="t.name"></span>
               <span class="text-muted" x-text="fmt(t.count)"></span>
               <span class="text-muted-2" x-text="'(' + t.pct.toFixed(0) + '%)'"></span>
             </div>
@@ -133,21 +138,20 @@
       </div>
 
       <!-- Movers -->
-      <div class="grid md:grid-cols-2 gap-3">
+      <div class="grid md:grid-cols-2 gap-4">
         <template x-for="dir in ['up','down']" :key="dir">
-          <div class="rounded-xl border border-border bg-card overflow-hidden">
-            <div class="px-4 py-2.5 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted flex items-center gap-2">
-              <span :class="dir==='up' ? 'bg-up' : 'bg-down'" class="w-1.5 h-1.5 rounded-full"></span>
+          <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
+            <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted flex items-center gap-2">
+              <span :class="dir==='up' ? 'bg-up' : 'bg-down'" class="w-2 h-2 rounded-full"></span>
               <span x-text="dir==='up' ? 'Gaining share' : 'Losing share'"></span>
             </div>
             <template x-for="r in movers()[dir]" :key="r.name">
-              <div class="flex items-center gap-3 px-4 py-2 border-b border-border-subtle last:border-0">
-                <span class="text-[12px] flex-1 truncate" x-text="r.name"></span>
-                <!-- mini bar -->
-                <div class="w-16 h-1.5 rounded-full bg-zinc-800 overflow-hidden">
+              <div class="flex items-center gap-3 px-5 py-3 border-b border-border-subtle last:border-0">
+                <span class="text-[13px] flex-1 truncate font-medium" x-text="r.name"></span>
+                <div class="w-20 h-1.5 rounded-full bg-gray-100 overflow-hidden">
                   <div :class="dir==='up' ? 'bg-up' : 'bg-down'" class="h-full rounded-full bar-anim" :style="'width:' + Math.min(Math.abs(r.delta) / maxDelta() * 100, 100) + '%'"></div>
                 </div>
-                <span :class="dir==='up' ? 'text-up' : 'text-down'" class="text-[12px] font-medium w-16 text-right" x-text="(r.delta > 0 ? '+' : '') + r.delta.toFixed(2) + 'pp'"></span>
+                <span :class="dir==='up' ? 'text-up' : 'text-down'" class="text-[12px] font-semibold w-20 text-right" x-text="(r.delta > 0 ? '+' : '') + r.delta.toFixed(2) + 'pp'"></span>
               </div>
             </template>
           </div>
@@ -155,73 +159,75 @@
       </div>
 
       <!-- Filter bar -->
-      <div class="sticky top-12 z-40 bg-bg/80 backdrop-blur-xl py-3 -mx-5 sm:-mx-8 px-5 sm:px-8 border-b border-border-subtle flex flex-wrap items-center gap-3">
+      <div class="sticky top-14 z-40 bg-bg-sub/80 backdrop-blur-xl py-3 -mx-5 sm:-mx-8 px-5 sm:px-8 border-b border-border-subtle flex flex-wrap items-center gap-3">
         <div class="relative flex-1 min-w-[200px] max-w-xs">
-          <input x-ref="searchInput" x-model="search" type="text" placeholder="Search communities…  /" class="w-full bg-card border border-border rounded-lg px-3 py-1.5 text-[12px] text-zinc-200 placeholder-muted-2 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20">
-          <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-muted-2 border border-border rounded px-1" x-show="!search">/</span>
+          <input x-ref="searchInput" x-model="search" type="text" placeholder="Search communities…" class="w-full bg-white border border-border rounded-lg px-3 py-2 text-[12px] text-gray-900 placeholder-muted-2 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm">
+          <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-muted-2 border border-gray-200 rounded px-1 py-0.5 bg-gray-50" x-show="!search">/</span>
         </div>
         <div class="flex items-center gap-2 text-[11px] text-muted">
-          <span>Min market</span>
+          <span class="font-medium">Min market</span>
           <input type="range" x-model="minMarket" min="0" max="5000" step="100" class="w-24">
-          <span class="text-zinc-400 w-10" x-text="fmt(minMarket)"></span>
+          <span class="text-heading font-medium w-10" x-text="fmt(minMarket)"></span>
         </div>
         <label class="flex items-center gap-1.5 text-[11px] text-muted cursor-pointer select-none">
-          <input type="checkbox" x-model="onlyWithListings" class="rounded border-border bg-card text-accent focus:ring-accent/30 w-3.5 h-3.5">
-          <span>Huspy only</span>
+          <input type="checkbox" x-model="onlyWithListings" class="rounded border-gray-300 text-accent focus:ring-accent/20 w-3.5 h-3.5">
+          <span class="font-medium">Huspy only</span>
         </label>
       </div>
 
       <!-- Communities Table -->
-      <div class="rounded-xl border border-border bg-card overflow-hidden">
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
         <div class="overflow-x-auto md:overflow-visible">
           <table class="w-full text-[12px] mobile-cards">
-            <thead class="text-muted bg-card sticky top-[95px] z-30">
+            <thead class="text-muted bg-gray-50/80 sticky top-[108px] z-30">
               <tr class="border-b border-border">
-                <th class="text-left px-4 py-2.5 font-medium cursor-pointer select-none" @click="toggleSort('name')">
+                <th class="text-left px-5 py-3 font-semibold cursor-pointer select-none hover:text-heading transition-colors" @click="toggleSort('name')">
                   Community <span x-show="sortCol==='name'" x-text="sortDir==='asc' ? '↑' : '↓'" class="text-accent"></span>
                 </th>
-                <th class="text-left px-3 py-2.5 font-medium">Types</th>
-                <th class="text-right px-3 py-2.5 font-medium cursor-pointer select-none" @click="toggleSort('count')">
+                <th class="text-left px-3 py-3 font-semibold">Types</th>
+                <th class="text-right px-3 py-3 font-semibold cursor-pointer select-none hover:text-heading" @click="toggleSort('count')">
                   Huspy <span x-show="sortCol==='count'" x-text="sortDir==='asc' ? '↑' : '↓'" class="text-accent"></span>
                 </th>
-                <th class="text-right px-3 py-2.5 font-medium cursor-pointer select-none" @click="toggleSort('market')">
+                <th class="text-right px-3 py-3 font-semibold cursor-pointer select-none hover:text-heading" @click="toggleSort('market')">
                   Market <span x-show="sortCol==='market'" x-text="sortDir==='asc' ? '↑' : '↓'" class="text-accent"></span>
                 </th>
-                <th class="text-right px-3 py-2.5 font-medium cursor-pointer select-none" @click="toggleSort('share')">
+                <th class="text-right px-3 py-3 font-semibold cursor-pointer select-none hover:text-heading" @click="toggleSort('share')">
                   Share <span x-show="sortCol==='share'" x-text="sortDir==='asc' ? '↑' : '↓'" class="text-accent"></span>
                 </th>
-                <th class="text-right px-4 py-2.5 font-medium cursor-pointer select-none" @click="toggleSort('delta')">
+                <th class="text-right px-5 py-3 font-semibold cursor-pointer select-none hover:text-heading" @click="toggleSort('delta')">
                   Δ pp <span x-show="sortCol==='delta'" x-text="sortDir==='asc' ? '↑' : '↓'" class="text-accent"></span>
                 </th>
               </tr>
             </thead>
             <tbody>
               <template x-for="r in filteredRows()" :key="r.name">
-                <tr class="border-b border-border-subtle hover:bg-card-hover transition-colors cursor-pointer" @click="selectCommunity(r.name)">
-                  <td class="px-4 py-2.5 font-medium" data-label="Community">
+                <tr class="border-b border-border-subtle hover:bg-gray-50 transition-colors cursor-pointer" @click="selectCommunity(r.name)">
+                  <td class="px-5 py-3 font-medium" data-label="Community">
                     <span class="hover:text-accent transition-colors" x-text="r.name"></span>
                     <template x-if="r.smallN">
-                      <span class="ml-1 text-[9px] bg-amber-500/10 text-amber-400 rounded px-1 py-0.5 font-medium">small n</span>
+                      <span class="ml-1.5 text-[9px] bg-amber-50 text-amber-600 border border-amber-200 rounded-full px-1.5 py-0.5 font-semibold">low n</span>
                     </template>
                   </td>
-                  <td class="px-3 py-2.5" data-label="Types">
+                  <td class="px-3 py-3" data-label="Types">
                     <div class="flex gap-1 flex-wrap">
                       <template x-for="t in r.topTypes" :key="t.name">
-                        <span class="inline-flex rounded bg-zinc-800/80 px-1.5 py-0.5 text-[10px] text-zinc-400 font-medium" x-text="t.abbr + ' ' + t.count"></span>
+                        <span class="inline-flex rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-500 font-medium" x-text="t.abbr + ' ' + t.count"></span>
                       </template>
                     </div>
                   </td>
-                  <td class="px-3 py-2.5 text-right font-medium" data-label="Huspy" x-text="fmt(r.count)"></td>
-                  <td class="px-3 py-2.5 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
-                  <td class="px-3 py-2.5 text-right font-medium" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : '—'"></td>
-                  <td class="px-4 py-2.5 text-right" data-label="Δ pp">
-                    <span :class="r.delta > 0 ? 'text-up' : r.delta < 0 ? 'text-down' : 'text-muted'" class="font-medium"
-                          x-text="r.delta != null ? (r.delta > 0 ? '↑ +' : r.delta < 0 ? '↓ ' : '') + r.delta.toFixed(2) + 'pp' : '—'"></span>
+                  <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Huspy" x-text="fmt(r.count)"></td>
+                  <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
+                  <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : '—'"></td>
+                  <td class="px-5 py-3 text-right" data-label="Δ pp">
+                    <span x-show="r.delta != null && r.delta > 0" class="inline-flex items-center gap-0.5 text-up bg-up-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↑ +<span x-text="r.delta.toFixed(2)"></span>pp</span>
+                    <span x-show="r.delta != null && r.delta < 0" class="inline-flex items-center gap-0.5 text-down bg-down-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↓ <span x-text="r.delta.toFixed(2)"></span>pp</span>
+                    <span x-show="r.delta != null && r.delta === 0" class="text-muted-2 text-[11px]">0.00pp</span>
+                    <span x-show="r.delta == null" class="text-muted-2 text-[11px]">—</span>
                   </td>
                 </tr>
               </template>
               <template x-if="filteredRows().length === 0">
-                <tr><td colspan="6" class="px-4 py-10 text-center text-muted text-[12px]">No communities match filters.</td></tr>
+                <tr><td colspan="6" class="px-5 py-12 text-center text-muted text-[13px]">No communities match filters.</td></tr>
               </template>
             </tbody>
           </table>
@@ -230,114 +236,102 @@
     </div>
 
     <!-- ==================== COMMUNITY DETAIL ==================== -->
-    <div x-show="!loading && view==='community-detail'" x-cloak class="space-y-5 fade-in">
+    <div x-show="!loading && view==='community-detail'" x-cloak class="space-y-6 fade-in">
       <div>
-        <button @click="navigate('overview')" class="text-[11px] text-muted hover:text-zinc-300 transition-colors">← Overview</button>
-        <h1 class="text-[18px] font-semibold tracking-tight mt-1" x-text="selectedCommunity"></h1>
-        <p class="text-[11px] text-muted mt-0.5" x-text="(latest?.snapshot_date || '') + '  ·  ' + mode"></p>
+        <button @click="navigate('overview')" class="text-[12px] text-accent hover:text-accent-dim font-medium transition-colors">← Back to overview</button>
+        <h1 class="text-[22px] font-bold tracking-tight text-heading mt-2" x-text="selectedCommunity"></h1>
+        <p class="text-[12px] text-muted mt-1" x-text="(latest?.snapshot_date || '') + '  ·  ' + mode"></p>
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         <template x-for="s in commDetailStats()" :key="s.label">
-          <div class="rounded-xl border border-border bg-card p-4">
-            <div class="text-[10px] uppercase tracking-widest text-muted font-medium" x-text="s.label"></div>
-            <div class="text-[22px] font-bold mt-1 leading-none" x-text="s.value"></div>
-            <div x-show="s.sub" class="text-[11px] mt-1" :class="s.subColor || 'text-muted'" x-text="s.sub"></div>
+          <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+            <div class="text-[10px] uppercase tracking-widest text-muted font-semibold" x-text="s.label"></div>
+            <div class="text-[22px] font-bold mt-1.5 leading-none text-heading" x-text="s.value"></div>
+            <div x-show="s.sub" class="text-[11px] mt-1.5 font-medium" :class="s.subColor || 'text-muted'" x-text="s.sub"></div>
           </div>
         </template>
       </div>
 
-      <!-- Types -->
-      <div class="rounded-xl border border-border bg-card p-4" x-show="commDetailTypes().length">
-        <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-3">Property types</div>
-        <div class="flex rounded-full overflow-hidden h-2 mb-3">
+      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commDetailTypes().length">
+        <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Property types</div>
+        <div class="flex rounded-full overflow-hidden h-2.5 mb-4 bg-gray-100">
           <template x-for="(t, i) in commDetailTypes()" :key="t.name">
             <div :class="typeColors[i % typeColors.length]" :style="'width:' + t.pct + '%'" class="bar-anim"></div>
           </template>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
           <template x-for="(t, i) in commDetailTypes()" :key="t.name">
-            <div class="flex items-center gap-1.5 text-[11px]">
-              <div :class="typeColors[i % typeColors.length]" class="w-2 h-2 rounded-full"></div>
-              <span class="text-zinc-300 font-medium" x-text="t.name"></span>
+            <div class="flex items-center gap-1.5 text-[12px]">
+              <div :class="typeColors[i % typeColors.length]" class="w-2.5 h-2.5 rounded-full"></div>
+              <span class="text-heading font-medium" x-text="t.name"></span>
               <span class="text-muted" x-text="t.count + ' (S:' + t.sale + ' R:' + t.rent + ')'"></span>
             </div>
           </template>
         </div>
       </div>
 
-      <!-- Beds + Price side by side -->
-      <div class="grid md:grid-cols-2 gap-3">
-        <div class="rounded-xl border border-border bg-card p-4" x-show="commDetailBeds().length">
-          <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-3">Bedrooms</div>
-          <div class="space-y-1.5">
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commDetailBeds().length">
+          <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Bedrooms</div>
+          <div class="space-y-2">
             <template x-for="b in commDetailBeds()" :key="b.label">
-              <div class="flex items-center gap-2 text-[11px]">
-                <span class="w-12 text-right text-muted font-medium" x-text="b.label"></span>
-                <div class="flex-1 bg-zinc-800 rounded-full h-2 overflow-hidden">
+              <div class="flex items-center gap-3 text-[12px]">
+                <span class="w-14 text-right text-muted font-medium" x-text="b.label"></span>
+                <div class="flex-1 bg-gray-100 rounded-full h-2.5 overflow-hidden">
                   <div class="bg-accent h-full rounded-full bar-anim" :style="'width:' + b.pct + '%'"></div>
                 </div>
-                <span class="w-8 text-right font-medium" x-text="b.count"></span>
+                <span class="w-8 text-right font-semibold text-heading" x-text="b.count"></span>
               </div>
             </template>
           </div>
         </div>
-        <div class="rounded-xl border border-border bg-card p-4" x-show="commDetailBands().length">
-          <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-3">Price distribution</div>
-          <div class="space-y-1.5">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commDetailBands().length">
+          <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Price distribution</div>
+          <div class="space-y-2">
             <template x-for="b in commDetailBands()" :key="b.label">
-              <div class="flex items-center gap-2 text-[11px]">
+              <div class="flex items-center gap-3 text-[12px]">
                 <span class="w-16 text-right text-muted font-medium" x-text="b.label"></span>
-                <div class="flex-1 bg-zinc-800 rounded-full h-2 overflow-hidden">
+                <div class="flex-1 bg-gray-100 rounded-full h-2.5 overflow-hidden">
                   <div class="bg-up h-full rounded-full bar-anim" :style="'width:' + b.pct + '%'"></div>
                 </div>
-                <span class="w-8 text-right font-medium" x-text="b.count"></span>
+                <span class="w-8 text-right font-semibold text-heading" x-text="b.count"></span>
               </div>
             </template>
           </div>
         </div>
       </div>
 
-      <!-- Sub-communities -->
-      <div class="rounded-xl border border-border bg-card overflow-hidden" x-show="commDetailSubs().length">
-        <div class="px-4 py-2.5 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Sub-communities</div>
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="commDetailSubs().length">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Sub-communities</div>
         <table class="w-full text-[12px]">
-          <thead class="text-muted">
-            <tr class="border-b border-border">
-              <th class="text-left px-4 py-2 font-medium">Name</th>
-              <th class="text-right px-3 py-2 font-medium">Listings</th>
-              <th class="text-right px-4 py-2 font-medium">Avg price</th>
-            </tr>
+          <thead class="text-muted bg-gray-50">
+            <tr class="border-b border-border"><th class="text-left px-5 py-2.5 font-semibold">Name</th><th class="text-right px-3 py-2.5 font-semibold">Listings</th><th class="text-right px-5 py-2.5 font-semibold">Avg price</th></tr>
           </thead>
           <tbody>
             <template x-for="s in commDetailSubs()" :key="s.name">
-              <tr class="border-b border-border-subtle last:border-0">
-                <td class="px-4 py-2 font-medium" x-text="s.name"></td>
-                <td class="px-3 py-2 text-right" x-text="s.count"></td>
-                <td class="px-4 py-2 text-right text-muted" x-text="fmtAed(s.avg_price)"></td>
+              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
+                <td class="px-5 py-2.5 font-medium" x-text="s.name"></td>
+                <td class="px-3 py-2.5 text-right" x-text="s.count"></td>
+                <td class="px-5 py-2.5 text-right text-muted" x-text="fmtAed(s.avg_price)"></td>
               </tr>
             </template>
           </tbody>
         </table>
       </div>
 
-      <!-- Agents -->
-      <div class="rounded-xl border border-border bg-card overflow-hidden" x-show="commDetailAgents().length">
-        <div class="px-4 py-2.5 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Agent leaderboard</div>
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="commDetailAgents().length">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Agent leaderboard</div>
         <table class="w-full text-[12px]">
-          <thead class="text-muted">
-            <tr class="border-b border-border">
-              <th class="text-left px-4 py-2 font-medium">Agent</th>
-              <th class="text-right px-3 py-2 font-medium">Listings</th>
-              <th class="text-right px-4 py-2 font-medium">Share</th>
-            </tr>
+          <thead class="text-muted bg-gray-50">
+            <tr class="border-b border-border"><th class="text-left px-5 py-2.5 font-semibold">Agent</th><th class="text-right px-3 py-2.5 font-semibold">Listings</th><th class="text-right px-5 py-2.5 font-semibold">Share</th></tr>
           </thead>
           <tbody>
             <template x-for="a in commDetailAgents()" :key="a.name">
-              <tr class="border-b border-border-subtle last:border-0">
-                <td class="px-4 py-2 font-medium" x-text="a.name"></td>
-                <td class="px-3 py-2 text-right" x-text="a.count"></td>
-                <td class="px-4 py-2 text-right text-muted" x-text="a.share_pct != null ? a.share_pct.toFixed(1) + '%' : '—'"></td>
+              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
+                <td class="px-5 py-2.5 font-medium" x-text="a.name"></td>
+                <td class="px-3 py-2.5 text-right" x-text="a.count"></td>
+                <td class="px-5 py-2.5 text-right text-muted" x-text="a.share_pct != null ? a.share_pct.toFixed(1) + '%' : '—'"></td>
               </tr>
             </template>
           </tbody>
@@ -346,46 +340,44 @@
     </div>
 
     <!-- ==================== COMMUNITIES LIST ==================== -->
-    <div x-show="!loading && view==='communities'" x-cloak class="space-y-5 fade-in">
-      <h1 class="text-[18px] font-semibold tracking-tight">Communities</h1>
-      <!-- Same filter + table as overview but with avg price column -->
+    <div x-show="!loading && view==='communities'" x-cloak class="space-y-6 fade-in">
+      <h1 class="text-[22px] font-bold tracking-tight text-heading">Communities</h1>
       <div class="flex flex-wrap items-center gap-3">
         <div class="relative flex-1 min-w-[200px] max-w-xs">
-          <input x-model="search" type="text" placeholder="Search…" class="w-full bg-card border border-border rounded-lg px-3 py-1.5 text-[12px] text-zinc-200 placeholder-muted-2 focus:outline-none focus:border-accent/50">
+          <input x-model="search" type="text" placeholder="Search…" class="w-full bg-white border border-border rounded-lg px-3 py-2 text-[12px] text-gray-900 placeholder-muted-2 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm">
         </div>
         <div class="flex items-center gap-2 text-[11px] text-muted">
-          <span>Min market</span>
+          <span class="font-medium">Min market</span>
           <input type="range" x-model="minMarket" min="0" max="5000" step="100" class="w-24">
-          <span class="text-zinc-400 w-10" x-text="fmt(minMarket)"></span>
+          <span class="text-heading font-medium w-10" x-text="fmt(minMarket)"></span>
         </div>
       </div>
-      <div class="rounded-xl border border-border bg-card overflow-hidden">
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
         <table class="w-full text-[12px] mobile-cards">
-          <thead class="text-muted bg-card sticky top-12 z-30">
+          <thead class="text-muted bg-gray-50/80 sticky top-14 z-30">
             <tr class="border-b border-border">
-              <th class="text-left px-4 py-2.5 font-medium cursor-pointer" @click="toggleSort('name')">Community</th>
-              <th class="text-left px-3 py-2.5 font-medium">Types</th>
-              <th class="text-right px-3 py-2.5 font-medium cursor-pointer" @click="toggleSort('count')">Huspy</th>
-              <th class="text-right px-3 py-2.5 font-medium cursor-pointer" @click="toggleSort('market')">Market</th>
-              <th class="text-right px-3 py-2.5 font-medium cursor-pointer" @click="toggleSort('share')">Share</th>
-              <th class="text-right px-3 py-2.5 font-medium">Avg price</th>
-              <th class="text-right px-4 py-2.5 font-medium cursor-pointer" @click="toggleSort('delta')">Δ pp</th>
+              <th class="text-left px-5 py-3 font-semibold cursor-pointer" @click="toggleSort('name')">Community</th>
+              <th class="text-left px-3 py-3 font-semibold">Types</th>
+              <th class="text-right px-3 py-3 font-semibold cursor-pointer" @click="toggleSort('count')">Huspy</th>
+              <th class="text-right px-3 py-3 font-semibold cursor-pointer" @click="toggleSort('market')">Market</th>
+              <th class="text-right px-3 py-3 font-semibold cursor-pointer" @click="toggleSort('share')">Share</th>
+              <th class="text-right px-3 py-3 font-semibold">Avg price</th>
+              <th class="text-right px-5 py-3 font-semibold cursor-pointer" @click="toggleSort('delta')">Δ pp</th>
             </tr>
           </thead>
           <tbody>
             <template x-for="r in filteredRows()" :key="r.name">
-              <tr class="border-b border-border-subtle hover:bg-card-hover transition-colors cursor-pointer" @click="selectCommunity(r.name)">
-                <td class="px-4 py-2.5 font-medium" data-label="Community">
-                  <span x-text="r.name"></span>
-                  <template x-if="r.smallN"><span class="ml-1 text-[9px] bg-amber-500/10 text-amber-400 rounded px-1 py-0.5 font-medium">small n</span></template>
-                </td>
-                <td class="px-3 py-2.5" data-label="Types"><div class="flex gap-1 flex-wrap"><template x-for="t in r.topTypes" :key="t.name"><span class="inline-flex rounded bg-zinc-800/80 px-1.5 py-0.5 text-[10px] text-zinc-400 font-medium" x-text="t.abbr + ' ' + t.count"></span></template></div></td>
-                <td class="px-3 py-2.5 text-right font-medium" data-label="Huspy" x-text="fmt(r.count)"></td>
-                <td class="px-3 py-2.5 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
-                <td class="px-3 py-2.5 text-right font-medium" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : '—'"></td>
-                <td class="px-3 py-2.5 text-right text-muted" data-label="Avg price" x-text="fmtAed(r.avg_price)"></td>
-                <td class="px-4 py-2.5 text-right" data-label="Δ pp">
-                  <span :class="r.delta > 0 ? 'text-up' : r.delta < 0 ? 'text-down' : 'text-muted'" class="font-medium" x-text="r.delta != null ? (r.delta > 0 ? '↑ +' : r.delta < 0 ? '↓ ' : '') + r.delta.toFixed(2) + 'pp' : '—'"></span>
+              <tr class="border-b border-border-subtle hover:bg-gray-50 transition-colors cursor-pointer" @click="selectCommunity(r.name)">
+                <td class="px-5 py-3 font-medium" data-label="Community"><span x-text="r.name"></span><template x-if="r.smallN"><span class="ml-1.5 text-[9px] bg-amber-50 text-amber-600 border border-amber-200 rounded-full px-1.5 py-0.5 font-semibold">low n</span></template></td>
+                <td class="px-3 py-3" data-label="Types"><div class="flex gap-1 flex-wrap"><template x-for="t in r.topTypes" :key="t.name"><span class="inline-flex rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-500 font-medium" x-text="t.abbr + ' ' + t.count"></span></template></div></td>
+                <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Huspy" x-text="fmt(r.count)"></td>
+                <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
+                <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : '—'"></td>
+                <td class="px-3 py-3 text-right text-muted" data-label="Avg price" x-text="fmtAed(r.avg_price)"></td>
+                <td class="px-5 py-3 text-right" data-label="Δ pp">
+                  <span x-show="r.delta != null && r.delta > 0" class="inline-flex items-center text-up bg-up-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↑ +<span x-text="r.delta.toFixed(2)"></span>pp</span>
+                  <span x-show="r.delta != null && r.delta < 0" class="inline-flex items-center text-down bg-down-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↓ <span x-text="r.delta.toFixed(2)"></span>pp</span>
+                  <span x-show="r.delta == null" class="text-muted-2">—</span>
                 </td>
               </tr>
             </template>
@@ -395,25 +387,25 @@
     </div>
 
     <!-- ==================== AGENTS ==================== -->
-    <div x-show="!loading && view==='agents'" x-cloak class="space-y-5 fade-in">
-      <h1 class="text-[18px] font-semibold tracking-tight">Agents</h1>
-      <div class="rounded-xl border border-border bg-card overflow-hidden">
+    <div x-show="!loading && view==='agents'" x-cloak class="space-y-6 fade-in">
+      <h1 class="text-[22px] font-bold tracking-tight text-heading">Agents</h1>
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
         <table class="w-full text-[12px] mobile-cards">
-          <thead class="text-muted bg-card sticky top-12 z-30">
+          <thead class="text-muted bg-gray-50/80 sticky top-14 z-30">
             <tr class="border-b border-border">
-              <th class="text-left px-4 py-2.5 font-medium w-8">#</th>
-              <th class="text-left px-3 py-2.5 font-medium">Agent</th>
-              <th class="text-right px-3 py-2.5 font-medium">Listings</th>
-              <th class="text-right px-4 py-2.5 font-medium">Share</th>
+              <th class="text-left px-5 py-3 font-semibold w-8">#</th>
+              <th class="text-left px-3 py-3 font-semibold">Agent</th>
+              <th class="text-right px-3 py-3 font-semibold">Listings</th>
+              <th class="text-right px-5 py-3 font-semibold">Share</th>
             </tr>
           </thead>
           <tbody>
             <template x-for="(a, i) in agentRows()" :key="a.name">
-              <tr class="border-b border-border-subtle last:border-0">
-                <td class="px-4 py-2.5 text-muted" data-label="#" x-text="i + 1"></td>
-                <td class="px-3 py-2.5 font-medium" data-label="Agent" x-text="a.name"></td>
-                <td class="px-3 py-2.5 text-right" data-label="Listings" x-text="a.count"></td>
-                <td class="px-4 py-2.5 text-right text-muted" data-label="Share" x-text="a.share.toFixed(1) + '%'"></td>
+              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
+                <td class="px-5 py-3 text-muted" data-label="#" x-text="i + 1"></td>
+                <td class="px-3 py-3 font-medium" data-label="Agent" x-text="a.name"></td>
+                <td class="px-3 py-3 text-right font-semibold" data-label="Listings" x-text="a.count"></td>
+                <td class="px-5 py-3 text-right text-muted" data-label="Share" x-text="a.share.toFixed(1) + '%'"></td>
               </tr>
             </template>
           </tbody>
@@ -440,7 +432,7 @@ function dashboard() {
     onlyWithListings: false,
     sortCol: 'share',
     sortDir: 'desc',
-    typeColors: ['bg-blue-500','bg-emerald-500','bg-amber-500','bg-purple-500','bg-rose-500','bg-cyan-500','bg-orange-500','bg-teal-500'],
+    typeColors: ['bg-blue-500','bg-emerald-500','bg-amber-500','bg-violet-500','bg-rose-500','bg-cyan-500','bg-orange-500','bg-teal-500'],
     abbrevMap: { Apartment:'Apt', Townhouse:'TH', Villa:'Villa', Office:'Off', Penthouse:'PH', Shop:'Shop', 'Commercial Floor':'Comm', 'Residential Plot':'Plot' },
 
     async init() {
@@ -454,10 +446,8 @@ function dashboard() {
 
     setMode(m) { this.mode = m; localStorage.setItem('huspy-mode', m); },
     navigate(v) { this.view = v; this.search = ''; window.scrollTo(0, 0); },
-
     block() { return this.latest?.data?.[this.mode] || null; },
     prevBlock() { return this.previous?.data?.[this.mode] || null; },
-
     fmt(n) { return n == null ? '—' : new Intl.NumberFormat('en-US').format(n); },
     fmtAed(n) {
       if (n == null) return '—';
@@ -470,20 +460,15 @@ function dashboard() {
       const d = cur - prev;
       return (d >= 0 ? '↑ +' : '↓ ') + Math.abs(d);
     },
-
     marketShare(m) {
-      const d = this.latest?.data?.[m];
-      if (!d) return '—';
+      const d = this.latest?.data?.[m]; if (!d) return '—';
       const mkt = d.dubai_market_total;
       return mkt > 0 ? ((d.total / mkt) * 100).toFixed(2) + '%' : '—';
     },
     marketShareSub(m) {
-      const d = this.latest?.data?.[m];
-      if (!d) return '';
-      const mkt = d.dubai_market_total;
-      return this.fmt(d.total) + ' of ' + this.fmt(mkt) + ' live market listings';
+      const d = this.latest?.data?.[m]; if (!d) return '';
+      return this.fmt(d.total) + ' of ' + this.fmt(d.dubai_market_total) + ' live market listings';
     },
-
     typeData() {
       const b = this.block(); if (!b) return [];
       const totals = {};
@@ -494,10 +479,8 @@ function dashboard() {
       const total = sorted.reduce((s, [, n]) => s + n, 0);
       return sorted.map(([name, count]) => ({ name, count, pct: total ? count / total * 100 : 0 }));
     },
-
     commRows() {
-      const cur = this.block(), prev = this.prevBlock();
-      if (!cur) return [];
+      const cur = this.block(), prev = this.prevBlock(); if (!cur) return [];
       const prevMap = prev?.by_community || {};
       return Object.entries(cur.by_community || {}).map(([name, node]) => {
         const prevNode = prevMap[name];
@@ -506,16 +489,14 @@ function dashboard() {
         const bt = node.by_type || {};
         const topTypes = Object.entries(bt).sort((a, b) => b[1].total - a[1].total).slice(0, 2)
           .map(([t, d]) => ({ name: t, abbr: this.abbrevMap[t] || t.slice(0,4), count: d.total }));
-        const smallN = node.count < 5 && share != null && share > 2;
         return {
           name, count: node.count || 0, market: node.market_total ?? null,
           share, avg_price: node.avg_price ?? null,
           delta: share != null && prevShare != null ? +(share - prevShare).toFixed(4) : null,
-          topTypes, smallN,
+          topTypes, smallN: node.count < 5 && share != null && share > 2,
         };
       });
     },
-
     filteredRows() {
       let rows = this.commRows();
       if (this.search) { const q = this.search.toLowerCase(); rows = rows.filter(r => r.name.toLowerCase().includes(q)); }
@@ -530,40 +511,28 @@ function dashboard() {
       });
       return rows;
     },
-
     toggleSort(col) {
       if (this.sortCol === col) this.sortDir = this.sortDir === 'desc' ? 'asc' : 'desc';
       else { this.sortCol = col; this.sortDir = 'desc'; }
     },
-
     movers() {
       const rows = this.commRows().filter(r => r.delta != null);
-      const up = [...rows].filter(r => r.delta > 0).sort((a, b) => b.delta - a.delta).slice(0, 5);
-      const down = [...rows].filter(r => r.delta < 0).sort((a, b) => a.delta - b.delta).slice(0, 5);
-      return { up, down };
+      return {
+        up: [...rows].filter(r => r.delta > 0).sort((a, b) => b.delta - a.delta).slice(0, 5),
+        down: [...rows].filter(r => r.delta < 0).sort((a, b) => a.delta - b.delta).slice(0, 5),
+      };
     },
-
-    maxDelta() {
-      const m = this.movers();
-      const all = [...m.up, ...m.down].map(r => Math.abs(r.delta));
-      return Math.max(...all, 0.01);
-    },
-
+    maxDelta() { const m = this.movers(); return Math.max(...[...m.up, ...m.down].map(r => Math.abs(r.delta)), 0.01); },
     agentRows() {
       const b = this.block(); if (!b) return [];
       const merged = {};
       for (const c of Object.values(b.by_community || {}))
-        for (const a of (c.agents || [])) {
-          if (!merged[a.name]) merged[a.name] = { name: a.name, count: 0 };
-          merged[a.name].count += a.count;
-        }
+        for (const a of (c.agents || [])) { if (!merged[a.name]) merged[a.name] = { name: a.name, count: 0 }; merged[a.name].count += a.count; }
       const total = b.total || 1;
       return Object.values(merged).map(a => ({ ...a, share: a.count / total * 100 })).sort((a, b) => b.count - a.count);
     },
-
     selectCommunity(name) { this.selectedCommunity = name; this.view = 'community-detail'; window.scrollTo(0, 0); },
     commNode() { return this.block()?.by_community?.[this.selectedCommunity] || {}; },
-
     commDetailStats() {
       const n = this.commNode();
       const stats = [
