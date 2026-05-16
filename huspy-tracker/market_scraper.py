@@ -87,6 +87,10 @@ COMMUNITY_SLUGS = {
     "Old Town": "old-town",
     "Dubai Festival City": "dubai-festival-city",
     "Sobha Hartland 2": "sobha-hartland-2",
+    "La Mer": "la-mer-jumeirah",
+    "Za'abeel 1": "zaabeel-1",
+    "Dubai Studio City": "dubai-studio-city",
+    "Dubai Internet City": "dubai-internet-city",
 }
 
 # Sub-locations that don't have their own Bayut search page.
@@ -130,6 +134,10 @@ SUB_TO_PARENT = {
     "Serena": "Dubailand",
     "Haven by Aldar": "Dubailand",
     "Falcon City of Wonders": "Dubailand",
+    "Al Satwa": "Bur Dubai",
+    "The Villa": "Dubailand",
+    "Al Kifaf": "Bur Dubai",
+    "Dubai Internet City": "Dubai Media City",
 }
 
 
