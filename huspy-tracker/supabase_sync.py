@@ -77,18 +77,33 @@ def transform_snapshot(snapshot: dict) -> dict:
                     if l.get("price_num"):
                         beds_prices[key].append(l["price_num"])
 
-            # Agents breakdown
-            agent_counts = defaultdict(int)
+            # Agents breakdown with avg price + per-bed prices
+            agent_data = defaultdict(lambda: {"count": 0, "prices": [], "beds": defaultdict(lambda: {"count": 0, "prices": []})})
             for l in comm_listings:
                 a = l.get("agent") or l.get("agent_name") or "Unattributed"
-                agent_counts[a] += 1
+                agent_data[a]["count"] += 1
+                if l.get("price_num"):
+                    agent_data[a]["prices"].append(l["price_num"])
+                    b = l.get("bedrooms")
+                    if b is not None:
+                        key = str(b) if b > 0 else "Studio"
+                        agent_data[a]["beds"][key]["count"] += 1
+                        agent_data[a]["beds"][key]["prices"].append(l["price_num"])
 
             agents = []
-            for name, cnt in sorted(agent_counts.items(), key=lambda x: -x[1]):
+            for name, ad in sorted(agent_data.items(), key=lambda x: -x[1]["count"]):
+                beds_out = {}
+                for bk, bd in sorted(ad["beds"].items()):
+                    beds_out[bk] = {
+                        "count": bd["count"],
+                        "avg_price": int(sum(bd["prices"]) / len(bd["prices"])) if bd["prices"] else None,
+                    }
                 agents.append({
                     "name": name,
-                    "count": cnt,
-                    "share_pct": round(cnt / count * 100, 1) if count else 0,
+                    "count": ad["count"],
+                    "share_pct": round(ad["count"] / count * 100, 1) if count else 0,
+                    "avg_price": int(sum(ad["prices"]) / len(ad["prices"])) if ad["prices"] else None,
+                    "beds": beds_out,
                 })
 
             # Average price
