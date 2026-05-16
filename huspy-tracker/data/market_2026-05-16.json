@@ -103,7 +103,7 @@
     "Arabian Ranches 3": {
       "community": "Arabian Ranches 3",
       "purpose": "sale",
-      "total_market": 3,
+      "total_market": 649,
       "sample_size": 35,
       "avg_price": 3887542,
       "median_price": 3100000,
@@ -639,6 +639,96 @@
       "median_price": 0,
       "min_price": 0,
       "max_price": 0
+    },
+    "DIFC": {
+      "community": "DIFC",
+      "purpose": "sale",
+      "total_market": 389,
+      "sample_size": 24,
+      "avg_price": 4485583,
+      "median_price": 2950000,
+      "min_price": 1450000,
+      "max_price": 21216000
+    },
+    "Al Barari": {
+      "community": "Al Barari",
+      "purpose": "sale",
+      "total_market": 178,
+      "sample_size": 29,
+      "avg_price": 16289866,
+      "median_price": 8500000,
+      "min_price": 3749575,
+      "max_price": 95000000
+    },
+    "Nad Al Sheba 1": {
+      "community": "Nad Al Sheba 1",
+      "purpose": "sale",
+      "total_market": 662,
+      "sample_size": 36,
+      "avg_price": 14404111,
+      "median_price": 13553000,
+      "min_price": 939000,
+      "max_price": 35000000
+    },
+    "Bur Dubai": {
+      "community": "Bur Dubai",
+      "purpose": "sale",
+      "total_market": 318,
+      "sample_size": 29,
+      "avg_price": 3139827,
+      "median_price": 2780000,
+      "min_price": 1600000,
+      "max_price": 6200000
+    },
+    "Expo City": {
+      "community": "Expo City",
+      "purpose": "sale",
+      "total_market": 477,
+      "sample_size": 36,
+      "avg_price": 7151336,
+      "median_price": 3469000,
+      "min_price": 1350000,
+      "max_price": 31000000
+    },
+    "Old Town": {
+      "community": "Old Town",
+      "purpose": "sale",
+      "total_market": 133,
+      "sample_size": 24,
+      "avg_price": 4189166,
+      "median_price": 3650000,
+      "min_price": 2000000,
+      "max_price": 17600000
+    },
+    "Dubai Festival City": {
+      "community": "Dubai Festival City",
+      "purpose": "sale",
+      "total_market": 32,
+      "sample_size": 24,
+      "avg_price": 4375395,
+      "median_price": 3500000,
+      "min_price": 1450000,
+      "max_price": 9303000
+    },
+    "Sobha Hartland 2": {
+      "community": "Sobha Hartland 2",
+      "purpose": "sale",
+      "total_market": 692,
+      "sample_size": 30,
+      "avg_price": 5615670,
+      "median_price": 1939452,
+      "min_price": 1199000,
+      "max_price": 28500000
+    },
+    "Al Barsha": {
+      "community": "Al Barsha",
+      "purpose": "sale",
+      "total_market": 73,
+      "sample_size": 24,
+      "avg_price": 5595707,
+      "median_price": 2394078,
+      "min_price": 1000000,
+      "max_price": 65000000
     }
   },
   "rent": {
@@ -1165,12 +1255,12 @@
     "Arabian Ranches 2": {
       "community": "Arabian Ranches 2",
       "purpose": "rent",
-      "total_market": 0,
-      "sample_size": 0,
-      "avg_price": 0,
-      "median_price": 0,
-      "min_price": 0,
-      "max_price": 0
+      "total_market": 272,
+      "sample_size": 24,
+      "avg_price": 312083,
+      "median_price": 320000,
+      "min_price": 220000,
+      "max_price": 595000
     },
     "Dubai Investment Park (DIP)": {
       "community": "Dubai Investment Park (DIP)",
@@ -1281,6 +1371,96 @@
       "median_price": 180000,
       "min_price": 150000,
       "max_price": 200000
+    },
+    "DIFC": {
+      "community": "DIFC",
+      "purpose": "rent",
+      "total_market": 380,
+      "sample_size": 24,
+      "avg_price": 121916,
+      "median_price": 110000,
+      "min_price": 75000,
+      "max_price": 199000
+    },
+    "Al Barari": {
+      "community": "Al Barari",
+      "purpose": "rent",
+      "total_market": 338,
+      "sample_size": 24,
+      "avg_price": 583416,
+      "median_price": 600000,
+      "min_price": 380000,
+      "max_price": 915000
+    },
+    "Nad Al Sheba 1": {
+      "community": "Nad Al Sheba 1",
+      "purpose": "rent",
+      "total_market": 678,
+      "sample_size": 24,
+      "avg_price": 322947,
+      "median_price": 260000,
+      "min_price": 70000,
+      "max_price": 1300000
+    },
+    "Bur Dubai": {
+      "community": "Bur Dubai",
+      "purpose": "rent",
+      "total_market": 1590,
+      "sample_size": 24,
+      "avg_price": 83625,
+      "median_price": 73000,
+      "min_price": 36000,
+      "max_price": 250000
+    },
+    "Expo City": {
+      "community": "Expo City",
+      "purpose": "rent",
+      "total_market": 119,
+      "sample_size": 24,
+      "avg_price": 104416,
+      "median_price": 100000,
+      "min_price": 78000,
+      "max_price": 140000
+    },
+    "Old Town": {
+      "community": "Old Town",
+      "purpose": "rent",
+      "total_market": 206,
+      "sample_size": 24,
+      "avg_price": 153583,
+      "median_price": 160000,
+      "min_price": 100000,
+      "max_price": 220000
+    },
+    "Dubai Festival City": {
+      "community": "Dubai Festival City",
+      "purpose": "rent",
+      "total_market": 202,
+      "sample_size": 24,
+      "avg_price": 189500,
+      "median_price": 180000,
+      "min_price": 86000,
+      "max_price": 360000
+    },
+    "Sobha Hartland 2": {
+      "community": "Sobha Hartland 2",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 104999,
+      "median_price": 84999,
+      "min_price": 70000,
+      "max_price": 149000
+    },
+    "Al Barsha": {
+      "community": "Al Barsha",
+      "purpose": "rent",
+      "total_market": 1371,
+      "sample_size": 24,
+      "avg_price": 181916,
+      "median_price": 90000,
+      "min_price": 58000,
+      "max_price": 750000
     }
   },
   "meta": {

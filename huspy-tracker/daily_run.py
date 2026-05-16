@@ -34,11 +34,20 @@ def _enrich_supabase_with_market(date_str, snapshot, market_data):
     existing.setdefault('sale', {})['dubai_market_total'] = 117476
     existing.setdefault('rent', {})['dubai_market_total'] = 109412
 
+    from market_scraper import SUB_TO_PARENT
+
     for purpose, mkt_key in [('sale', 'sale'), ('rent', 'rent')]:
         mkt = market_data.get(mkt_key, {})
         for comm, data in existing.get(purpose, {}).get('by_community', {}).items():
             m = mkt.get(comm, {})
             mt = m.get('total_market')
+            # If no market data, try parent community
+            if (not mt or mt <= 0) and comm in SUB_TO_PARENT:
+                parent = SUB_TO_PARENT[comm]
+                m = mkt.get(parent, {})
+                mt = m.get('total_market')
+                if mt and mt > 0:
+                    data['parent_community'] = parent
             data['market_total'] = mt if mt and mt > 0 else None
             data['market_avg_price'] = m.get('avg_price') if mt and mt > 0 else None
             if mt and mt > 0 and data.get('count'):

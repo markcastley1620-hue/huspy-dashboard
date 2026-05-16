@@ -79,6 +79,57 @@ COMMUNITY_SLUGS = {
     "Al Jaddaf": "al-jaddaf",
     "Dubai Harbour": "dubai-harbour",
     "Dubai Islands": "dubai-islands",
+    "DIFC": "difc",
+    "Al Barari": "al-barari",
+    "Nad Al Sheba 1": "nad-al-sheba",
+    "Bur Dubai": "bur-dubai",
+    "Expo City": "expo-city",
+    "Old Town": "old-town",
+    "Dubai Festival City": "dubai-festival-city",
+    "Sobha Hartland 2": "sobha-hartland-2",
+}
+
+# Sub-locations that don't have their own Bayut search page.
+# Map them to their parent community for market comparison.
+SUB_TO_PARENT = {
+    "Villanova": "Dubailand",
+    "Emaar Beachfront": "Dubai Marina",
+    "City Walk": "Al Wasl",
+    "Meydan One": "Meydan",
+    "Meydan Horizon": "Meydan",
+    "Meydan Avenue": "Meydan",
+    "La Mer": "Palm Jumeirah",
+    "Port de La Mer": "Palm Jumeirah",
+    "Madinat Jumeirah Living": "Palm Jumeirah",
+    "Barsha Heights (Tecom)": "Al Barsha",
+    "Za'abeel 1": "Downtown Dubai",
+    "JVC District 10": "Jumeirah Village Circle (JVC)",
+    "JVC District 11": "Jumeirah Village Circle (JVC)",
+    "JVC District 12": "Jumeirah Village Circle (JVC)",
+    "JVC District 13": "Jumeirah Village Circle (JVC)",
+    "JVC District 15": "Jumeirah Village Circle (JVC)",
+    "District 11": "Mohammed Bin Rashid City (MBR City)",
+    "District One": "Mohammed Bin Rashid City (MBR City)",
+    "District 7": "Jumeirah Village Circle (JVC)",
+    "Park Heights": "Dubai Hills Estate",
+    "Uptown Motor City": "Motor City",
+    "Golf Promenade": "DAMAC Hills",
+    "Golf Town": "DAMAC Hills",
+    "Residential District": "Dubai South",
+    "Emaar South": "Dubai South",
+    "Central Park": "Dubai Investment Park (DIP)",
+    "Midtown": "Dubai Production City (IMPZ)",
+    "Opera District": "Downtown Dubai",
+    "Wasl Gate": "Al Wasl",
+    "Sobha Hartland 2": "Sobha Hartland",
+    "The Pulse": "Dubai South",
+    "Azizi Riviera": "Meydan",
+    "City of Arabia": "Dubailand",
+    "Dubai Land Residence Complex (DLRC)": "Dubailand",
+    "JVT District 2": "Jumeirah Village Triangle (JVT)",
+    "Serena": "Dubailand",
+    "Haven by Aldar": "Dubailand",
+    "Falcon City of Wonders": "Dubailand",
 }
 
 
@@ -108,7 +159,8 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
             # Get total count (first page only)
             if page == 1:
                 text = soup.get_text()
-                m = re.search(r"([\d,]+)\s*Properties", text)
+                # Match "X Properties" with at least one space to avoid false positives
+                m = re.search(r"([\d,]+)\s+Properties", text)
                 if m:
                     total_market = int(m.group(1).replace(",", ""))
 
