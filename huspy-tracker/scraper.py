@@ -89,9 +89,50 @@ def parse_listing_card(card) -> dict | None:
     elif len(loc_parts) == 1:
         community = loc_parts[0]
 
+    # Listing URL
+    link_el = card.find("a", href=re.compile(r"/property/"))
+    listing_url = link_el["href"] if link_el else None
+    listing_id = None
+    if listing_url:
+        id_match = re.search(r"details-(\d+)", listing_url)
+        listing_id = id_match.group(1) if id_match else None
+
+    # Agent name
+    agent_el = card.find(attrs={"aria-label": "Agent logo"})
+    agent_name = agent_el.get("title", "").strip() if agent_el else None
+
+    # Listed date → days on market
+    card_text = card.get_text()
+    listed_date = None
+    dom = None
+    date_match = re.search(r"on (\d+)\w* of (\w+) (\d{4})", card_text)
+    if date_match:
+        try:
+            from datetime import datetime
+            day, month_name, year = date_match.group(1), date_match.group(2), date_match.group(3)
+            listed_date = datetime.strptime(f"{day} {month_name} {year}", "%d %B %Y").strftime("%Y-%m-%d")
+            dom = (datetime.utcnow() - datetime.strptime(listed_date, "%Y-%m-%d")).days
+        except (ValueError, Exception):
+            pass
+
+    # Promotional status
+    promo = None
+    if "Signature" in card_text:
+        promo = "Signature"
+    elif "Hot" in card_text:
+        promo = "Hot"
+
+    # Price per sqft
+    psqft = None
+    if price_num and size and size > 0:
+        psqft = round(price_num / size)
+
     return {
+        "listing_id": listing_id,
+        "url": listing_url,
         "price": f"AED {price_text}",
         "price_num": price_num,
+        "price_sqft": psqft,
         "purpose": purpose,
         "frequency": frequency.lower() if frequency else None,
         "type": get_aria("Type"),
@@ -104,8 +145,12 @@ def parse_listing_card(card) -> dict | None:
         "sub_community": sub_community,
         "community": community,
         "city": city,
+        "agent": agent_name,
+        "listed_date": listed_date,
+        "dom": dom,
+        "promo": promo,
         "verified": bool(card.find(attrs={"aria-label": "TruBroker"})),
-        "off_plan": "Off-Plan" in card.get_text(),
+        "off_plan": "Off-Plan" in card_text,
     }
 
 
