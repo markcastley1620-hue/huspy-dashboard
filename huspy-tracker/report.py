@@ -133,6 +133,13 @@ def generate_report(date: str = None) -> str:
             change_str = f" {change_indicator(ch)}"
 
         lines.append(f"  {'  '.join(parts)}{change_str}")
+        # Property type breakdown for this community
+        by_type = data.get("by_type", {})
+        if by_type:
+            type_strs = []
+            for ptype, td in by_type.items():
+                type_strs.append(f"{ptype}:{td['total']}")
+            lines.append(f"    └ {' | '.join(type_strs)}")
     lines.append("")
 
     # Sub-community breakdown (top 20)
