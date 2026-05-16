@@ -1,0 +1,2342 @@
+{
+  "Dubai Creek Harbour|Creek Edge": {
+    "community": "Dubai Creek Harbour",
+    "sub_community": "Creek Edge",
+    "sale": {
+      "market_count": 55,
+      "market_avg_price": 2844791
+    },
+    "rent": {
+      "market_count": 117,
+      "market_avg_price": 135333
+    }
+  },
+  "The Lakes|Maeen": {
+    "community": "The Lakes",
+    "sub_community": "Maeen",
+    "sale": {
+      "market_count": 10,
+      "market_avg_price": 9869995
+    },
+    "rent": {
+      "market_count": 10,
+      "market_avg_price": 356400
+    }
+  },
+  "Mudon|Mudon Al Ranim": {
+    "community": "Mudon",
+    "sub_community": "Mudon Al Ranim",
+    "sale": {
+      "market_count": 380,
+      "market_avg_price": 4245361
+    },
+    "rent": {
+      "market_count": 306,
+      "market_avg_price": 227083
+    }
+  },
+  "Downtown Dubai|Opera Grand": {
+    "community": "Downtown Dubai",
+    "sub_community": "Opera Grand",
+    "sale": {
+      "market_count": 70,
+      "market_avg_price": 8142240
+    },
+    "rent": {
+      "market_count": 107,
+      "market_avg_price": 416374
+    }
+  },
+  "Dubai Marina|JW Marriott Hotel Marina": {
+    "community": "Dubai Marina",
+    "sub_community": "JW Marriott Hotel Marina",
+    "sale": {
+      "market_count": 49,
+      "market_avg_price": 2446875
+    },
+    "rent": {
+      "market_count": 76,
+      "market_avg_price": 146041
+    }
+  },
+  "Dubai Hills Estate|Prive Residences": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "Prive Residences",
+    "sale": {
+      "market_count": 39,
+      "market_avg_price": 1631875
+    },
+    "rent": {
+      "market_count": 69,
+      "market_avg_price": 105891
+    }
+  },
+  "Jumeirah Village Circle (JVC)|JVC District 14": {
+    "community": "Jumeirah Village Circle (JVC)",
+    "sub_community": "JVC District 14",
+    "sale": {
+      "market_count": 1358,
+      "market_avg_price": 1488924
+    },
+    "rent": {
+      "market_count": 2009,
+      "market_avg_price": 74374
+    }
+  },
+  "Jumeirah Village Circle (JVC)|JVC District 11": {
+    "community": "Jumeirah Village Circle (JVC)",
+    "sub_community": "JVC District 11",
+    "sale": {
+      "market_count": 1955,
+      "market_avg_price": 966471
+    },
+    "rent": {
+      "market_count": 2043,
+      "market_avg_price": 69416
+    }
+  },
+  "Jumeirah Village Circle (JVC)|JVC District 12": {
+    "community": "Jumeirah Village Circle (JVC)",
+    "sub_community": "JVC District 12",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 0
+    },
+    "rent": {
+      "market_count": 1791,
+      "market_avg_price": 72291
+    }
+  },
+  "Jebel Ali|Jebel Ali Village": {
+    "community": "Jebel Ali",
+    "sub_community": "Jebel Ali Village",
+    "sale": {
+      "market_count": 160,
+      "market_avg_price": 6818749
+    },
+    "rent": {
+      "market_count": 55,
+      "market_avg_price": 422083
+    }
+  },
+  "DAMAC Hills|Trump Estates": {
+    "community": "DAMAC Hills",
+    "sub_community": "Trump Estates",
+    "sale": {
+      "market_count": 76,
+      "market_avg_price": 8422916
+    },
+    "rent": {
+      "market_count": 117,
+      "market_avg_price": 218704
+    }
+  },
+  "Jumeirah Village Circle (JVC)|JVC District 13": {
+    "community": "Jumeirah Village Circle (JVC)",
+    "sub_community": "JVC District 13",
+    "sale": {
+      "market_count": 1211,
+      "market_avg_price": 1149755
+    },
+    "rent": {
+      "market_count": 1838,
+      "market_avg_price": 71874
+    }
+  },
+  "Downtown Dubai|29 Boulevard": {
+    "community": "Downtown Dubai",
+    "sub_community": "29 Boulevard",
+    "sale": {
+      "market_count": 72,
+      "market_avg_price": 2615820
+    },
+    "rent": {
+      "market_count": 196,
+      "market_avg_price": 118203
+    }
+  },
+  "Sobha Hartland|The Crest": {
+    "community": "Sobha Hartland",
+    "sub_community": "The Crest",
+    "sale": {
+      "market_count": 198,
+      "market_avg_price": 2066250
+    },
+    "rent": {
+      "market_count": 319,
+      "market_avg_price": 129874
+    }
+  },
+  "Sobha Hartland|Sobha Hartland Estates": {
+    "community": "Sobha Hartland",
+    "sub_community": "Sobha Hartland Estates",
+    "sale": {
+      "market_count": 26,
+      "market_avg_price": 21764583
+    },
+    "rent": {
+      "market_count": 27,
+      "market_avg_price": 1004328
+    }
+  },
+  "Arabian Ranches 3|Sun": {
+    "community": "Arabian Ranches 3",
+    "sub_community": "Sun",
+    "sale": {
+      "market_count": 19,
+      "market_avg_price": 3230786
+    },
+    "rent": {
+      "market_count": 108,
+      "market_avg_price": 162332
+    }
+  },
+  "Tilal Al Ghaf|Elan": {
+    "community": "Tilal Al Ghaf",
+    "sub_community": "Elan",
+    "sale": {
+      "market_count": 97,
+      "market_avg_price": 4183333
+    },
+    "rent": {
+      "market_count": 307,
+      "market_avg_price": 213916
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|Mazaya Business Avenue": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "Mazaya Business Avenue",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 1576000
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 137799
+    }
+  },
+  "Dubai Marina|Al Sahab Tower": {
+    "community": "Dubai Marina",
+    "sub_community": "Al Sahab Tower",
+    "sale": {
+      "market_count": 25,
+      "market_avg_price": 3692291
+    },
+    "rent": {
+      "market_count": 61,
+      "market_avg_price": 204895
+    }
+  },
+  "Al Furjan|PG One": {
+    "community": "Al Furjan",
+    "sub_community": "PG One",
+    "sale": {
+      "market_count": 36,
+      "market_avg_price": 1344583
+    },
+    "rent": {
+      "market_count": 217,
+      "market_avg_price": 84291
+    }
+  },
+  "Dubailand|Villanova": {
+    "community": "Dubailand",
+    "sub_community": "Villanova",
+    "sale": {
+      "market_count": 487,
+      "market_avg_price": 3504999
+    },
+    "rent": {
+      "market_count": 604,
+      "market_avg_price": 172166
+    }
+  },
+  "Arabian Ranches 3|Raya": {
+    "community": "Arabian Ranches 3",
+    "sub_community": "Raya",
+    "sale": {
+      "market_count": 61,
+      "market_avg_price": 3385000
+    },
+    "rent": {
+      "market_count": 104,
+      "market_avg_price": 179833
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Amazonia": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Amazonia",
+    "sale": {
+      "market_count": 38,
+      "market_avg_price": 2141000
+    },
+    "rent": {
+      "market_count": 41,
+      "market_avg_price": 0
+    }
+  },
+  "Business Bay|Churchill Towers": {
+    "community": "Business Bay",
+    "sub_community": "Churchill Towers",
+    "sale": {
+      "market_count": 39,
+      "market_avg_price": 2167120
+    },
+    "rent": {
+      "market_count": 80,
+      "market_avg_price": 111638
+    }
+  },
+  "Villanova|La Violeta": {
+    "community": "Villanova",
+    "sub_community": "La Violeta",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    }
+  },
+  "Jumeirah Beach Residence (JBR)|Rimal": {
+    "community": "Jumeirah Beach Residence (JBR)",
+    "sub_community": "Rimal",
+    "sale": {
+      "market_count": 88,
+      "market_avg_price": 4221416
+    },
+    "rent": {
+      "market_count": 286,
+      "market_avg_price": 198291
+    }
+  },
+  "Dubai Marina|Park Island": {
+    "community": "Dubai Marina",
+    "sub_community": "Park Island",
+    "sale": {
+      "market_count": 74,
+      "market_avg_price": 2622375
+    },
+    "rent": {
+      "market_count": 120,
+      "market_avg_price": 127374
+    }
+  },
+  "Dubai Marina|The Torch": {
+    "community": "Dubai Marina",
+    "sub_community": "The Torch",
+    "sale": {
+      "market_count": 75,
+      "market_avg_price": 2746416
+    },
+    "rent": {
+      "market_count": 121,
+      "market_avg_price": 138791
+    }
+  },
+  "The Valley by Emaar|Talia": {
+    "community": "The Valley by Emaar",
+    "sub_community": "Talia",
+    "sale": {
+      "market_count": 48,
+      "market_avg_price": 3281458
+    },
+    "rent": {
+      "market_count": 83,
+      "market_avg_price": 162916
+    }
+  },
+  "Business Bay|Aykon City": {
+    "community": "Business Bay",
+    "sub_community": "Aykon City",
+    "sale": {
+      "market_count": 483,
+      "market_avg_price": 1592062
+    },
+    "rent": {
+      "market_count": 387,
+      "market_avg_price": 96541
+    }
+  },
+  "DAMAC Hills|Silver Springs": {
+    "community": "DAMAC Hills",
+    "sub_community": "Silver Springs",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 3766666
+    },
+    "rent": {
+      "market_count": 129,
+      "market_avg_price": 286020
+    }
+  },
+  "Al Furjan|Al Furjan West": {
+    "community": "Al Furjan",
+    "sub_community": "Al Furjan West",
+    "sale": {
+      "market_count": 308,
+      "market_avg_price": 7554333
+    },
+    "rent": {
+      "market_count": 511,
+      "market_avg_price": 303333
+    }
+  },
+  "Business Bay|Ontario Tower": {
+    "community": "Business Bay",
+    "sub_community": "Ontario Tower",
+    "sale": {
+      "market_count": 33,
+      "market_avg_price": 1281666
+    },
+    "rent": {
+      "market_count": 56,
+      "market_avg_price": 85499
+    }
+  },
+  "Downtown Dubai|Forte": {
+    "community": "Downtown Dubai",
+    "sub_community": "Forte",
+    "sale": {
+      "market_count": 105,
+      "market_avg_price": 3920958
+    },
+    "rent": {
+      "market_count": 264,
+      "market_avg_price": 223395
+    }
+  },
+  "Business Bay|Al Habtoor City": {
+    "community": "Business Bay",
+    "sub_community": "Al Habtoor City",
+    "sale": {
+      "market_count": 251,
+      "market_avg_price": 2685791
+    },
+    "rent": {
+      "market_count": 441,
+      "market_avg_price": 168332
+    }
+  },
+  "Dubai Marina|Marina Wharf": {
+    "community": "Dubai Marina",
+    "sub_community": "Marina Wharf",
+    "sale": {
+      "market_count": 31,
+      "market_avg_price": 1959958
+    },
+    "rent": {
+      "market_count": 82,
+      "market_avg_price": 131249
+    }
+  },
+  "Dubai Marina|Silverene": {
+    "community": "Dubai Marina",
+    "sub_community": "Silverene",
+    "sale": {
+      "market_count": 30,
+      "market_avg_price": 2272208
+    },
+    "rent": {
+      "market_count": 111,
+      "market_avg_price": 113291
+    }
+  },
+  "DAMAC Hills|The Park Villas": {
+    "community": "DAMAC Hills",
+    "sub_community": "The Park Villas",
+    "sale": {
+      "market_count": 122,
+      "market_avg_price": 5949999
+    },
+    "rent": {
+      "market_count": 318,
+      "market_avg_price": 245291
+    }
+  },
+  "Business Bay|The Opus": {
+    "community": "Business Bay",
+    "sub_community": "The Opus",
+    "sale": {
+      "market_count": 15,
+      "market_avg_price": 8513298
+    },
+    "rent": {
+      "market_count": 9,
+      "market_avg_price": 299332
+    }
+  },
+  "Sobha Hartland|Hartland Waves": {
+    "community": "Sobha Hartland",
+    "sub_community": "Hartland Waves",
+    "sale": {
+      "market_count": 55,
+      "market_avg_price": 1577416
+    },
+    "rent": {
+      "market_count": 73,
+      "market_avg_price": 98830
+    }
+  },
+  "DAMAC Hills|Park Residences 1": {
+    "community": "DAMAC Hills",
+    "sub_community": "Park Residences 1",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    }
+  },
+  "Arabian Ranches 2|Rosa": {
+    "community": "Arabian Ranches 2",
+    "sub_community": "Rosa",
+    "sale": {
+      "market_count": 7,
+      "market_avg_price": 12114285
+    },
+    "rent": {
+      "market_count": 19,
+      "market_avg_price": 600999
+    }
+  },
+  "La Mer|Port de La Mer": {
+    "community": "La Mer",
+    "sub_community": "Port de La Mer",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 2616000
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    }
+  },
+  "Jumeirah Beach Residence (JBR)|Bahar": {
+    "community": "Jumeirah Beach Residence (JBR)",
+    "sub_community": "Bahar",
+    "sale": {
+      "market_count": 71,
+      "market_avg_price": 2740995
+    },
+    "rent": {
+      "market_count": 152,
+      "market_avg_price": 133958
+    }
+  },
+  "Al Furjan|Millennium Talia Residences": {
+    "community": "Al Furjan",
+    "sub_community": "Millennium Talia Residences",
+    "sale": {
+      "market_count": 40,
+      "market_avg_price": 1328187
+    },
+    "rent": {
+      "market_count": 45,
+      "market_avg_price": 108495
+    }
+  },
+  "Bluewaters Island|Bluewaters Residences": {
+    "community": "Bluewaters Island",
+    "sub_community": "Bluewaters Residences",
+    "sale": {
+      "market_count": 99,
+      "market_avg_price": 13020832
+    },
+    "rent": {
+      "market_count": 159,
+      "market_avg_price": 503666
+    }
+  },
+  "Villanova|Amaranta": {
+    "community": "Villanova",
+    "sub_community": "Amaranta",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    }
+  },
+  "Palm Jumeirah|Soho Palm": {
+    "community": "Palm Jumeirah",
+    "sub_community": "Soho Palm",
+    "sale": {
+      "market_count": 3,
+      "market_avg_price": 32777996
+    },
+    "rent": {
+      "market_count": 106,
+      "market_avg_price": 253749
+    }
+  },
+  "Dubai Marina|Al Habtoor Business Tower": {
+    "community": "Dubai Marina",
+    "sub_community": "Al Habtoor Business Tower",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6611056
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 273000
+    }
+  },
+  "Jumeirah Village Circle (JVC)|JVC District 15": {
+    "community": "Jumeirah Village Circle (JVC)",
+    "sub_community": "JVC District 15",
+    "sale": {
+      "market_count": 1114,
+      "market_avg_price": 1505375
+    },
+    "rent": {
+      "market_count": 1889,
+      "market_avg_price": 83447
+    }
+  },
+  "Dubai Marina|The Waves": {
+    "community": "Dubai Marina",
+    "sub_community": "The Waves",
+    "sale": {
+      "market_count": 22,
+      "market_avg_price": 2008409
+    },
+    "rent": {
+      "market_count": 32,
+      "market_avg_price": 121249
+    }
+  },
+  "Arabian Ranches 3|Bliss": {
+    "community": "Arabian Ranches 3",
+    "sub_community": "Bliss",
+    "sale": {
+      "market_count": 61,
+      "market_avg_price": 3931833
+    },
+    "rent": {
+      "market_count": 176,
+      "market_avg_price": 181666
+    }
+  },
+  "Arabian Ranches 3|Caya": {
+    "community": "Arabian Ranches 3",
+    "sub_community": "Caya",
+    "sale": {
+      "market_count": 75,
+      "market_avg_price": 8522020
+    },
+    "rent": {
+      "market_count": 470,
+      "market_avg_price": 345000
+    }
+  },
+  "Dubai Creek Harbour|Creek Horizon": {
+    "community": "Dubai Creek Harbour",
+    "sub_community": "Creek Horizon",
+    "sale": {
+      "market_count": 50,
+      "market_avg_price": 2885916
+    },
+    "rent": {
+      "market_count": 68,
+      "market_avg_price": 139578
+    }
+  },
+  "Dubai Marina|Marina Diamonds": {
+    "community": "Dubai Marina",
+    "sub_community": "Marina Diamonds",
+    "sale": {
+      "market_count": 69,
+      "market_avg_price": 1303541
+    },
+    "rent": {
+      "market_count": 240,
+      "market_avg_price": 92229
+    }
+  },
+  "Dubai Creek Harbour|The Grand": {
+    "community": "Dubai Creek Harbour",
+    "sub_community": "The Grand",
+    "sale": {
+      "market_count": 44,
+      "market_avg_price": 4293041
+    },
+    "rent": {
+      "market_count": 70,
+      "market_avg_price": 170833
+    }
+  },
+  "Dubai Hills Estate|Hills Park": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "Hills Park",
+    "sale": {
+      "market_count": 97,
+      "market_avg_price": 1995833
+    },
+    "rent": {
+      "market_count": 156,
+      "market_avg_price": 118124
+    }
+  },
+  "Dubai Marina|Marina Quays": {
+    "community": "Dubai Marina",
+    "sub_community": "Marina Quays",
+    "sale": {
+      "market_count": 29,
+      "market_avg_price": 3008583
+    },
+    "rent": {
+      "market_count": 74,
+      "market_avg_price": 155625
+    }
+  },
+  "Za'abeel 1|Address Residences Zabeel": {
+    "community": "Za'abeel 1",
+    "sub_community": "Address Residences Zabeel",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 2616000
+    }
+  },
+  "Jebel Ali|Garden View Villas": {
+    "community": "Jebel Ali",
+    "sub_community": "Garden View Villas",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 4289979
+    },
+    "rent": {
+      "market_count": 43,
+      "market_avg_price": 295208
+    }
+  },
+  "Jumeirah Village Circle (JVC)|JVC District 16": {
+    "community": "Jumeirah Village Circle (JVC)",
+    "sub_community": "JVC District 16",
+    "sale": {
+      "market_count": 489,
+      "market_avg_price": 1004958
+    },
+    "rent": {
+      "market_count": 1084,
+      "market_avg_price": 69249
+    }
+  },
+  "Downtown Dubai|Boulevard Crescent Towers": {
+    "community": "Downtown Dubai",
+    "sub_community": "Boulevard Crescent Towers",
+    "sale": {
+      "market_count": 34,
+      "market_avg_price": 4268696
+    },
+    "rent": {
+      "market_count": 80,
+      "market_avg_price": 192020
+    }
+  },
+  "City Walk|Central Park": {
+    "community": "City Walk",
+    "sub_community": "Central Park",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 2616000
+    }
+  },
+  "Palm Jumeirah|Garden Homes Palm Jumeirah": {
+    "community": "Palm Jumeirah",
+    "sub_community": "Garden Homes Palm Jumeirah",
+    "sale": {
+      "market_count": 93,
+      "market_avg_price": 48595833
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 0
+    }
+  },
+  "Dubai Marina|DAMAC Heights": {
+    "community": "Dubai Marina",
+    "sub_community": "DAMAC Heights",
+    "sale": {
+      "market_count": 71,
+      "market_avg_price": 3564719
+    },
+    "rent": {
+      "market_count": 253,
+      "market_avg_price": 166579
+    }
+  },
+  "Al Furjan|Amalia Residences": {
+    "community": "Al Furjan",
+    "sub_community": "Amalia Residences",
+    "sale": {
+      "market_count": 10,
+      "market_avg_price": 1779999
+    },
+    "rent": {
+      "market_count": 14,
+      "market_avg_price": 118642
+    }
+  },
+  "Dubai Marina|Studio One Tower": {
+    "community": "Dubai Marina",
+    "sub_community": "Studio One Tower",
+    "sale": {
+      "market_count": 39,
+      "market_avg_price": 1552287
+    },
+    "rent": {
+      "market_count": 138,
+      "market_avg_price": 93791
+    }
+  },
+  "Dubai Marina|Marina Gate": {
+    "community": "Dubai Marina",
+    "sub_community": "Marina Gate",
+    "sale": {
+      "market_count": 113,
+      "market_avg_price": 3950333
+    },
+    "rent": {
+      "market_count": 231,
+      "market_avg_price": 311270
+    }
+  },
+  "Dubai Hills Estate|Maple": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "Maple",
+    "sale": {
+      "market_count": 113,
+      "market_avg_price": 5372874
+    },
+    "rent": {
+      "market_count": 430,
+      "market_avg_price": 274666
+    }
+  },
+  "Business Bay|The Executive Bay": {
+    "community": "Business Bay",
+    "sub_community": "The Executive Bay",
+    "sale": {
+      "market_count": 20,
+      "market_avg_price": 1098999
+    },
+    "rent": {
+      "market_count": 66,
+      "market_avg_price": 104366
+    }
+  },
+  "Dubai Creek Harbour|Island Park": {
+    "community": "Dubai Creek Harbour",
+    "sub_community": "Island Park",
+    "sale": {
+      "market_count": 58,
+      "market_avg_price": 2577833
+    },
+    "rent": {
+      "market_count": 38,
+      "market_avg_price": 183145
+    }
+  },
+  "Jumeirah Village Circle (JVC)|JVC District 10": {
+    "community": "Jumeirah Village Circle (JVC)",
+    "sub_community": "JVC District 10",
+    "sale": {
+      "market_count": 2208,
+      "market_avg_price": 1096639
+    },
+    "rent": {
+      "market_count": 2894,
+      "market_avg_price": 70791
+    }
+  },
+  "The Meadows|The Meadows 2": {
+    "community": "The Meadows",
+    "sub_community": "The Meadows 2",
+    "sale": {
+      "market_count": 28,
+      "market_avg_price": 13502291
+    },
+    "rent": {
+      "market_count": 41,
+      "market_avg_price": 481458
+    }
+  },
+  "Sobha Hartland|Hartland Greens": {
+    "community": "Sobha Hartland",
+    "sub_community": "Hartland Greens",
+    "sale": {
+      "market_count": 46,
+      "market_avg_price": 2657291
+    },
+    "rent": {
+      "market_count": 66,
+      "market_avg_price": 120374
+    }
+  },
+  "Reem|Mira": {
+    "community": "Reem",
+    "sub_community": "Mira",
+    "sale": {
+      "market_count": 65,
+      "market_avg_price": 4033083
+    },
+    "rent": {
+      "market_count": 90,
+      "market_avg_price": 198291
+    }
+  },
+  "The Springs|The Springs 14": {
+    "community": "The Springs",
+    "sub_community": "The Springs 14",
+    "sale": {
+      "market_count": 28,
+      "market_avg_price": 5665791
+    },
+    "rent": {
+      "market_count": 60,
+      "market_avg_price": 240999
+    }
+  },
+  "Sobha Hartland|Kensington Waters": {
+    "community": "Sobha Hartland",
+    "sub_community": "Kensington Waters",
+    "sale": {
+      "market_count": 21,
+      "market_avg_price": 2574658
+    },
+    "rent": {
+      "market_count": 29,
+      "market_avg_price": 136791
+    }
+  },
+  "Sobha Hartland|The Terraces": {
+    "community": "Sobha Hartland",
+    "sub_community": "The Terraces",
+    "sale": {
+      "market_count": 20,
+      "market_avg_price": 2554400
+    },
+    "rent": {
+      "market_count": 42,
+      "market_avg_price": 173249
+    }
+  },
+  "Downtown Dubai|Opera District": {
+    "community": "Downtown Dubai",
+    "sub_community": "Opera District",
+    "sale": {
+      "market_count": 186,
+      "market_avg_price": 5129166
+    },
+    "rent": {
+      "market_count": 506,
+      "market_avg_price": 216625
+    }
+  },
+  "Dubai Marina|Escan Marina Tower": {
+    "community": "Dubai Marina",
+    "sub_community": "Escan Marina Tower",
+    "sale": {
+      "market_count": 66,
+      "market_avg_price": 1296041
+    },
+    "rent": {
+      "market_count": 240,
+      "market_avg_price": 85583
+    }
+  },
+  "Mohammed Bin Rashid City (MBR City)|District 11": {
+    "community": "Mohammed Bin Rashid City (MBR City)",
+    "sub_community": "District 11",
+    "sale": {
+      "market_count": 958,
+      "market_avg_price": 5134639
+    },
+    "rent": {
+      "market_count": 208,
+      "market_avg_price": 187791
+    }
+  },
+  "Sobha Hartland|Crest Grande": {
+    "community": "Sobha Hartland",
+    "sub_community": "Crest Grande",
+    "sale": {
+      "market_count": 273,
+      "market_avg_price": 2877416
+    },
+    "rent": {
+      "market_count": 532,
+      "market_avg_price": 160404
+    }
+  },
+  "The Springs|The Springs 15": {
+    "community": "The Springs",
+    "sub_community": "The Springs 15",
+    "sale": {
+      "market_count": 24,
+      "market_avg_price": 6633124
+    },
+    "rent": {
+      "market_count": 81,
+      "market_avg_price": 237666
+    }
+  },
+  "The Meadows|The Meadows 9": {
+    "community": "The Meadows",
+    "sub_community": "The Meadows 9",
+    "sale": {
+      "market_count": 47,
+      "market_avg_price": 12182291
+    },
+    "rent": {
+      "market_count": 51,
+      "market_avg_price": 499957
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Aquilegia": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Aquilegia",
+    "sale": {
+      "market_count": 45,
+      "market_avg_price": 1726416
+    },
+    "rent": {
+      "market_count": 63,
+      "market_avg_price": 99854
+    }
+  },
+  "The Springs|The Springs 5": {
+    "community": "The Springs",
+    "sub_community": "The Springs 5",
+    "sale": {
+      "market_count": 18,
+      "market_avg_price": 6163888
+    },
+    "rent": {
+      "market_count": 27,
+      "market_avg_price": 239312
+    }
+  },
+  "Palm Jumeirah|Mileo The Palm": {
+    "community": "Palm Jumeirah",
+    "sub_community": "Mileo The Palm",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 27109427
+    },
+    "rent": {
+      "market_count": 25,
+      "market_avg_price": 322083
+    }
+  },
+  "Green Community|Green Community West": {
+    "community": "Green Community",
+    "sub_community": "Green Community West",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    }
+  },
+  "Dubai Hills Estate|Ellington House": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "Ellington House",
+    "sale": {
+      "market_count": 73,
+      "market_avg_price": 3996219
+    },
+    "rent": {
+      "market_count": 109,
+      "market_avg_price": 234415
+    }
+  },
+  "Dubai Media City|Concord Tower": {
+    "community": "Dubai Media City",
+    "sub_community": "Concord Tower",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 5179999
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 99577
+    }
+  },
+  "Dubai Hills Estate|Park Ridge": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "Park Ridge",
+    "sale": {
+      "market_count": 43,
+      "market_avg_price": 3434541
+    },
+    "rent": {
+      "market_count": 118,
+      "market_avg_price": 129414
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Trixis": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Trixis",
+    "sale": {
+      "market_count": 14,
+      "market_avg_price": 3316071
+    },
+    "rent": {
+      "market_count": 16,
+      "market_avg_price": 132181
+    }
+  },
+  "Business Bay|Peninsula": {
+    "community": "Business Bay",
+    "sub_community": "Peninsula",
+    "sale": {
+      "market_count": 533,
+      "market_avg_price": 2029912
+    },
+    "rent": {
+      "market_count": 543,
+      "market_avg_price": 137999
+    }
+  },
+  "The Springs|The Springs 4": {
+    "community": "The Springs",
+    "sub_community": "The Springs 4",
+    "sale": {
+      "market_count": 28,
+      "market_avg_price": 4998333
+    },
+    "rent": {
+      "market_count": 45,
+      "market_avg_price": 263958
+    }
+  },
+  "DAMAC Hills|Golf Town": {
+    "community": "DAMAC Hills",
+    "sub_community": "Golf Town",
+    "sale": {
+      "market_count": 124,
+      "market_avg_price": 1959204
+    },
+    "rent": {
+      "market_count": 171,
+      "market_avg_price": 128499
+    }
+  },
+  "DAMAC Hills|Golf Gate": {
+    "community": "DAMAC Hills",
+    "sub_community": "Golf Gate",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 2616000
+    }
+  },
+  "Business Bay|Bayswater Tower": {
+    "community": "Business Bay",
+    "sub_community": "Bayswater Tower",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 8971177
+    },
+    "rent": {
+      "market_count": 3,
+      "market_avg_price": 195563
+    }
+  },
+  "Arabian Ranches 3|Bliss 2": {
+    "community": "Arabian Ranches 3",
+    "sub_community": "Bliss 2",
+    "sale": {
+      "market_count": 82,
+      "market_avg_price": 3805833
+    },
+    "rent": {
+      "market_count": 162,
+      "market_avg_price": 177291
+    }
+  },
+  "Dubai Marina|Ocean Heights": {
+    "community": "Dubai Marina",
+    "sub_community": "Ocean Heights",
+    "sale": {
+      "market_count": 51,
+      "market_avg_price": 2597283
+    },
+    "rent": {
+      "market_count": 183,
+      "market_avg_price": 139332
+    }
+  },
+  "Al Furjan|Equiti Home": {
+    "community": "Al Furjan",
+    "sub_community": "Equiti Home",
+    "sale": {
+      "market_count": 155,
+      "market_avg_price": 1647041
+    },
+    "rent": {
+      "market_count": 183,
+      "market_avg_price": 119374
+    }
+  },
+  "Dubai Marina|Marina View Tower": {
+    "community": "Dubai Marina",
+    "sub_community": "Marina View Tower",
+    "sale": {
+      "market_count": 15,
+      "market_avg_price": 2467332
+    },
+    "rent": {
+      "market_count": 112,
+      "market_avg_price": 85000
+    }
+  },
+  "Dubai Marina|Bay Central": {
+    "community": "Dubai Marina",
+    "sub_community": "Bay Central",
+    "sale": {
+      "market_count": 57,
+      "market_avg_price": 2662458
+    },
+    "rent": {
+      "market_count": 158,
+      "market_avg_price": 98457
+    }
+  },
+  "Dubai Marina|Orra Harbour Residences": {
+    "community": "Dubai Marina",
+    "sub_community": "Orra Harbour Residences",
+    "sale": {
+      "market_count": 14,
+      "market_avg_price": 2175151
+    },
+    "rent": {
+      "market_count": 63,
+      "market_avg_price": 114875
+    }
+  },
+  "Mohammed Bin Rashid City (MBR City)|District One": {
+    "community": "Mohammed Bin Rashid City (MBR City)",
+    "sub_community": "District One",
+    "sale": {
+      "market_count": 385,
+      "market_avg_price": 17327083
+    },
+    "rent": {
+      "market_count": 809,
+      "market_avg_price": 375791
+    }
+  },
+  "Villanova|La Rosa": {
+    "community": "Villanova",
+    "sub_community": "La Rosa",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    }
+  },
+  "Sheikh Zayed Road|Fairmont Dubai": {
+    "community": "Sheikh Zayed Road",
+    "sub_community": "Fairmont Dubai",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 8747999
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 195997
+    }
+  },
+  "Dubai Marina|Trident Grand Residence": {
+    "community": "Dubai Marina",
+    "sub_community": "Trident Grand Residence",
+    "sale": {
+      "market_count": 29,
+      "market_avg_price": 4219708
+    },
+    "rent": {
+      "market_count": 42,
+      "market_avg_price": 206374
+    }
+  },
+  "Dubai Hills Estate|Golf Grand": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "Golf Grand",
+    "sale": {
+      "market_count": 89,
+      "market_avg_price": 2220097
+    },
+    "rent": {
+      "market_count": 225,
+      "market_avg_price": 143083
+    }
+  },
+  "Reem|Mira Oasis": {
+    "community": "Reem",
+    "sub_community": "Mira Oasis",
+    "sale": {
+      "market_count": 89,
+      "market_avg_price": 3692874
+    },
+    "rent": {
+      "market_count": 168,
+      "market_avg_price": 170291
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Basswood": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Basswood",
+    "sale": {
+      "market_count": 32,
+      "market_avg_price": 1499166
+    },
+    "rent": {
+      "market_count": 70,
+      "market_avg_price": 91958
+    }
+  },
+  "Dubai Marina|Mag 218 Tower": {
+    "community": "Dubai Marina",
+    "sub_community": "Mag 218 Tower",
+    "sale": {
+      "market_count": 37,
+      "market_avg_price": 1870958
+    },
+    "rent": {
+      "market_count": 98,
+      "market_avg_price": 90089
+    }
+  },
+  "Dubai Hills Estate|Park Field": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "Park Field",
+    "sale": {
+      "market_count": 40,
+      "market_avg_price": 3150416
+    },
+    "rent": {
+      "market_count": 255,
+      "market_avg_price": 153123
+    }
+  },
+  "Dubai Marina|Marina Promenade": {
+    "community": "Dubai Marina",
+    "sub_community": "Marina Promenade",
+    "sale": {
+      "market_count": 74,
+      "market_avg_price": 3412624
+    },
+    "rent": {
+      "market_count": 143,
+      "market_avg_price": 141145
+    }
+  },
+  "Dubai Marina|Al Majara": {
+    "community": "Dubai Marina",
+    "sub_community": "Al Majara",
+    "sale": {
+      "market_count": 72,
+      "market_avg_price": 7345975
+    },
+    "rent": {
+      "market_count": 82,
+      "market_avg_price": 164624
+    }
+  },
+  "DAMAC Hills|Carson - The Drive": {
+    "community": "DAMAC Hills",
+    "sub_community": "Carson - The Drive",
+    "sale": {
+      "market_count": 158,
+      "market_avg_price": 748416
+    },
+    "rent": {
+      "market_count": 254,
+      "market_avg_price": 51833
+    }
+  },
+  "DAMAC Hills|The Legends": {
+    "community": "DAMAC Hills",
+    "sub_community": "The Legends",
+    "sale": {
+      "market_count": 2,
+      "market_avg_price": 2425200
+    },
+    "rent": {
+      "market_count": 4,
+      "market_avg_price": 202842
+    }
+  },
+  "Palm Jumeirah|Shoreline Apartments": {
+    "community": "Palm Jumeirah",
+    "sub_community": "Shoreline Apartments",
+    "sale": {
+      "market_count": 138,
+      "market_avg_price": 4777500
+    },
+    "rent": {
+      "market_count": 461,
+      "market_avg_price": 229572
+    }
+  },
+  "Dubai Marina|Elite Residence": {
+    "community": "Dubai Marina",
+    "sub_community": "Elite Residence",
+    "sale": {
+      "market_count": 83,
+      "market_avg_price": 3489124
+    },
+    "rent": {
+      "market_count": 334,
+      "market_avg_price": 173245
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Janusia": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Janusia",
+    "sale": {
+      "market_count": 36,
+      "market_avg_price": 2065333
+    },
+    "rent": {
+      "market_count": 65,
+      "market_avg_price": 134458
+    }
+  },
+  "Downtown Dubai|Address Dubai Mall": {
+    "community": "Downtown Dubai",
+    "sub_community": "Address Dubai Mall",
+    "sale": {
+      "market_count": 84,
+      "market_avg_price": 7360235
+    },
+    "rent": {
+      "market_count": 293,
+      "market_avg_price": 439958
+    }
+  },
+  "Dubai Marina|Vida Residences Dubai Marina": {
+    "community": "Dubai Marina",
+    "sub_community": "Vida Residences Dubai Marina",
+    "sale": {
+      "market_count": 42,
+      "market_avg_price": 5687934
+    },
+    "rent": {
+      "market_count": 114,
+      "market_avg_price": 250624
+    }
+  },
+  "Dubai Sports City|Victory Heights": {
+    "community": "Dubai Sports City",
+    "sub_community": "Victory Heights",
+    "sale": {
+      "market_count": 96,
+      "market_avg_price": 14643124
+    },
+    "rent": {
+      "market_count": 78,
+      "market_avg_price": 457916
+    }
+  },
+  "Palm Jumeirah|FIVE Palm Jumeirah": {
+    "community": "Palm Jumeirah",
+    "sub_community": "FIVE Palm Jumeirah",
+    "sale": {
+      "market_count": 85,
+      "market_avg_price": 7256665
+    },
+    "rent": {
+      "market_count": 118,
+      "market_avg_price": 678540
+    }
+  },
+  "Dubai Marina|Marina Crown": {
+    "community": "Dubai Marina",
+    "sub_community": "Marina Crown",
+    "sale": {
+      "market_count": 50,
+      "market_avg_price": 3135624
+    },
+    "rent": {
+      "market_count": 71,
+      "market_avg_price": 130125
+    }
+  },
+  "Downtown Dubai|Ramada Downtown Dubai": {
+    "community": "Downtown Dubai",
+    "sub_community": "Ramada Downtown Dubai",
+    "sale": {
+      "market_count": 2,
+      "market_avg_price": 8195287
+    },
+    "rent": {
+      "market_count": 3,
+      "market_avg_price": 239104
+    }
+  },
+  "Dubai Hills Estate|Park Horizon": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "Park Horizon",
+    "sale": {
+      "market_count": 73,
+      "market_avg_price": 2576370
+    },
+    "rent": {
+      "market_count": 338,
+      "market_avg_price": 141999
+    }
+  },
+  "Dubai Islands|Bay Villas": {
+    "community": "Dubai Islands",
+    "sub_community": "Bay Villas",
+    "sale": {
+      "market_count": 221,
+      "market_avg_price": 12176368
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 182000
+    }
+  },
+  "Business Bay|Century Tower": {
+    "community": "Business Bay",
+    "sub_community": "Century Tower",
+    "sale": {
+      "market_count": 41,
+      "market_avg_price": 1592541
+    },
+    "rent": {
+      "market_count": 94,
+      "market_avg_price": 87041
+    }
+  },
+  "Arabian Ranches 3|Elie Saab": {
+    "community": "Arabian Ranches 3",
+    "sub_community": "Elie Saab",
+    "sale": {
+      "market_count": 63,
+      "market_avg_price": 9033958
+    },
+    "rent": {
+      "market_count": 283,
+      "market_avg_price": 414666
+    }
+  },
+  "Dubai Marina|Stella Maris": {
+    "community": "Dubai Marina",
+    "sub_community": "Stella Maris",
+    "sale": {
+      "market_count": 33,
+      "market_avg_price": 6505120
+    },
+    "rent": {
+      "market_count": 76,
+      "market_avg_price": 280145
+    }
+  },
+  "Palm Jumeirah|The Crescent": {
+    "community": "Palm Jumeirah",
+    "sub_community": "The Crescent",
+    "sale": {
+      "market_count": 359,
+      "market_avg_price": 15959061
+    },
+    "rent": {
+      "market_count": 236,
+      "market_avg_price": 714583
+    }
+  },
+  "Town Square|The Hamilton": {
+    "community": "Town Square",
+    "sub_community": "The Hamilton",
+    "sale": {
+      "market_count": 54,
+      "market_avg_price": 1867832
+    },
+    "rent": {
+      "market_count": 223,
+      "market_avg_price": 90076
+    }
+  },
+  "Tilal Al Ghaf|Aura Gardens": {
+    "community": "Tilal Al Ghaf",
+    "sub_community": "Aura Gardens",
+    "sale": {
+      "market_count": 69,
+      "market_avg_price": 5437081
+    },
+    "rent": {
+      "market_count": 271,
+      "market_avg_price": 235999
+    }
+  },
+  "Palm Jumeirah|The Palm Tower": {
+    "community": "Palm Jumeirah",
+    "sub_community": "The Palm Tower",
+    "sale": {
+      "market_count": 53,
+      "market_avg_price": 4517458
+    },
+    "rent": {
+      "market_count": 131,
+      "market_avg_price": 194541
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|JLT Cluster K": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "JLT Cluster K",
+    "sale": {
+      "market_count": 50,
+      "market_avg_price": 2298333
+    },
+    "rent": {
+      "market_count": 115,
+      "market_avg_price": 136041
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|JLT Cluster Y": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "JLT Cluster Y",
+    "sale": {
+      "market_count": 29,
+      "market_avg_price": 2104124
+    },
+    "rent": {
+      "market_count": 60,
+      "market_avg_price": 123208
+    }
+  },
+  "Town Square|Hayat Boulevard": {
+    "community": "Town Square",
+    "sub_community": "Hayat Boulevard",
+    "sale": {
+      "market_count": 63,
+      "market_avg_price": 1378245
+    },
+    "rent": {
+      "market_count": 76,
+      "market_avg_price": 86958
+    }
+  },
+  "The Meadows|The Meadows 5": {
+    "community": "The Meadows",
+    "sub_community": "The Meadows 5",
+    "sale": {
+      "market_count": 16,
+      "market_avg_price": 18620937
+    },
+    "rent": {
+      "market_count": 26,
+      "market_avg_price": 772079
+    }
+  },
+  "Mirdif|PG Avenue": {
+    "community": "Mirdif",
+    "sub_community": "PG Avenue",
+    "sale": {
+      "market_count": 1,
+      "market_avg_price": 7318137
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 127600
+    }
+  },
+  "Business Bay|XL Tower": {
+    "community": "Business Bay",
+    "sub_community": "XL Tower",
+    "sale": {
+      "market_count": 110,
+      "market_avg_price": 8971177
+    },
+    "rent": {
+      "market_count": 1,
+      "market_avg_price": 209993
+    }
+  },
+  "Business Bay|The Prism": {
+    "community": "Business Bay",
+    "sub_community": "The Prism",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6491377
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 157000
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|JLT Cluster W": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "JLT Cluster W",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 1576000
+    },
+    "rent": {
+      "market_count": 1,
+      "market_avg_price": 164561
+    }
+  },
+  "Jumeirah Village Circle (JVC)|JVC District 18": {
+    "community": "Jumeirah Village Circle (JVC)",
+    "sub_community": "JVC District 18",
+    "sale": {
+      "market_count": 787,
+      "market_avg_price": 1046373
+    },
+    "rent": {
+      "market_count": 1178,
+      "market_avg_price": 72969
+    }
+  },
+  "Business Bay|Regal Tower": {
+    "community": "Business Bay",
+    "sub_community": "Regal Tower",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 8971177
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 157000
+    }
+  },
+  "Nad Al Sheba 1|Nad Al Sheba Gardens": {
+    "community": "Nad Al Sheba 1",
+    "sub_community": "Nad Al Sheba Gardens",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 2616000
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|JLT Cluster C": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "JLT Cluster C",
+    "sale": {
+      "market_count": 22,
+      "market_avg_price": 1332636
+    },
+    "rent": {
+      "market_count": 90,
+      "market_avg_price": 96416
+    }
+  },
+  "Downtown Dubai|Boulevard Central": {
+    "community": "Downtown Dubai",
+    "sub_community": "Boulevard Central",
+    "sale": {
+      "market_count": 40,
+      "market_avg_price": 2945791
+    },
+    "rent": {
+      "market_count": 110,
+      "market_avg_price": 130041
+    }
+  },
+  "The Springs|The Springs 9": {
+    "community": "The Springs",
+    "sub_community": "The Springs 9",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 0
+    },
+    "rent": {
+      "market_count": 42,
+      "market_avg_price": 247500
+    }
+  },
+  "Al Furjan|Prime Residency 3": {
+    "community": "Al Furjan",
+    "sub_community": "Prime Residency 3",
+    "sale": {
+      "market_count": 25,
+      "market_avg_price": 760245
+    },
+    "rent": {
+      "market_count": 70,
+      "market_avg_price": 53583
+    }
+  },
+  "Business Bay|Burlington": {
+    "community": "Business Bay",
+    "sub_community": "Burlington",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 9971177
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 157000
+    }
+  },
+  "Business Bay|The Citadel": {
+    "community": "Business Bay",
+    "sub_community": "The Citadel",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6491377
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 157000
+    }
+  },
+  "Downtown Dubai|Burj Royale": {
+    "community": "Downtown Dubai",
+    "sub_community": "Burj Royale",
+    "sale": {
+      "market_count": 70,
+      "market_avg_price": 3805416
+    },
+    "rent": {
+      "market_count": 257,
+      "market_avg_price": 171162
+    }
+  },
+  "Palm Jumeirah|NH Collection Dubai The Palm": {
+    "community": "Palm Jumeirah",
+    "sub_community": "NH Collection Dubai The Palm",
+    "sale": {
+      "market_count": 22,
+      "market_avg_price": 1309540
+    },
+    "rent": {
+      "market_count": 13,
+      "market_avg_price": 160261
+    }
+  },
+  "Business Bay|Zada Tower": {
+    "community": "Business Bay",
+    "sub_community": "Zada Tower",
+    "sale": {
+      "market_count": 62,
+      "market_avg_price": 1146041
+    },
+    "rent": {
+      "market_count": 244,
+      "market_avg_price": 73833
+    }
+  },
+  "Dubai Marina|Cayan Tower": {
+    "community": "Dubai Marina",
+    "sub_community": "Cayan Tower",
+    "sale": {
+      "market_count": 45,
+      "market_avg_price": 3139832
+    },
+    "rent": {
+      "market_count": 132,
+      "market_avg_price": 172978
+    }
+  },
+  "DAMAC Hills|Park Residences 4": {
+    "community": "DAMAC Hills",
+    "sub_community": "Park Residences 4",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 2616000
+    }
+  },
+  "Madinat Jumeirah Living|Jadeel": {
+    "community": "Madinat Jumeirah Living",
+    "sub_community": "Jadeel",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 2616000
+    }
+  },
+  "Dubai Marina|Botanica Tower": {
+    "community": "Dubai Marina",
+    "sub_community": "Botanica Tower",
+    "sale": {
+      "market_count": 42,
+      "market_avg_price": 2477791
+    },
+    "rent": {
+      "market_count": 94,
+      "market_avg_price": 96958
+    }
+  },
+  "Al Furjan|Quortaj": {
+    "community": "Al Furjan",
+    "sub_community": "Quortaj",
+    "sale": {
+      "market_count": 27,
+      "market_avg_price": 6314078
+    },
+    "rent": {
+      "market_count": 78,
+      "market_avg_price": 243958
+    }
+  },
+  "Dubai Hills Estate|399 Hills Park": {
+    "community": "Dubai Hills Estate",
+    "sub_community": "399 Hills Park",
+    "sale": {
+      "market_count": 59,
+      "market_avg_price": 3580023
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 198000
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|JLT Cluster X (Jumeirah Bay Towers)": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "JLT Cluster X (Jumeirah Bay Towers)",
+    "sale": {
+      "market_count": 21,
+      "market_avg_price": 1519047
+    },
+    "rent": {
+      "market_count": 109,
+      "market_avg_price": 86283
+    }
+  },
+  "The Springs|The Springs 3": {
+    "community": "The Springs",
+    "sub_community": "The Springs 3",
+    "sale": {
+      "market_count": 35,
+      "market_avg_price": 5072874
+    },
+    "rent": {
+      "market_count": 72,
+      "market_avg_price": 277536
+    }
+  },
+  "Business Bay|Park Lane Tower": {
+    "community": "Business Bay",
+    "sub_community": "Park Lane Tower",
+    "sale": {
+      "market_count": 5,
+      "market_avg_price": 507200
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 157000
+    }
+  },
+  "Business Bay|Rove Home Marasi Drive": {
+    "community": "Business Bay",
+    "sub_community": "Rove Home Marasi Drive",
+    "sale": {
+      "market_count": 71,
+      "market_avg_price": 1691127
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 157000
+    }
+  },
+  "Al Furjan|The Stella Residence": {
+    "community": "Al Furjan",
+    "sub_community": "The Stella Residence",
+    "sale": {
+      "market_count": 29,
+      "market_avg_price": 1852621
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 179999
+    }
+  },
+  "Palm Jumeirah|Signature Villas Palm Jumeirah": {
+    "community": "Palm Jumeirah",
+    "sub_community": "Signature Villas Palm Jumeirah",
+    "sale": {
+      "market_count": 44,
+      "market_avg_price": 80338249
+    },
+    "rent": {
+      "market_count": 178,
+      "market_avg_price": 2345833
+    }
+  },
+  "Sobha Hartland|Creek Vistas Grande": {
+    "community": "Sobha Hartland",
+    "sub_community": "Creek Vistas Grande",
+    "sale": {
+      "market_count": 50,
+      "market_avg_price": 2586999
+    },
+    "rent": {
+      "market_count": 115,
+      "market_avg_price": 145686
+    }
+  },
+  "Business Bay|Silver Tower Business Bay": {
+    "community": "Business Bay",
+    "sub_community": "Silver Tower Business Bay",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 6491377
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 157000
+    }
+  },
+  "Palm Jumeirah|Dukes The Palm": {
+    "community": "Palm Jumeirah",
+    "sub_community": "Dukes The Palm",
+    "sale": {
+      "market_count": 22,
+      "market_avg_price": 1353863
+    },
+    "rent": {
+      "market_count": 18,
+      "market_avg_price": 149347
+    }
+  },
+  "Palm Jumeirah|Serenia Living": {
+    "community": "Palm Jumeirah",
+    "sub_community": "Serenia Living",
+    "sale": {
+      "market_count": 78,
+      "market_avg_price": 15904166
+    },
+    "rent": {
+      "market_count": 21,
+      "market_avg_price": 795237
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|JLT Cluster M": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "JLT Cluster M",
+    "sale": {
+      "market_count": 26,
+      "market_avg_price": 1695416
+    },
+    "rent": {
+      "market_count": 86,
+      "market_avg_price": 90624
+    }
+  },
+  "Jumeirah Beach Residence (JBR)|Shams": {
+    "community": "Jumeirah Beach Residence (JBR)",
+    "sub_community": "Shams",
+    "sale": {
+      "market_count": 75,
+      "market_avg_price": 2895745
+    },
+    "rent": {
+      "market_count": 129,
+      "market_avg_price": 161249
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Sanctnary": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Sanctnary",
+    "sale": {
+      "market_count": 30,
+      "market_avg_price": 2022874
+    },
+    "rent": {
+      "market_count": 63,
+      "market_avg_price": 117499
+    }
+  },
+  "Al Wasl|Canal Front Residences": {
+    "community": "Al Wasl",
+    "sub_community": "Canal Front Residences",
+    "sale": {
+      "market_count": 133,
+      "market_avg_price": 4577291
+    },
+    "rent": {
+      "market_count": 173,
+      "market_avg_price": 240416
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|JLT Cluster N": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "JLT Cluster N",
+    "sale": {
+      "market_count": 42,
+      "market_avg_price": 1227874
+    },
+    "rent": {
+      "market_count": 69,
+      "market_avg_price": 99243
+    }
+  },
+  "Bur Dubai|Oud Metha": {
+    "community": "Bur Dubai",
+    "sub_community": "Oud Metha",
+    "sale": {
+      "market_count": 1,
+      "market_avg_price": 8896977
+    },
+    "rent": {
+      "market_count": 184,
+      "market_avg_price": 105041
+    }
+  },
+  "Town Square|Symphony on the Park": {
+    "community": "Town Square",
+    "sub_community": "Symphony on the Park",
+    "sale": {
+      "market_count": 43,
+      "market_avg_price": 1421587
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 129770
+    }
+  },
+  "Al Jaddaf|Binghatti Creek": {
+    "community": "Al Jaddaf",
+    "sub_community": "Binghatti Creek",
+    "sale": {
+      "market_count": 31,
+      "market_avg_price": 1701624
+    },
+    "rent": {
+      "market_count": 49,
+      "market_avg_price": 91854
+    }
+  },
+  "Business Bay|The Binary": {
+    "community": "Business Bay",
+    "sub_community": "The Binary",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 9971177
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 157000
+    }
+  },
+  "Town Square|Safi Townhouses": {
+    "community": "Town Square",
+    "sub_community": "Safi Townhouses",
+    "sale": {
+      "market_count": 19,
+      "market_avg_price": 3002578
+    },
+    "rent": {
+      "market_count": 24,
+      "market_avg_price": 158333
+    }
+  },
+  "Sobha Hartland|The Highbury": {
+    "community": "Sobha Hartland",
+    "sub_community": "The Highbury",
+    "sale": {
+      "market_count": 53,
+      "market_avg_price": 2851416
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 152800
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Juniper": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Juniper",
+    "sale": {
+      "market_count": 38,
+      "market_avg_price": 3221291
+    },
+    "rent": {
+      "market_count": 54,
+      "market_avg_price": 171541
+    }
+  },
+  "Palm Jumeirah|Ellington Beach House": {
+    "community": "Palm Jumeirah",
+    "sub_community": "Ellington Beach House",
+    "sale": {
+      "market_count": 53,
+      "market_avg_price": 10476989
+    },
+    "rent": {
+      "market_count": 31,
+      "market_avg_price": 389999
+    }
+  },
+  "Dubai Festival City|Marsa Plaza": {
+    "community": "Dubai Festival City",
+    "sub_community": "Marsa Plaza",
+    "sale": {
+      "market_count": 13,
+      "market_avg_price": 4869384
+    },
+    "rent": {
+      "market_count": 22,
+      "market_avg_price": 218995
+    }
+  },
+  "Meydan|Park Avenue III (Azizi Greenfield)": {
+    "community": "Meydan",
+    "sub_community": "Park Avenue III (Azizi Greenfield)",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 2616000
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 6762722
+    }
+  },
+  "Jumeirah Lake Towers (JLT)|JLT Cluster T": {
+    "community": "Jumeirah Lake Towers (JLT)",
+    "sub_community": "JLT Cluster T",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 1576000
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 137799
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Violet 2": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Violet 2",
+    "sale": {
+      "market_count": 24,
+      "market_avg_price": 2267278
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 139799
+    }
+  },
+  "Town Square|Hillcrest": {
+    "community": "Town Square",
+    "sub_community": "Hillcrest",
+    "sale": {
+      "market_count": 17,
+      "market_avg_price": 1750496
+    },
+    "rent": {
+      "market_count": 0,
+      "market_avg_price": 129770
+    }
+  },
+  "Dubai Investment Park (DIP)|Centurion Residences": {
+    "community": "Dubai Investment Park (DIP)",
+    "sub_community": "Centurion Residences",
+    "sale": {
+      "market_count": 15,
+      "market_avg_price": 1025666
+    },
+    "rent": {
+      "market_count": 8,
+      "market_avg_price": 81874
+    }
+  },
+  "Arjan|Oxford Gardens": {
+    "community": "Arjan",
+    "sub_community": "Oxford Gardens",
+    "sale": {
+      "market_count": 20,
+      "market_avg_price": 1125244
+    },
+    "rent": {
+      "market_count": 106,
+      "market_avg_price": 86041
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Amargo": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Amargo",
+    "sale": {
+      "market_count": 28,
+      "market_avg_price": 1868125
+    },
+    "rent": {
+      "market_count": 64,
+      "market_avg_price": 101958
+    }
+  },
+  "Town Square|Zahra Apartments": {
+    "community": "Town Square",
+    "sub_community": "Zahra Apartments",
+    "sale": {
+      "market_count": 42,
+      "market_avg_price": 1550208
+    },
+    "rent": {
+      "market_count": 31,
+      "market_avg_price": 93291
+    }
+  },
+  "DAMAC Hills 2 (Akoya by DAMAC)|Viridis Residence and Hotel Apartments": {
+    "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+    "sub_community": "Viridis Residence and Hotel Apartments",
+    "sale": {
+      "market_count": 72,
+      "market_avg_price": 854437
+    },
+    "rent": {
+      "market_count": 111,
+      "market_avg_price": 47499
+    }
+  },
+  "Dubai Internet City|Al Shatha Tower": {
+    "community": "Dubai Internet City",
+    "sub_community": "Al Shatha Tower",
+    "sale": {
+      "market_count": 0,
+      "market_avg_price": 8833643
+    },
+    "rent": {
+      "market_count": 1,
+      "market_avg_price": 458849
+    }
+  },
+  "The Springs|The Springs 8": {
+    "community": "The Springs",
+    "sub_community": "The Springs 8",
+    "sale": {
+      "market_count": 17,
+      "market_avg_price": 5178411
+    },
+    "rent": {
+      "market_count": 59,
+      "market_avg_price": 262833
+    }
+  }
+}
