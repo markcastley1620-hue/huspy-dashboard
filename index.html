@@ -595,31 +595,43 @@
             </div>
 
             <!-- League table -->
-            <div class="md:col-span-3 rounded-2xl border border-border bg-white p-5 shadow-sm">
-              <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-1">
-                Comparable listings — <span class="text-heading" x-text="(advisorResult.listing.beds === 0 ? 'Studio' : advisorResult.listing.beds + ' BR') + ' in ' + advisorResult.market.peer_location"></span>
+            <div class="md:col-span-3 rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+              <div class="px-5 py-3 border-b border-border">
+                <div class="text-[11px] font-semibold text-muted uppercase tracking-wider">
+                  Comparable listings — <span class="text-heading" x-text="(advisorResult.listing.beds === 0 ? 'Studio' : advisorResult.listing.beds + ' BR') + ' in ' + advisorResult.market.peer_location"></span>
+                </div>
+                <div class="text-[10px] text-muted-2 mt-0.5" x-text="advisorResult.market.count + ' active listings · ' + advisorResult.market.promoted + ' with spend'"></div>
               </div>
-              <div class="text-[10px] text-muted-2 mb-4" x-text="advisorResult.market.count + ' active listings · sorted by price'"></div>
-              <div class="space-y-0">
-                <template x-for="(p, i) in advisorResult.peers" :key="i">
-                  <div class="flex items-center gap-3 py-2 px-3 rounded-lg text-[11px] transition-colors"
-                       :class="p.isTarget ? 'bg-accent/5 border-2 border-accent/20 my-1 py-2.5' : 'border border-transparent hover:bg-gray-50'">
-                    <span class="w-5 text-right font-semibold" :class="p.isTarget ? 'text-accent' : 'text-muted-2'" x-text="p.rank"></span>
-                    <div class="flex-1">
-                      <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full rounded-full" :class="p.isTarget ? 'bg-accent' : 'bg-gray-300'" :style="'width:' + p.bar_pct + '%'"></div>
-                      </div>
-                    </div>
-                    <span class="w-20 text-right font-medium" :class="p.isTarget ? 'text-accent font-bold' : 'text-heading'" x-text="fmtAed(p.price)"></span>
-                    <span class="w-16 text-right text-muted" x-text="p.sqft ? fmt(p.sqft) + 'ft' : ''"></span>
-                    <span class="w-16 text-right text-muted-2" x-text="p.psqft ? fmt(p.psqft) + '/ft' : ''"></span>
-                    <template x-if="p.isTarget">
-                      <span class="text-[9px] text-accent font-bold bg-accent/10 px-2 py-0.5 rounded-full whitespace-nowrap">THIS LISTING</span>
-                    </template>
-                  </div>
-                </template>
-              </div>
-              <div class="flex justify-between text-[10px] text-muted mt-3 pt-3 border-t border-border-subtle">
+              <table class="w-full text-[11px]">
+                <thead class="text-muted bg-gray-50">
+                  <tr class="border-b border-border">
+                    <th class="text-right px-3 py-2 font-semibold w-8">#</th>
+                    <th class="text-right px-3 py-2 font-semibold">Price</th>
+                    <th class="text-right px-3 py-2 font-semibold">Size</th>
+                    <th class="text-right px-3 py-2 font-semibold">AED/sqft</th>
+                    <th class="text-left px-3 py-2 font-semibold">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="(p, i) in advisorResult.peers" :key="i">
+                    <tr class="border-b border-border-subtle" :class="p.isTarget ? 'bg-accent/5' : 'hover:bg-gray-50'">
+                      <td class="px-3 py-2 text-right font-semibold" :class="p.isTarget ? 'text-accent' : 'text-muted-2'" x-text="p.rank"></td>
+                      <td class="px-3 py-2 text-right font-semibold" :class="p.isTarget ? 'text-accent' : 'text-heading'" x-text="fmtAed(p.price)"></td>
+                      <td class="px-3 py-2 text-right text-muted" x-text="p.sqft ? fmt(p.sqft) + ' ft' : '—'"></td>
+                      <td class="px-3 py-2 text-right text-muted" x-text="p.psqft ? fmt(p.psqft) : '—'"></td>
+                      <td class="px-3 py-2">
+                        <div class="flex items-center gap-1">
+                          <template x-if="p.isTarget"><span class="inline-flex rounded-full bg-accent text-white px-2 py-0.5 text-[9px] font-bold">YOUR LISTING</span></template>
+                          <template x-if="p.badge === 'Signature'"><span class="inline-flex rounded-full bg-purple-100 text-purple-600 px-2 py-0.5 text-[9px] font-semibold">Signature</span></template>
+                          <template x-if="p.badge === 'Hot'"><span class="inline-flex rounded-full bg-orange-100 text-orange-600 px-2 py-0.5 text-[9px] font-semibold">Hot</span></template>
+                          <template x-if="p.verified && !p.isTarget"><span class="inline-flex rounded-full bg-blue-50 text-blue-500 px-2 py-0.5 text-[9px] font-semibold">Verified</span></template>
+                        </div>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+              <div class="flex justify-between text-[10px] text-muted px-5 py-2.5 bg-gray-50 border-t border-border">
                 <span x-text="'Rank ' + advisorResult.price_rank + ' of ' + advisorResult.market.count"></span>
                 <span :class="advisorResult.gap_pct < 0 ? 'text-up font-medium' : advisorResult.gap_pct > 5 ? 'text-down font-medium' : ''" x-text="advisorResult.gap_pct < 0 ? Math.abs(advisorResult.gap_pct) + '% below peer median' : advisorResult.gap_pct + '% above peer median'"></span>
               </div>
@@ -1285,10 +1297,15 @@ function dashboard() {
           const pEl = card.querySelector('[aria-label="Price"]');
           const aEl = card.querySelector('[aria-label="Area"]');
           const tEl = card.querySelector('[aria-label="Title"]');
+          const txt = card.textContent || '';
           if (pEl) {
             const pp = parseInt(pEl.textContent.trim().replace(/,/g, ''));
             const aa = aEl ? parseInt(aEl.textContent.trim().replace(/,/g, '').replace(/[^0-9]/g,'')) : 0;
-            peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0, title: tEl ? tEl.textContent.trim().substring(0,40) : '' });
+            let badge = null;
+            if (/Signature/i.test(txt)) badge = 'Signature';
+            else if (/Hot/i.test(txt)) badge = 'Hot';
+            const verified = !!card.querySelector('[aria-label="TruBroker"]') || /TruCheck/i.test(txt);
+            peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0, title: tEl ? tEl.textContent.trim().substring(0,40) : '', badge, verified });
           }
         });
         
@@ -1302,10 +1319,15 @@ function dashboard() {
           fallDoc.querySelectorAll('[aria-label="Listing"]').forEach(card => {
             const pEl = card.querySelector('[aria-label="Price"]');
             const aEl = card.querySelector('[aria-label="Area"]');
+            const txt2 = card.textContent || '';
             if (pEl) {
               const pp = parseInt(pEl.textContent.trim().replace(/,/g, ''));
               const aa = aEl ? parseInt(aEl.textContent.trim().replace(/,/g, '').replace(/[^0-9]/g,'')) : 0;
-              peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0 });
+              let badge2 = null;
+              if (/Signature/i.test(txt2)) badge2 = 'Signature';
+              else if (/Hot/i.test(txt2)) badge2 = 'Hot';
+              const verified2 = !!card.querySelector('[aria-label="TruBroker"]') || /TruCheck/i.test(txt2);
+              peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0, badge: badge2, verified: verified2 });
             }
           });
           peerLocation = community + ' (community level)';
@@ -1330,7 +1352,7 @@ function dashboard() {
         let allPeers = peerListings.map((p, i) => ({ ...p, rank: i + 1, bar_pct: Math.round(p.price / maxPrice * 100), isTarget: false }));
         // Insert this listing
         const insertIdx = allPeers.filter(p => p.price < price).length;
-        allPeers.splice(insertIdx, 0, { price, sqft, psqft: psqft, rank: insertIdx + 1, bar_pct: Math.round(price / maxPrice * 100), isTarget: true });
+        allPeers.splice(insertIdx, 0, { price, sqft, psqft: psqft, rank: insertIdx + 1, bar_pct: Math.round(price / maxPrice * 100), isTarget: true, badge: null, verified: false });
         // Re-rank
         allPeers.forEach((p, i) => p.rank = i + 1);
         priceRank = allPeers.findIndex(p => p.isTarget) + 1;
