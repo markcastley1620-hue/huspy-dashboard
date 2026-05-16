@@ -64,7 +64,7 @@
         <span class="text-[10px] text-muted-2 font-medium tracking-wide uppercase bg-gray-100 px-1.5 py-0.5 rounded">Dubai</span>
       </div>
       <div class="flex items-center gap-1.5">
-        <template x-for="v in ['overview','communities','agents']" :key="v">
+        <template x-for="v in ['overview','communities','agents','opportunities']" :key="v">
           <button @click="navigate(v)" :class="view===v || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all" x-text="v.charAt(0).toUpperCase()+v.slice(1)"></button>
         </template>
         <div class="w-px h-5 bg-border mx-1.5"></div>
@@ -492,6 +492,197 @@
       </div>
     </div>
 
+    <!-- ==================== OPPORTUNITIES ==================== -->
+    <div x-show="!loading && view==='opportunities'" x-cloak class="space-y-6 fade-in">
+      <div>
+        <h1 class="text-[22px] font-bold tracking-tight text-heading">Opportunities</h1>
+        <p class="text-[12px] text-muted mt-1">Actionable signals from listing data — updated daily</p>
+      </div>
+
+      <!-- Summary cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" x-show="latest?.data?.opportunities">
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Underpriced</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="latest?.data?.opportunities?.summary?.underpriced_count || 0"></div>
+          <div class="text-[11px] text-muted mt-1">recommend spend</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Overpriced</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="latest?.data?.opportunities?.summary?.overpriced_count || 0"></div>
+          <div class="text-[11px] text-muted mt-1">need price talk</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Stale (30+ days)</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-amber-500" x-text="latest?.data?.opportunities?.summary?.stale_count || 0"></div>
+          <div class="text-[11px] text-muted mt-1">need review</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Coverage gaps</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-accent" x-text="latest?.data?.opportunities?.summary?.coverage_gaps_count || 0"></div>
+          <div class="text-[11px] text-muted mt-1">communities to farm</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex rounded-lg border border-border p-0.5 bg-gray-50 w-fit">
+        <template x-for="t in ['underpriced','overpriced','stale','coverage_gaps']" :key="t">
+          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all capitalize" x-text="t.replace('_',' ')"></button>
+        </template>
+      </div>
+
+      <!-- Underpriced table -->
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='underpriced'">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Underpriced listings — recommend for Signature / Hot</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-gray-50">
+              <tr class="border-b border-border">
+                <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Location</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Beds</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Price</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Market avg</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Gap</th>
+                <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Action</th>
+                <th class="text-right px-5 py-2.5 font-semibold">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="o in (latest?.data?.opportunities?.underpriced || [])" :key="o.url">
+                <tr class="border-b border-border-subtle hover:bg-gray-50">
+                  <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
+                  <td class="px-3 py-2.5">
+                    <div class="text-heading" x-text="o.sub_community || o.community"></div>
+                    <div class="text-[10px] text-muted" x-text="o.community"></div>
+                  </td>
+                  <td class="px-3 py-2.5 text-right" x-text="o.beds === 0 ? 'Studio' : o.beds + ' BR'"></td>
+                  <td class="px-3 py-2.5 text-right font-semibold" x-text="fmtAed(o.price)"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(o.market_avg)"></td>
+                  <td class="px-3 py-2.5 text-right text-up font-semibold" x-text="o.gap_pct + '%'"></td>
+                  <td class="px-3 py-2.5 text-right" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
+                  <td class="px-3 py-2.5">
+                    <span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold"
+                          :class="o.action==='Signature' ? 'bg-purple-50 text-purple-600' : o.action==='Hot' ? 'bg-orange-50 text-orange-600' : 'bg-gray-100 text-gray-600'"
+                          x-text="o.action"></span>
+                  </td>
+                  <td class="px-5 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Overpriced table -->
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='overpriced'">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Overpriced listings — need price reduction conversation</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-gray-50">
+              <tr class="border-b border-border">
+                <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Location</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Beds</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Price</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Market avg</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Gap</th>
+                <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
+                <th class="text-right px-5 py-2.5 font-semibold">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="o in (latest?.data?.opportunities?.overpriced || [])" :key="o.url">
+                <tr class="border-b border-border-subtle hover:bg-gray-50">
+                  <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
+                  <td class="px-3 py-2.5">
+                    <div class="text-heading" x-text="o.sub_community || o.community"></div>
+                    <div class="text-[10px] text-muted" x-text="o.community"></div>
+                  </td>
+                  <td class="px-3 py-2.5 text-right" x-text="o.beds === 0 ? 'Studio' : o.beds + ' BR'"></td>
+                  <td class="px-3 py-2.5 text-right font-semibold" x-text="fmtAed(o.price)"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(o.market_avg)"></td>
+                  <td class="px-3 py-2.5 text-right text-down font-semibold" x-text="'+' + o.gap_pct + '%'"></td>
+                  <td class="px-3 py-2.5 text-right" :class="(o.dom||0) > 30 ? 'text-down font-semibold' : ''" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
+                  <td class="px-5 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Stale table -->
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='stale'">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Stale listings — 30+ days on market</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-gray-50">
+              <tr class="border-b border-border">
+                <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Location</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Beds</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Price</th>
+                <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Promo</th>
+                <th class="text-left px-5 py-2.5 font-semibold">Title</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="o in (latest?.data?.opportunities?.stale || [])" :key="o.url">
+                <tr class="border-b border-border-subtle hover:bg-gray-50">
+                  <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
+                  <td class="px-3 py-2.5">
+                    <div class="text-heading" x-text="o.sub_community || o.community"></div>
+                    <div class="text-[10px] text-muted" x-text="o.community"></div>
+                  </td>
+                  <td class="px-3 py-2.5 text-right" x-text="o.beds === 0 ? 'Studio' : o.beds + ' BR'"></td>
+                  <td class="px-3 py-2.5 text-right font-semibold" x-text="fmtAed(o.price)"></td>
+                  <td class="px-3 py-2.5 text-right text-down font-semibold" x-text="o.dom + 'd'"></td>
+                  <td class="px-3 py-2.5">
+                    <span x-show="o.promo" class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold bg-orange-50 text-orange-600" x-text="o.promo"></span>
+                    <span x-show="!o.promo" class="text-muted">None</span>
+                  </td>
+                  <td class="px-5 py-2.5 text-muted text-[11px] truncate max-w-[200px]" x-text="o.title"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Coverage gaps -->
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='coverage_gaps'">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Coverage gaps — where should we recruit / farm next</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-gray-50">
+              <tr class="border-b border-border">
+                <th class="text-left px-5 py-2.5 font-semibold">Community</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Type</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Market listings</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Huspy listings</th>
+                <th class="text-right px-5 py-2.5 font-semibold">Share</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="g in (latest?.data?.opportunities?.coverage_gaps || [])" :key="g.community + g.purpose">
+                <tr class="border-b border-border-subtle hover:bg-gray-50 cursor-pointer" @click="selectCommunity(g.community)">
+                  <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" x-text="g.community"></td>
+                  <td class="px-3 py-2.5">
+                    <span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="g.purpose==='sale' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'" x-text="g.purpose"></span>
+                  </td>
+                  <td class="px-3 py-2.5 text-right font-semibold" x-text="fmt(g.market_listings)"></td>
+                  <td class="px-3 py-2.5 text-right" x-text="g.huspy_listings"></td>
+                  <td class="px-5 py-2.5 text-right text-muted" x-text="g.share_pct ? g.share_pct.toFixed(2) + '%' : '0%'"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- ==================== AGENT DETAIL ==================== -->
     <div x-show="!loading && view==='agent-detail'" x-cloak class="space-y-6 fade-in">
       <div>
@@ -558,6 +749,7 @@ function dashboard() {
     selectedCommunity: null,
     selectedAgent: null,
     selectedBed: null,
+    oppTab: 'underpriced',
     search: '',
     minMarket: 0,
     onlyWithListings: false,
