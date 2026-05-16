@@ -828,13 +828,17 @@ function dashboard() {
             count = bd.count ?? count;
           }
         }
-        // If bedroom selected, market data is not bed-specific at sub-community level yet
         let mktAvg = s.market_avg_price ?? null;
         let mktCount = s.market_count ?? null;
-        if (bed != null) {
-          // We don't have per-bed market data at sub-community level — show null
-          mktAvg = null;
-          mktCount = null;
+        if (bed != null && beds[bed]) {
+          const bd = beds[bed];
+          if (typeof bd === 'object' && bd.market_avg_price) {
+            mktAvg = bd.market_avg_price;
+            mktCount = bd.market_count;
+          } else {
+            mktAvg = null;
+            mktCount = null;
+          }
         }
         return { name, count, avg_price: avgPrice, market_avg_price: mktAvg, market_count: mktCount, bedBadges, beds, fullCount: s.count||0 };
       }).sort((a,b) => b.count - a.count);
