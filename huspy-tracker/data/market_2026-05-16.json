@@ -1,0 +1,1293 @@
+{
+  "sale": {
+    "Jumeirah Village Circle (JVC)": {
+      "community": "Jumeirah Village Circle (JVC)",
+      "purpose": "sale",
+      "total_market": 10693,
+      "sample_size": 36,
+      "avg_price": 1016662,
+      "median_price": 880038,
+      "min_price": 520873,
+      "max_price": 2300000
+    },
+    "Sobha Hartland": {
+      "community": "Sobha Hartland",
+      "purpose": "sale",
+      "total_market": 1907,
+      "sample_size": 36,
+      "avg_price": 2351103,
+      "median_price": 1992447,
+      "min_price": 1189000,
+      "max_price": 5425000
+    },
+    "Business Bay": {
+      "community": "Business Bay",
+      "purpose": "sale",
+      "total_market": 6492,
+      "sample_size": 36,
+      "avg_price": 1914081,
+      "median_price": 1350000,
+      "min_price": 950100,
+      "max_price": 6900000
+    },
+    "Dubai Marina": {
+      "community": "Dubai Marina",
+      "purpose": "sale",
+      "total_market": 3218,
+      "sample_size": 24,
+      "avg_price": 2311295,
+      "median_price": 1999999,
+      "min_price": 995000,
+      "max_price": 5300000
+    },
+    "DAMAC Hills": {
+      "community": "DAMAC Hills",
+      "purpose": "sale",
+      "total_market": 1497,
+      "sample_size": 34,
+      "avg_price": 1976716,
+      "median_price": 1270000,
+      "min_price": 600000,
+      "max_price": 7999999
+    },
+    "Palm Jumeirah": {
+      "community": "Palm Jumeirah",
+      "purpose": "sale",
+      "total_market": 2111,
+      "sample_size": 35,
+      "avg_price": 13634564,
+      "median_price": 5819000,
+      "min_price": 1750000,
+      "max_price": 89999000
+    },
+    "Al Furjan": {
+      "community": "Al Furjan",
+      "purpose": "sale",
+      "total_market": 2828,
+      "sample_size": 24,
+      "avg_price": 2457190,
+      "median_price": 1623172,
+      "min_price": 520000,
+      "max_price": 9399999
+    },
+    "Dubai Hills Estate": {
+      "community": "Dubai Hills Estate",
+      "purpose": "sale",
+      "total_market": 2859,
+      "sample_size": 36,
+      "avg_price": 3814845,
+      "median_price": 2300000,
+      "min_price": 1431888,
+      "max_price": 29000000
+    },
+    "DAMAC Hills 2 (Akoya by DAMAC)": {
+      "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+      "purpose": "sale",
+      "total_market": 1834,
+      "sample_size": 36,
+      "avg_price": 1798916,
+      "median_price": 1725000,
+      "min_price": 510000,
+      "max_price": 5400000
+    },
+    "Downtown Dubai": {
+      "community": "Downtown Dubai",
+      "purpose": "sale",
+      "total_market": 3384,
+      "sample_size": 32,
+      "avg_price": 6254968,
+      "median_price": 4200000,
+      "min_price": 1880000,
+      "max_price": 31000000
+    },
+    "Arabian Ranches 3": {
+      "community": "Arabian Ranches 3",
+      "purpose": "sale",
+      "total_market": 3,
+      "sample_size": 35,
+      "avg_price": 3887542,
+      "median_price": 3100000,
+      "min_price": 2600000,
+      "max_price": 9400000
+    },
+    "Jumeirah Lake Towers (JLT)": {
+      "community": "Jumeirah Lake Towers (JLT)",
+      "purpose": "sale",
+      "total_market": 1841,
+      "sample_size": 24,
+      "avg_price": 1624105,
+      "median_price": 1440000,
+      "min_price": 550000,
+      "max_price": 4827585
+    },
+    "Villanova": {
+      "community": "Villanova",
+      "purpose": "sale",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Town Square": {
+      "community": "Town Square",
+      "purpose": "sale",
+      "total_market": 1299,
+      "sample_size": 32,
+      "avg_price": 1365437,
+      "median_price": 1060000,
+      "min_price": 750000,
+      "max_price": 3600000
+    },
+    "Emaar Beachfront": {
+      "community": "Emaar Beachfront",
+      "purpose": "sale",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 2616000,
+      "median_price": 1500000,
+      "min_price": 1000000,
+      "max_price": 6750000
+    },
+    "Arjan": {
+      "community": "Arjan",
+      "purpose": "sale",
+      "total_market": 3382,
+      "sample_size": 24,
+      "avg_price": 963098,
+      "median_price": 925000,
+      "min_price": 547000,
+      "max_price": 2048000
+    },
+    "Mudon": {
+      "community": "Mudon",
+      "purpose": "sale",
+      "total_market": 566,
+      "sample_size": 35,
+      "avg_price": 4233799,
+      "median_price": 4200000,
+      "min_price": 1650000,
+      "max_price": 6400000
+    },
+    "The Lakes": {
+      "community": "The Lakes",
+      "purpose": "sale",
+      "total_market": 57,
+      "sample_size": 24,
+      "avg_price": 9855620,
+      "median_price": 8999950,
+      "min_price": 5600000,
+      "max_price": 14950000
+    },
+    "Dubai Creek Harbour": {
+      "community": "Dubai Creek Harbour",
+      "purpose": "sale",
+      "total_market": 2262,
+      "sample_size": 36,
+      "avg_price": 3029709,
+      "median_price": 2799999,
+      "min_price": 1700000,
+      "max_price": 8500000
+    },
+    "Meydan": {
+      "community": "Meydan",
+      "purpose": "sale",
+      "total_market": 2012,
+      "sample_size": 24,
+      "avg_price": 1053958,
+      "median_price": 950000,
+      "min_price": 610000,
+      "max_price": 2500000
+    },
+    "Jumeirah Beach Residence (JBR)": {
+      "community": "Jumeirah Beach Residence (JBR)",
+      "purpose": "sale",
+      "total_market": 839,
+      "sample_size": 24,
+      "avg_price": 5295208,
+      "median_price": 3120000,
+      "min_price": 1850000,
+      "max_price": 18950000
+    },
+    "The Meadows": {
+      "community": "The Meadows",
+      "purpose": "sale",
+      "total_market": 154,
+      "sample_size": 24,
+      "avg_price": 13426041,
+      "median_price": 13200000,
+      "min_price": 10000000,
+      "max_price": 19950000
+    },
+    "Motor City": {
+      "community": "Motor City",
+      "purpose": "sale",
+      "total_market": 2080,
+      "sample_size": 36,
+      "avg_price": 950456,
+      "median_price": 922000,
+      "min_price": 569900,
+      "max_price": 2900000
+    },
+    "The Springs": {
+      "community": "The Springs",
+      "purpose": "sale",
+      "total_market": 304,
+      "sample_size": 24,
+      "avg_price": 5026312,
+      "median_price": 5200000,
+      "min_price": 3400000,
+      "max_price": 8500000
+    },
+    "City Walk": {
+      "community": "City Walk",
+      "purpose": "sale",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 2616000,
+      "median_price": 1500000,
+      "min_price": 1000000,
+      "max_price": 6750000
+    },
+    "Mirdif": {
+      "community": "Mirdif",
+      "purpose": "sale",
+      "total_market": 251,
+      "sample_size": 28,
+      "avg_price": 1991341,
+      "median_price": 1802329,
+      "min_price": 950000,
+      "max_price": 4400000
+    },
+    "Reem": {
+      "community": "Reem",
+      "purpose": "sale",
+      "total_market": 154,
+      "sample_size": 24,
+      "avg_price": 4045750,
+      "median_price": 3990000,
+      "min_price": 3000000,
+      "max_price": 5500000
+    },
+    "Emaar South": {
+      "community": "Emaar South",
+      "purpose": "sale",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Discovery Gardens": {
+      "community": "Discovery Gardens",
+      "purpose": "sale",
+      "total_market": 641,
+      "sample_size": 24,
+      "avg_price": 937499,
+      "median_price": 800000,
+      "min_price": 500000,
+      "max_price": 1500000
+    },
+    "International City": {
+      "community": "International City",
+      "purpose": "sale",
+      "total_market": 2354,
+      "sample_size": 36,
+      "avg_price": 918022,
+      "median_price": 883888,
+      "min_price": 350000,
+      "max_price": 2070000
+    },
+    "Dubai South": {
+      "community": "Dubai South",
+      "purpose": "sale",
+      "total_market": 3678,
+      "sample_size": 36,
+      "avg_price": 1339643,
+      "median_price": 838350,
+      "min_price": 478992,
+      "max_price": 4900000
+    },
+    "Tilal Al Ghaf": {
+      "community": "Tilal Al Ghaf",
+      "purpose": "sale",
+      "total_market": 477,
+      "sample_size": 24,
+      "avg_price": 9698958,
+      "median_price": 7500000,
+      "min_price": 3600000,
+      "max_price": 51000000
+    },
+    "Arabian Ranches 2": {
+      "community": "Arabian Ranches 2",
+      "purpose": "sale",
+      "total_market": 2,
+      "sample_size": 24,
+      "avg_price": 6974791,
+      "median_price": 6600000,
+      "min_price": 3250000,
+      "max_price": 15500000
+    },
+    "Residential District": {
+      "community": "Residential District",
+      "purpose": "sale",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Mohammed Bin Rashid City (MBR City)": {
+      "community": "Mohammed Bin Rashid City (MBR City)",
+      "purpose": "sale",
+      "total_market": 1680,
+      "sample_size": 36,
+      "avg_price": 8007222,
+      "median_price": 4600000,
+      "min_price": 1200000,
+      "max_price": 55000000
+    },
+    "Dubailand": {
+      "community": "Dubailand",
+      "purpose": "sale",
+      "total_market": 1729,
+      "sample_size": 32,
+      "avg_price": 2940749,
+      "median_price": 3199999,
+      "min_price": 1250000,
+      "max_price": 4600000
+    },
+    "Jebel Ali": {
+      "community": "Jebel Ali",
+      "purpose": "sale",
+      "total_market": 1766,
+      "sample_size": 24,
+      "avg_price": 1512495,
+      "median_price": 765000,
+      "min_price": 499000,
+      "max_price": 6000000
+    },
+    "Jumeirah Golf Estates": {
+      "community": "Jumeirah Golf Estates",
+      "purpose": "sale",
+      "total_market": 487,
+      "sample_size": 36,
+      "avg_price": 16898130,
+      "median_price": 13350000,
+      "min_price": 4199999,
+      "max_price": 69950000
+    },
+    "The Valley by Emaar": {
+      "community": "The Valley by Emaar",
+      "purpose": "sale",
+      "total_market": 1583,
+      "sample_size": 36,
+      "avg_price": 5152203,
+      "median_price": 4500000,
+      "min_price": 2650000,
+      "max_price": 8947888
+    },
+    "Arabian Ranches": {
+      "community": "Arabian Ranches",
+      "purpose": "sale",
+      "total_market": 294,
+      "sample_size": 24,
+      "avg_price": 9330583,
+      "median_price": 8700000,
+      "min_price": 4150000,
+      "max_price": 18000000
+    },
+    "Dubai Media City": {
+      "community": "Dubai Media City",
+      "purpose": "sale",
+      "total_market": 66,
+      "sample_size": 24,
+      "avg_price": 5497050,
+      "median_price": 4599000,
+      "min_price": 2417400,
+      "max_price": 18000000
+    },
+    "Bluewaters Island": {
+      "community": "Bluewaters Island",
+      "purpose": "sale",
+      "total_market": 209,
+      "sample_size": 30,
+      "avg_price": 8083332,
+      "median_price": 7300000,
+      "min_price": 2850000,
+      "max_price": 19999999
+    },
+    "The Greens": {
+      "community": "The Greens",
+      "purpose": "sale",
+      "total_market": 156,
+      "sample_size": 24,
+      "avg_price": 1737625,
+      "median_price": 1525000,
+      "min_price": 840000,
+      "max_price": 3398000
+    },
+    "District One": {
+      "community": "District One",
+      "purpose": "sale",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Palm Jebel Ali": {
+      "community": "Palm Jebel Ali",
+      "purpose": "sale",
+      "total_market": 339,
+      "sample_size": 36,
+      "avg_price": 22746627,
+      "median_price": 22000000,
+      "min_price": 2500000,
+      "max_price": 42000000
+    },
+    "Sheikh Zayed Road": {
+      "community": "Sheikh Zayed Road",
+      "purpose": "sale",
+      "total_market": 391,
+      "sample_size": 29,
+      "avg_price": 4657753,
+      "median_price": 3730000,
+      "min_price": 1779057,
+      "max_price": 11109590
+    },
+    "Dubai Sports City": {
+      "community": "Dubai Sports City",
+      "purpose": "sale",
+      "total_market": 1977,
+      "sample_size": 36,
+      "avg_price": 1235181,
+      "median_price": 1350000,
+      "min_price": 455000,
+      "max_price": 2000000
+    },
+    "Mina Rashid": {
+      "community": "Mina Rashid",
+      "purpose": "sale",
+      "total_market": 648,
+      "sample_size": 33,
+      "avg_price": 2868599,
+      "median_price": 2200000,
+      "min_price": 1579000,
+      "max_price": 14000000
+    },
+    "The Views": {
+      "community": "The Views",
+      "purpose": "sale",
+      "total_market": 181,
+      "sample_size": 31,
+      "avg_price": 4076290,
+      "median_price": 3700000,
+      "min_price": 1349999,
+      "max_price": 7900000
+    },
+    "Emirates Hills": {
+      "community": "Emirates Hills",
+      "purpose": "sale",
+      "total_market": 14,
+      "sample_size": 14,
+      "avg_price": 75088928,
+      "median_price": 79000000,
+      "min_price": 14500000,
+      "max_price": 150000000
+    },
+    "Al Wasl": {
+      "community": "Al Wasl",
+      "purpose": "sale",
+      "total_market": 1052,
+      "sample_size": 36,
+      "avg_price": 10853472,
+      "median_price": 4000000,
+      "min_price": 2100000,
+      "max_price": 75000000
+    },
+    "Jumeirah Village Triangle (JVT)": {
+      "community": "Jumeirah Village Triangle (JVT)",
+      "purpose": "sale",
+      "total_market": 2948,
+      "sample_size": 36,
+      "avg_price": 2305348,
+      "median_price": 1174999,
+      "min_price": 490000,
+      "max_price": 9350000
+    },
+    "Dubai Investment Park (DIP)": {
+      "community": "Dubai Investment Park (DIP)",
+      "purpose": "sale",
+      "total_market": 2563,
+      "sample_size": 24,
+      "avg_price": 1747783,
+      "median_price": 1200000,
+      "min_price": 480000,
+      "max_price": 11232888
+    },
+    "Green Community": {
+      "community": "Green Community",
+      "purpose": "sale",
+      "total_market": 55,
+      "sample_size": 24,
+      "avg_price": 7353958,
+      "median_price": 7800000,
+      "min_price": 500000,
+      "max_price": 23000000
+    },
+    "Port de La Mer": {
+      "community": "Port de La Mer",
+      "purpose": "sale",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Jumeirah Park": {
+      "community": "Jumeirah Park",
+      "purpose": "sale",
+      "total_market": 166,
+      "sample_size": 24,
+      "avg_price": 11091999,
+      "median_price": 10800000,
+      "min_price": 7200000,
+      "max_price": 22000000
+    },
+    "Dubai Production City (IMPZ)": {
+      "community": "Dubai Production City (IMPZ)",
+      "purpose": "sale",
+      "total_market": 2032,
+      "sample_size": 24,
+      "avg_price": 930208,
+      "median_price": 930000,
+      "min_price": 450000,
+      "max_price": 1650000
+    },
+    "Jumeirah Islands": {
+      "community": "Jumeirah Islands",
+      "purpose": "sale",
+      "total_market": 120,
+      "sample_size": 24,
+      "avg_price": 34521662,
+      "median_price": 34900000,
+      "min_price": 7250000,
+      "max_price": 50000000
+    },
+    "DAMAC Lagoons": {
+      "community": "DAMAC Lagoons",
+      "purpose": "sale",
+      "total_market": 1947,
+      "sample_size": 36,
+      "avg_price": 2767486,
+      "median_price": 2650000,
+      "min_price": 629500,
+      "max_price": 9500000
+    },
+    "Dubai Maritime City": {
+      "community": "Dubai Maritime City",
+      "purpose": "sale",
+      "total_market": 1557,
+      "sample_size": 36,
+      "avg_price": 2696527,
+      "median_price": 2200000,
+      "min_price": 890000,
+      "max_price": 6450000
+    },
+    "Al Jaddaf": {
+      "community": "Al Jaddaf",
+      "purpose": "sale",
+      "total_market": 1704,
+      "sample_size": 36,
+      "avg_price": 1280005,
+      "median_price": 1318819,
+      "min_price": 613000,
+      "max_price": 2449999
+    },
+    "Dubai Harbour": {
+      "community": "Dubai Harbour",
+      "purpose": "sale",
+      "total_market": 1373,
+      "sample_size": 36,
+      "avg_price": 6330382,
+      "median_price": 5845000,
+      "min_price": 2350000,
+      "max_price": 15600000
+    },
+    "Dubai Islands": {
+      "community": "Dubai Islands",
+      "purpose": "sale",
+      "total_market": 3416,
+      "sample_size": 36,
+      "avg_price": 8529003,
+      "median_price": 6610000,
+      "min_price": 1800000,
+      "max_price": 44999900
+    },
+    "Madinat Jumeirah Living": {
+      "community": "Madinat Jumeirah Living",
+      "purpose": "sale",
+      "total_market": 0,
+      "sample_size": 0,
+      "avg_price": 0,
+      "median_price": 0,
+      "min_price": 0,
+      "max_price": 0
+    }
+  },
+  "rent": {
+    "Dubai Marina": {
+      "community": "Dubai Marina",
+      "purpose": "rent",
+      "total_market": 5925,
+      "sample_size": 24,
+      "avg_price": 124249,
+      "median_price": 90000,
+      "min_price": 54000,
+      "max_price": 380000
+    },
+    "Business Bay": {
+      "community": "Business Bay",
+      "purpose": "rent",
+      "total_market": 7777,
+      "sample_size": 24,
+      "avg_price": 97120,
+      "median_price": 90000,
+      "min_price": 60000,
+      "max_price": 160000
+    },
+    "Sobha Hartland": {
+      "community": "Sobha Hartland",
+      "purpose": "rent",
+      "total_market": 1745,
+      "sample_size": 24,
+      "avg_price": 141652,
+      "median_price": 145000,
+      "min_price": 65000,
+      "max_price": 295000
+    },
+    "DAMAC Hills": {
+      "community": "DAMAC Hills",
+      "purpose": "rent",
+      "total_market": 1562,
+      "sample_size": 24,
+      "avg_price": 135666,
+      "median_price": 75000,
+      "min_price": 41999,
+      "max_price": 450000
+    },
+    "Palm Jumeirah": {
+      "community": "Palm Jumeirah",
+      "purpose": "rent",
+      "total_market": 2865,
+      "sample_size": 24,
+      "avg_price": 547916,
+      "median_price": 230000,
+      "min_price": 75000,
+      "max_price": 4000000
+    },
+    "Jumeirah Village Circle (JVC)": {
+      "community": "Jumeirah Village Circle (JVC)",
+      "purpose": "rent",
+      "total_market": 15440,
+      "sample_size": 24,
+      "avg_price": 83208,
+      "median_price": 60000,
+      "min_price": 44500,
+      "max_price": 250000
+    },
+    "Dubai Hills Estate": {
+      "community": "Dubai Hills Estate",
+      "purpose": "rent",
+      "total_market": 3821,
+      "sample_size": 24,
+      "avg_price": 268458,
+      "median_price": 199000,
+      "min_price": 78000,
+      "max_price": 1275000
+    },
+    "Al Furjan": {
+      "community": "Al Furjan",
+      "purpose": "rent",
+      "total_market": 2900,
+      "sample_size": 24,
+      "avg_price": 112748,
+      "median_price": 97998,
+      "min_price": 45000,
+      "max_price": 300000
+    },
+    "DAMAC Hills 2 (Akoya by DAMAC)": {
+      "community": "DAMAC Hills 2 (Akoya by DAMAC)",
+      "purpose": "rent",
+      "total_market": 1665,
+      "sample_size": 24,
+      "avg_price": 105333,
+      "median_price": 110000,
+      "min_price": 40000,
+      "max_price": 200000
+    },
+    "Arabian Ranches 3": {
+      "community": "Arabian Ranches 3",
+      "purpose": "rent",
+      "total_market": 1828,
+      "sample_size": 24,
+      "avg_price": 217499,
+      "median_price": 180000,
+      "min_price": 140000,
+      "max_price": 400000
+    },
+    "Downtown Dubai": {
+      "community": "Downtown Dubai",
+      "purpose": "rent",
+      "total_market": 6162,
+      "sample_size": 24,
+      "avg_price": 162161,
+      "median_price": 155000,
+      "min_price": 70000,
+      "max_price": 310000
+    },
+    "Jumeirah Lake Towers (JLT)": {
+      "community": "Jumeirah Lake Towers (JLT)",
+      "purpose": "rent",
+      "total_market": 2252,
+      "sample_size": 24,
+      "avg_price": 101249,
+      "median_price": 95000,
+      "min_price": 53000,
+      "max_price": 300000
+    },
+    "Town Square": {
+      "community": "Town Square",
+      "purpose": "rent",
+      "total_market": 1171,
+      "sample_size": 24,
+      "avg_price": 98541,
+      "median_price": 88000,
+      "min_price": 40000,
+      "max_price": 169999
+    },
+    "Emaar Beachfront": {
+      "community": "Emaar Beachfront",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Villanova": {
+      "community": "Villanova",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Dubai Creek Harbour": {
+      "community": "Dubai Creek Harbour",
+      "purpose": "rent",
+      "total_market": 2351,
+      "sample_size": 24,
+      "avg_price": 145624,
+      "median_price": 140000,
+      "min_price": 84999,
+      "max_price": 250000
+    },
+    "Mudon": {
+      "community": "Mudon",
+      "purpose": "rent",
+      "total_market": 564,
+      "sample_size": 24,
+      "avg_price": 214958,
+      "median_price": 230000,
+      "min_price": 149999,
+      "max_price": 300000
+    },
+    "Arjan": {
+      "community": "Arjan",
+      "purpose": "rent",
+      "total_market": 5292,
+      "sample_size": 24,
+      "avg_price": 87078,
+      "median_price": 82000,
+      "min_price": 43000,
+      "max_price": 125000
+    },
+    "The Lakes": {
+      "community": "The Lakes",
+      "purpose": "rent",
+      "total_market": 48,
+      "sample_size": 24,
+      "avg_price": 379166,
+      "median_price": 330000,
+      "min_price": 260000,
+      "max_price": 1200000
+    },
+    "City Walk": {
+      "community": "City Walk",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Meydan": {
+      "community": "Meydan",
+      "purpose": "rent",
+      "total_market": 2921,
+      "sample_size": 24,
+      "avg_price": 57749,
+      "median_price": 50000,
+      "min_price": 40000,
+      "max_price": 100000
+    },
+    "The Meadows": {
+      "community": "The Meadows",
+      "purpose": "rent",
+      "total_market": 191,
+      "sample_size": 24,
+      "avg_price": 556124,
+      "median_price": 575000,
+      "min_price": 299000,
+      "max_price": 930000
+    },
+    "Jumeirah Beach Residence (JBR)": {
+      "community": "Jumeirah Beach Residence (JBR)",
+      "purpose": "rent",
+      "total_market": 1527,
+      "sample_size": 24,
+      "avg_price": 235000,
+      "median_price": 165000,
+      "min_price": 95000,
+      "max_price": 1500000
+    },
+    "The Springs": {
+      "community": "The Springs",
+      "purpose": "rent",
+      "total_market": 691,
+      "sample_size": 24,
+      "avg_price": 220083,
+      "median_price": 199000,
+      "min_price": 140000,
+      "max_price": 380000
+    },
+    "Mirdif": {
+      "community": "Mirdif",
+      "purpose": "rent",
+      "total_market": 597,
+      "sample_size": 24,
+      "avg_price": 163458,
+      "median_price": 170000,
+      "min_price": 86000,
+      "max_price": 260000
+    },
+    "Motor City": {
+      "community": "Motor City",
+      "purpose": "rent",
+      "total_market": 392,
+      "sample_size": 24,
+      "avg_price": 103791,
+      "median_price": 75000,
+      "min_price": 52000,
+      "max_price": 350000
+    },
+    "Discovery Gardens": {
+      "community": "Discovery Gardens",
+      "purpose": "rent",
+      "total_market": 595,
+      "sample_size": 24,
+      "avg_price": 59412,
+      "median_price": 64999,
+      "min_price": 44000,
+      "max_price": 90000
+    },
+    "Reem": {
+      "community": "Reem",
+      "purpose": "rent",
+      "total_market": 264,
+      "sample_size": 24,
+      "avg_price": 179458,
+      "median_price": 175000,
+      "min_price": 145000,
+      "max_price": 225000
+    },
+    "International City": {
+      "community": "International City",
+      "purpose": "rent",
+      "total_market": 1766,
+      "sample_size": 24,
+      "avg_price": 54458,
+      "median_price": 55000,
+      "min_price": 36000,
+      "max_price": 85000
+    },
+    "Emaar South": {
+      "community": "Emaar South",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Dubai South": {
+      "community": "Dubai South",
+      "purpose": "rent",
+      "total_market": 1474,
+      "sample_size": 24,
+      "avg_price": 64374,
+      "median_price": 62999,
+      "min_price": 37990,
+      "max_price": 129999
+    },
+    "Dubailand": {
+      "community": "Dubailand",
+      "purpose": "rent",
+      "total_market": 1222,
+      "sample_size": 24,
+      "avg_price": 183624,
+      "median_price": 165000,
+      "min_price": 120000,
+      "max_price": 300000
+    },
+    "Residential District": {
+      "community": "Residential District",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Tilal Al Ghaf": {
+      "community": "Tilal Al Ghaf",
+      "purpose": "rent",
+      "total_market": 852,
+      "sample_size": 24,
+      "avg_price": 394958,
+      "median_price": 250000,
+      "min_price": 179999,
+      "max_price": 1400000
+    },
+    "Jebel Ali": {
+      "community": "Jebel Ali",
+      "purpose": "rent",
+      "total_market": 424,
+      "sample_size": 24,
+      "avg_price": 90749,
+      "median_price": 57000,
+      "min_price": 42999,
+      "max_price": 315000
+    },
+    "Mohammed Bin Rashid City (MBR City)": {
+      "community": "Mohammed Bin Rashid City (MBR City)",
+      "purpose": "rent",
+      "total_market": 1315,
+      "sample_size": 24,
+      "avg_price": 184708,
+      "median_price": 160000,
+      "min_price": 80000,
+      "max_price": 1000000
+    },
+    "The Valley by Emaar": {
+      "community": "The Valley by Emaar",
+      "purpose": "rent",
+      "total_market": 608,
+      "sample_size": 24,
+      "avg_price": 153499,
+      "median_price": 155000,
+      "min_price": 124000,
+      "max_price": 200000
+    },
+    "Dubai Media City": {
+      "community": "Dubai Media City",
+      "purpose": "rent",
+      "total_market": 48,
+      "sample_size": 24,
+      "avg_price": 273666,
+      "median_price": 220000,
+      "min_price": 150000,
+      "max_price": 1300000
+    },
+    "Jumeirah Golf Estates": {
+      "community": "Jumeirah Golf Estates",
+      "purpose": "rent",
+      "total_market": 206,
+      "sample_size": 24,
+      "avg_price": 417791,
+      "median_price": 259000,
+      "min_price": 85000,
+      "max_price": 1600000
+    },
+    "The Greens": {
+      "community": "The Greens",
+      "purpose": "rent",
+      "total_market": 396,
+      "sample_size": 24,
+      "avg_price": 124937,
+      "median_price": 110000,
+      "min_price": 65000,
+      "max_price": 350000
+    },
+    "Palm Jebel Ali": {
+      "community": "Palm Jebel Ali",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 15,
+      "avg_price": 89399,
+      "median_price": 69999,
+      "min_price": 49999,
+      "max_price": 160000
+    },
+    "Arabian Ranches": {
+      "community": "Arabian Ranches",
+      "purpose": "rent",
+      "total_market": 439,
+      "sample_size": 24,
+      "avg_price": 332288,
+      "median_price": 375000,
+      "min_price": 140000,
+      "max_price": 500000
+    },
+    "Bluewaters Island": {
+      "community": "Bluewaters Island",
+      "purpose": "rent",
+      "total_market": 175,
+      "sample_size": 24,
+      "avg_price": 510125,
+      "median_price": 480000,
+      "min_price": 300000,
+      "max_price": 1000000
+    },
+    "Mina Rashid": {
+      "community": "Mina Rashid",
+      "purpose": "rent",
+      "total_market": 313,
+      "sample_size": 24,
+      "avg_price": 157183,
+      "median_price": 120000,
+      "min_price": 75000,
+      "max_price": 500000
+    },
+    "Sheikh Zayed Road": {
+      "community": "Sheikh Zayed Road",
+      "purpose": "rent",
+      "total_market": 848,
+      "sample_size": 24,
+      "avg_price": 173625,
+      "median_price": 155000,
+      "min_price": 77000,
+      "max_price": 750000
+    },
+    "The Views": {
+      "community": "The Views",
+      "purpose": "rent",
+      "total_market": 307,
+      "sample_size": 24,
+      "avg_price": 156583,
+      "median_price": 145000,
+      "min_price": 69000,
+      "max_price": 280000
+    },
+    "Dubai Sports City": {
+      "community": "Dubai Sports City",
+      "purpose": "rent",
+      "total_market": 1369,
+      "sample_size": 24,
+      "avg_price": 64103,
+      "median_price": 63000,
+      "min_price": 38000,
+      "max_price": 120000
+    },
+    "District One": {
+      "community": "District One",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Jumeirah Village Triangle (JVT)": {
+      "community": "Jumeirah Village Triangle (JVT)",
+      "purpose": "rent",
+      "total_market": 735,
+      "sample_size": 24,
+      "avg_price": 73833,
+      "median_price": 70000,
+      "min_price": 42000,
+      "max_price": 125000
+    },
+    "Emirates Hills": {
+      "community": "Emirates Hills",
+      "purpose": "rent",
+      "total_market": 57,
+      "sample_size": 24,
+      "avg_price": 1661249,
+      "median_price": 1600000,
+      "min_price": 1100000,
+      "max_price": 2700000
+    },
+    "Al Wasl": {
+      "community": "Al Wasl",
+      "purpose": "rent",
+      "total_market": 744,
+      "sample_size": 24,
+      "avg_price": 230791,
+      "median_price": 225000,
+      "min_price": 102000,
+      "max_price": 435000
+    },
+    "Madinat Jumeirah Living": {
+      "community": "Madinat Jumeirah Living",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Arabian Ranches 2": {
+      "community": "Arabian Ranches 2",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 0,
+      "avg_price": 0,
+      "median_price": 0,
+      "min_price": 0,
+      "max_price": 0
+    },
+    "Dubai Investment Park (DIP)": {
+      "community": "Dubai Investment Park (DIP)",
+      "purpose": "rent",
+      "total_market": 87,
+      "sample_size": 24,
+      "avg_price": 81499,
+      "median_price": 70000,
+      "min_price": 42000,
+      "max_price": 150000
+    },
+    "Jumeirah Park": {
+      "community": "Jumeirah Park",
+      "purpose": "rent",
+      "total_market": 447,
+      "sample_size": 24,
+      "avg_price": 448958,
+      "median_price": 420000,
+      "min_price": 265000,
+      "max_price": 1300000
+    },
+    "Green Community": {
+      "community": "Green Community",
+      "purpose": "rent",
+      "total_market": 52,
+      "sample_size": 24,
+      "avg_price": 312833,
+      "median_price": 315000,
+      "min_price": 75000,
+      "max_price": 1299999
+    },
+    "Port de La Mer": {
+      "community": "Port de La Mer",
+      "purpose": "rent",
+      "total_market": 0,
+      "sample_size": 5,
+      "avg_price": 6762722,
+      "median_price": 6681805,
+      "min_price": 6600000,
+      "max_price": 7100000
+    },
+    "Jumeirah Islands": {
+      "community": "Jumeirah Islands",
+      "purpose": "rent",
+      "total_market": 109,
+      "sample_size": 24,
+      "avg_price": 1372708,
+      "median_price": 900000,
+      "min_price": 575000,
+      "max_price": 3500000
+    },
+    "Dubai Maritime City": {
+      "community": "Dubai Maritime City",
+      "purpose": "rent",
+      "total_market": 221,
+      "sample_size": 24,
+      "avg_price": 143124,
+      "median_price": 130000,
+      "min_price": 90000,
+      "max_price": 275000
+    },
+    "DAMAC Lagoons": {
+      "community": "DAMAC Lagoons",
+      "purpose": "rent",
+      "total_market": 971,
+      "sample_size": 24,
+      "avg_price": 191229,
+      "median_price": 180000,
+      "min_price": 150000,
+      "max_price": 280000
+    },
+    "Dubai Production City (IMPZ)": {
+      "community": "Dubai Production City (IMPZ)",
+      "purpose": "rent",
+      "total_market": 738,
+      "sample_size": 24,
+      "avg_price": 67333,
+      "median_price": 56000,
+      "min_price": 35000,
+      "max_price": 120000
+    },
+    "Al Jaddaf": {
+      "community": "Al Jaddaf",
+      "purpose": "rent",
+      "total_market": 1451,
+      "sample_size": 24,
+      "avg_price": 86624,
+      "median_price": 84999,
+      "min_price": 52000,
+      "max_price": 140000
+    },
+    "Dubai Harbour": {
+      "community": "Dubai Harbour",
+      "purpose": "rent",
+      "total_market": 1334,
+      "sample_size": 24,
+      "avg_price": 203333,
+      "median_price": 180000,
+      "min_price": 110000,
+      "max_price": 500000
+    },
+    "Dubai Islands": {
+      "community": "Dubai Islands",
+      "purpose": "rent",
+      "total_market": 7,
+      "sample_size": 7,
+      "avg_price": 177571,
+      "median_price": 180000,
+      "min_price": 150000,
+      "max_price": 200000
+    }
+  },
+  "meta": {
+    "timestamp": "2026-05-16T05:37:04.542379+00:00",
+    "date": "2026-05-16",
+    "communities_scraped": 64,
+    "credits_used": 9600,
+    "elapsed_seconds": 318
+  }
+}
