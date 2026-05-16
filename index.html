@@ -441,13 +441,13 @@ function dashboard() {
     marketShare(m) {
       const d = this.latest?.data?.[m];
       if (!d) return '—';
-      const mkt = Object.values(d.by_community || {}).reduce((s, c) => s + (c.market_total || 0), 0);
+      const mkt = d.dubai_market_total;
       return mkt > 0 ? ((d.total / mkt) * 100).toFixed(2) + '%' : '—';
     },
     marketShareSub(m) {
       const d = this.latest?.data?.[m];
       if (!d) return '';
-      const mkt = Object.values(d.by_community || {}).reduce((s, c) => s + (c.market_total || 0), 0);
+      const mkt = d.dubai_market_total;
       return this.fmt(d.total) + ' / ' + this.fmt(mkt) + ' online listings';
     },
 
