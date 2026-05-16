@@ -14,6 +14,44 @@ from supabase_sync import transform_snapshot, upsert_to_supabase
 from report import generate_report
 
 
+def _fill_missing_agents(result):
+    """Fetch agent names from detail pages for listings missing them."""
+    import requests as req
+    from bs4 import BeautifulSoup
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    API_KEY = os.environ.get('SCRAPINGBEE_API_KEY', 'QNG91WITJC8K7U39RMHTB7CAVQOUGTK8C09PPFJESMCYT2MNGJY19FLUQWDK3NABEC4PWPVF5HWI2CR0')
+
+    listings = result['listings']
+    missing = [(i, l) for i, l in enumerate(listings) if not l.get('agent') and l.get('url')]
+    if not missing:
+        print('  All agents attributed')
+        return
+    print(f'  Filling {len(missing)} missing agents from detail pages...')
+
+    def fetch(idx_l):
+        idx, l = idx_l
+        try:
+            r = req.get('https://app.scrapingbee.com/api/v1/', params={
+                'api_key': API_KEY, 'url': f'https://www.bayut.com{l["url"]}',
+                'stealth_proxy': 'true', 'country_code': 'ae',
+            }, timeout=120)
+            soup = BeautifulSoup(r.text, 'lxml')
+            el = soup.find(attrs={'aria-label': 'Agent name'})
+            return (idx, el.get_text(strip=True) if el else None)
+        except:
+            return (idx, None)
+
+    found = 0
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(fetch, m): m for m in missing}
+        for future in as_completed(futures):
+            idx, name = future.result()
+            if name:
+                listings[idx]['agent'] = name
+                found += 1
+    print(f'  Recovered {found}/{len(missing)} agents')
+
+
 def _enrich_supabase_with_market(date_str, snapshot, market_data):
     """Add market comparison data to the Supabase row."""
     import requests
@@ -70,10 +108,15 @@ def run():
     print("⬡ NEXUS — Daily Huspy Run")
     print()
 
-    # 1. Scrape
+    # 1. Scrape listings
     result = scrape_all_listings(concurrency=10)
     path = save_snapshot(result)
     print(f"  Saved: {path}")
+    print()
+
+    # 1b. Fill missing agents from detail pages
+    _fill_missing_agents(result)
+    save_snapshot(result)
     print()
 
     # 2. Market comparison scrape
