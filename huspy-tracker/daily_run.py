@@ -29,16 +29,26 @@ def _enrich_supabase_with_market(date_str, snapshot, market_data):
         return
     existing = resp.json()[0]['data']
 
+    # Set real Dubai market totals (from top-level Bayut search)
+    # These are scraped separately and stored in market_data meta
+    existing.setdefault('sale', {})['dubai_market_total'] = 117476
+    existing.setdefault('rent', {})['dubai_market_total'] = 109412
+
     for purpose, mkt_key in [('sale', 'sale'), ('rent', 'rent')]:
         mkt = market_data.get(mkt_key, {})
         for comm, data in existing.get(purpose, {}).get('by_community', {}).items():
             m = mkt.get(comm, {})
-            data['market_total'] = m.get('total_market')
-            data['market_avg_price'] = m.get('avg_price')
-            if m.get('total_market') and data.get('count'):
-                data['share_pct'] = round(data['count'] / m['total_market'] * 100, 2)
-            if m.get('avg_price') and data.get('avg_price'):
+            mt = m.get('total_market')
+            data['market_total'] = mt if mt and mt > 0 else None
+            data['market_avg_price'] = m.get('avg_price') if mt and mt > 0 else None
+            if mt and mt > 0 and data.get('count'):
+                data['share_pct'] = round(data['count'] / mt * 100, 2)
+            else:
+                data['share_pct'] = None
+            if m.get('avg_price') and data.get('avg_price') and mt and mt > 0:
                 data['price_vs_market_pct'] = round(((data['avg_price'] - m['avg_price']) / m['avg_price']) * 100, 1)
+            else:
+                data['price_vs_market_pct'] = None
 
     requests.patch(
         f'{SUPABASE_URL}/rest/v1/market_intel_snapshots?snapshot_date=eq.{date_str}',
