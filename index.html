@@ -302,17 +302,54 @@
         </div>
       </div>
 
+      <!-- Pricing comparison -->
+      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commNode()?.avg_price || commNode()?.market_avg_price">
+        <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Price comparison</div>
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold mb-1">Huspy avg</div>
+            <div class="text-[24px] font-bold text-heading" x-text="fmtAed(commNode()?.avg_price)"></div>
+            <div class="mt-2 h-3 rounded-full overflow-hidden bg-gray-100">
+              <div class="h-full rounded-full bg-accent bar-anim" :style="'width:' + priceBarPct('huspy') + '%'"></div>
+            </div>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold mb-1">Market avg</div>
+            <div class="text-[24px] font-bold text-muted" x-text="fmtAed(commNode()?.market_avg_price)"></div>
+            <div class="mt-2 h-3 rounded-full overflow-hidden bg-gray-100">
+              <div class="h-full rounded-full bg-gray-400 bar-anim" :style="'width:' + priceBarPct('market') + '%'"></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 text-[11px] font-medium" :class="(commNode()?.price_vs_market_pct || 0) > 0 ? 'text-down' : 'text-up'" x-show="commNode()?.price_vs_market_pct != null">
+          <span x-text="'Huspy is priced ' + Math.abs(commNode()?.price_vs_market_pct || 0).toFixed(1) + '% ' + ((commNode()?.price_vs_market_pct || 0) > 0 ? 'above' : 'below') + ' market average'"></span>
+        </div>
+      </div>
+
+      <!-- Sub-communities -->
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="commDetailSubs().length">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Sub-communities</div>
         <table class="w-full text-[12px]">
           <thead class="text-muted bg-gray-50">
-            <tr class="border-b border-border"><th class="text-left px-5 py-2.5 font-semibold">Name</th><th class="text-right px-3 py-2.5 font-semibold">Listings</th><th class="text-right px-5 py-2.5 font-semibold">Avg price</th></tr>
+            <tr class="border-b border-border">
+              <th class="text-left px-5 py-2.5 font-semibold">Name</th>
+              <th class="text-left px-3 py-2.5 font-semibold">Bedrooms</th>
+              <th class="text-right px-3 py-2.5 font-semibold">Listings</th>
+              <th class="text-right px-5 py-2.5 font-semibold">Avg price</th>
+            </tr>
           </thead>
           <tbody>
             <template x-for="s in commDetailSubs()" :key="s.name">
               <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
                 <td class="px-5 py-2.5 font-medium" x-text="s.name"></td>
-                <td class="px-3 py-2.5 text-right" x-text="s.count"></td>
+                <td class="px-3 py-2.5">
+                  <div class="flex gap-1 flex-wrap">
+                    <template x-for="b in s.bedBadges" :key="b.label">
+                      <span class="inline-flex rounded-md bg-blue-50 text-blue-600 px-1.5 py-0.5 text-[10px] font-medium" x-text="b.label + ' ' + b.count"></span>
+                    </template>
+                  </div>
+                </td>
+                <td class="px-3 py-2.5 text-right font-semibold" x-text="s.count"></td>
                 <td class="px-5 py-2.5 text-right text-muted" x-text="fmtAed(s.avg_price)"></td>
               </tr>
             </template>
@@ -531,20 +568,29 @@ function dashboard() {
       const total = b.total || 1;
       return Object.values(merged).map(a => ({ ...a, share: a.count / total * 100 })).sort((a, b) => b.count - a.count);
     },
+    priceBarPct(which) {
+      const n = this.commNode();
+      const h = n?.avg_price || 0;
+      const m = n?.market_avg_price || 0;
+      const max = Math.max(h, m, 1);
+      return which === 'huspy' ? (h / max * 100) : (m / max * 100);
+    },
     selectCommunity(name) { this.selectedCommunity = name; this.view = 'community-detail'; window.scrollTo(0, 0); },
     commNode() { return this.block()?.by_community?.[this.selectedCommunity] || {}; },
     commDetailStats() {
       const n = this.commNode();
       const stats = [
-        { label: 'Huspy', value: this.fmt(n.count) },
-        { label: 'Market', value: n.market_total != null ? this.fmt(n.market_total) : '—' },
-        { label: 'Share', value: n.share_pct != null ? n.share_pct.toFixed(2) + '%' : '—' },
-        { label: 'Avg price', value: this.fmtAed(n.avg_price) },
+        { label: 'Huspy listings', value: this.fmt(n.count) },
+        { label: 'Market listings', value: n.market_total != null ? this.fmt(n.market_total) : '—' },
+        { label: 'Market share', value: n.share_pct != null ? n.share_pct.toFixed(2) + '%' : '—' },
+        { label: 'Huspy avg price', value: this.fmtAed(n.avg_price) },
+        { label: 'Market avg price', value: this.fmtAed(n.market_avg_price) },
       ];
-      if (n.market_avg_price != null) stats.push({ label: 'Market avg', value: this.fmtAed(n.market_avg_price) });
       if (n.price_vs_market_pct != null) {
         const v = n.price_vs_market_pct;
-        stats.push({ label: 'vs Market', value: (v > 0 ? '+' : '') + v.toFixed(1) + '%', sub: v > 0 ? 'above market' : v < 0 ? 'below market' : 'at market', subColor: v > 0 ? 'text-up' : v < 0 ? 'text-down' : 'text-muted' });
+        stats.push({ label: 'Price position', value: (v > 0 ? '+' : '') + v.toFixed(1) + '%', sub: v > 0 ? 'above market' : v < 0 ? 'below market' : 'at market', subColor: v > 0 ? 'text-down' : v < 0 ? 'text-up' : 'text-muted' });
+      } else {
+        stats.push({ label: 'Price position', value: '—' });
       }
       return stats;
     },
@@ -568,7 +614,17 @@ function dashboard() {
     },
     commDetailSubs() {
       const subs = this.commNode()?.sub_communities || {};
-      return Object.entries(subs).map(([name, s]) => ({ name, count: s.count||0, avg_price: s.avg_price })).sort((a,b) => b.count - a.count);
+      // Enrich with bedroom data from raw listings
+      const listings = this.latest?.data?.listings_by_sub?.[this.selectedCommunity] || {};
+      return Object.entries(subs).map(([name, s]) => {
+        // Get bed counts from the sub-community node if available, else from listings
+        const beds = s.beds || listings[name]?.beds || {};
+        const bedBadges = Object.entries(beds)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 3)
+          .map(([b, n]) => ({ label: b === '0' || b === 'Studio' ? 'Stu' : b + 'BR', count: n }));
+        return { name, count: s.count||0, avg_price: s.avg_price, bedBadges };
+      }).sort((a,b) => b.count - a.count);
     },
     commDetailAgents() { return (this.commNode()?.agents || []).slice(0, 20); },
   };
