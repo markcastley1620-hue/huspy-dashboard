@@ -532,108 +532,103 @@
 
       <!-- Result -->
       <template x-if="advisorResult">
-        <div class="space-y-4 fade-in">
-          <!-- Verdict -->
-          <div class="rounded-2xl border-2 p-6 shadow-sm" :class="advisorResult.verdict === 'Signature' ? 'border-purple-200 bg-purple-50' : advisorResult.verdict === 'Hot' ? 'border-orange-200 bg-orange-50' : advisorResult.verdict === 'Price first' ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'">
-            <div class="flex items-start justify-between">
-              <div>
-                <div class="text-[10px] uppercase tracking-widest font-semibold" :class="advisorResult.verdict === 'Signature' ? 'text-purple-500' : advisorResult.verdict === 'Hot' ? 'text-orange-500' : advisorResult.verdict === 'Price first' ? 'text-red-500' : 'text-gray-500'">Recommendation</div>
-                <div class="text-[32px] font-bold mt-1 leading-none" :class="advisorResult.verdict === 'Signature' ? 'text-purple-700' : advisorResult.verdict === 'Hot' ? 'text-orange-700' : advisorResult.verdict === 'Price first' ? 'text-red-700' : 'text-gray-700'" x-text="advisorResult.verdict"></div>
-                <p class="text-[13px] mt-3 leading-relaxed max-w-lg" :class="advisorResult.verdict === 'Signature' ? 'text-purple-700' : advisorResult.verdict === 'Hot' ? 'text-orange-700' : 'text-gray-700'" x-text="advisorResult.reason"></p>
+        <div class="space-y-5 fade-in">
+          <!-- Verdict + Score -->
+          <div class="rounded-2xl border-2 overflow-hidden shadow-sm" :class="advisorResult.verdict === 'Signature' ? 'border-purple-200' : advisorResult.verdict === 'Hot' ? 'border-orange-200' : advisorResult.verdict === 'Price first' ? 'border-red-200' : 'border-gray-200'">
+            <div class="p-6" :class="advisorResult.verdict === 'Signature' ? 'bg-purple-50' : advisorResult.verdict === 'Hot' ? 'bg-orange-50' : advisorResult.verdict === 'Price first' ? 'bg-red-50' : 'bg-gray-50'">
+              <div class="flex items-start justify-between">
+                <div>
+                  <div class="text-[10px] uppercase tracking-widest font-semibold" :class="advisorResult.verdict === 'Signature' ? 'text-purple-500' : advisorResult.verdict === 'Hot' ? 'text-orange-500' : advisorResult.verdict === 'Price first' ? 'text-red-500' : 'text-gray-500'">Recommendation</div>
+                  <div class="text-[28px] font-bold mt-1 leading-none" :class="advisorResult.verdict === 'Signature' ? 'text-purple-700' : advisorResult.verdict === 'Hot' ? 'text-orange-700' : advisorResult.verdict === 'Price first' ? 'text-red-700' : 'text-gray-700'" x-text="advisorResult.verdict"></div>
+                  <p class="text-[12px] mt-2 leading-relaxed max-w-lg" :class="advisorResult.verdict === 'Signature' ? 'text-purple-600' : advisorResult.verdict === 'Hot' ? 'text-orange-600' : 'text-gray-600'" x-text="advisorResult.reason"></p>
+                </div>
+                <div class="text-right">
+                  <div class="w-20 h-20 rounded-2xl flex flex-col items-center justify-center" :class="advisorResult.score >= 70 ? 'bg-up/10' : advisorResult.score >= 40 ? 'bg-amber-500/10' : 'bg-down/10'">
+                    <div class="text-[28px] font-bold leading-none" :class="advisorResult.score >= 70 ? 'text-up' : advisorResult.score >= 40 ? 'text-amber-500' : 'text-down'" x-text="advisorResult.score"></div>
+                    <div class="text-[9px] text-muted uppercase tracking-wider mt-0.5">Score</div>
+                  </div>
+                </div>
               </div>
-              <div class="text-right">
-                <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Deal score</div>
-                <div class="text-[48px] font-bold leading-none" :class="advisorResult.score >= 70 ? 'text-up' : advisorResult.score >= 40 ? 'text-amber-500' : 'text-down'" x-text="advisorResult.score"></div>
-                <div class="text-[11px] text-muted">/100</div>
-              </div>
+            </div>
+            <!-- Property summary bar -->
+            <div class="px-6 py-3 bg-white flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px] border-t" :class="advisorResult.verdict === 'Signature' ? 'border-purple-100' : advisorResult.verdict === 'Hot' ? 'border-orange-100' : 'border-gray-100'">
+              <span class="text-muted">Agent: <span class="text-heading font-medium" x-text="advisorResult.listing.agent"></span></span>
+              <span class="text-muted" x-text="advisorResult.listing.location"></span>
+              <span class="text-muted" x-text="(advisorResult.listing.beds === 0 ? 'Studio' : advisorResult.listing.beds + ' BR') + ' ' + advisorResult.listing.type"></span>
+              <span class="text-muted" x-text="fmt(advisorResult.listing.sqft) + ' sqft'"></span>
+              <span class="text-muted" x-show="advisorResult.listing.furnishing" x-text="advisorResult.listing.furnishing"></span>
+              <span class="font-medium" :class="(advisorResult.listing.dom||0) > 30 ? 'text-down' : (advisorResult.listing.dom||0) < 14 ? 'text-up' : 'text-muted'" x-text="advisorResult.listing.dom != null ? advisorResult.listing.dom + ' days on market' : ''"></span>
             </div>
           </div>
 
-          <!-- Property details -->
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-              <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Property</div>
-              <div class="space-y-2 text-[12px]">
-                <div class="flex justify-between"><span class="text-muted">Location</span><span class="font-medium text-heading" x-text="advisorResult.listing.location"></span></div>
-                <div class="flex justify-between"><span class="text-muted">Type</span><span class="font-medium" x-text="advisorResult.listing.type"></span></div>
-                <div class="flex justify-between"><span class="text-muted">Beds / Baths</span><span class="font-medium" x-text="advisorResult.listing.beds + ' / ' + advisorResult.listing.baths"></span></div>
-                <div class="flex justify-between"><span class="text-muted">Size</span><span class="font-medium" x-text="fmt(advisorResult.listing.sqft) + ' sqft'"></span></div>
-                <div class="flex justify-between"><span class="text-muted">Agent</span><span class="font-medium" x-text="advisorResult.listing.agent"></span></div>
-                <div class="flex justify-between"><span class="text-muted">Furnishing</span><span class="font-medium" x-text="advisorResult.listing.furnishing || '—'"></span></div>
-                <div class="flex justify-between"><span class="text-muted">DOM</span><span class="font-medium" :class="(advisorResult.listing.dom || 0) > 30 ? 'text-down' : 'text-up'" x-text="advisorResult.listing.dom != null ? advisorResult.listing.dom + ' days' : '—'"></span></div>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-              <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Price analysis</div>
-              <div class="space-y-2 text-[12px]">
-                <div class="flex justify-between"><span class="text-muted">Asking price</span><span class="font-bold text-heading text-[16px]" x-text="'AED ' + fmt(advisorResult.listing.price)"></span></div>
-                <div class="flex justify-between"><span class="text-muted">Price / sqft</span><span class="font-medium" x-text="'AED ' + fmt(advisorResult.listing.psqft)"></span></div>
-                <div class="h-px bg-border my-1"></div>
-                <div class="flex justify-between"><span class="text-muted">Market avg (<span x-text="advisorResult.listing.beds"></span> BR)</span><span class="font-medium" x-text="'AED ' + fmt(advisorResult.market.avg_price)"></span></div>
-                <div class="flex justify-between"><span class="text-muted">Market listings</span><span class="font-medium" x-text="fmt(advisorResult.market.count)"></span></div>
-                <div class="h-px bg-border my-1"></div>
+          <!-- Price + League side by side -->
+          <div class="grid md:grid-cols-5 gap-4">
+            <!-- Price card -->
+            <div class="md:col-span-2 rounded-2xl border border-border bg-white p-5 shadow-sm">
+              <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Pricing</div>
+              <div class="text-[28px] font-bold text-heading" x-text="'AED ' + fmt(advisorResult.listing.price)"></div>
+              <div class="text-[12px] text-muted mt-1" x-text="'AED ' + fmt(advisorResult.listing.psqft) + ' / sqft'"></div>
+              <div class="h-px bg-border my-4"></div>
+              <div class="space-y-3 text-[12px]">
+                <div class="flex justify-between">
+                  <span class="text-muted">Peer median</span>
+                  <span class="font-semibold" x-text="'AED ' + fmt(advisorResult.market.peer_median)"></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-muted">Peer avg</span>
+                  <span class="font-medium" x-text="'AED ' + fmt(advisorResult.market.avg_price)"></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-muted">Peer count</span>
+                  <span class="font-medium" x-text="advisorResult.market.count + ' listings'"></span>
+                </div>
+                <div class="h-px bg-border"></div>
                 <div class="flex justify-between items-center">
-                  <span class="text-muted">vs Market</span>
-                  <span class="font-bold text-[14px]" :class="advisorResult.gap_pct < 0 ? 'text-up' : 'text-down'" x-text="(advisorResult.gap_pct > 0 ? '+' : '') + advisorResult.gap_pct + '%'"></span>
+                  <span class="text-muted">vs Peer median</span>
+                  <span class="font-bold text-[15px]" :class="advisorResult.gap_pct < 0 ? 'text-up' : advisorResult.gap_pct > 5 ? 'text-down' : 'text-amber-500'" x-text="(advisorResult.gap_pct > 0 ? '+' : '') + advisorResult.gap_pct + '%'"></span>
                 </div>
-                <!-- Price rank bar -->
-                <div class="mt-3">
-                  <div class="text-[10px] text-muted mb-1">Price position in market</div>
-                  <div class="relative h-3 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="absolute h-full bg-gradient-to-r from-up via-amber-400 to-down rounded-full" style="width:100%"></div>
-                    <div class="absolute top-0 w-1 h-full bg-heading rounded-full shadow" :style="'left:' + Math.min(Math.max(advisorResult.price_rank_pct, 2), 98) + '%'"></div>
+              </div>
+            </div>
+
+            <!-- League table -->
+            <div class="md:col-span-3 rounded-2xl border border-border bg-white p-5 shadow-sm">
+              <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-1">
+                Comparable listings — <span class="text-heading" x-text="(advisorResult.listing.beds === 0 ? 'Studio' : advisorResult.listing.beds + ' BR') + ' in ' + advisorResult.market.peer_location"></span>
+              </div>
+              <div class="text-[10px] text-muted-2 mb-4" x-text="advisorResult.market.count + ' active listings · sorted by price'"></div>
+              <div class="space-y-0">
+                <template x-for="(p, i) in advisorResult.peers" :key="i">
+                  <div class="flex items-center gap-3 py-2 px-3 rounded-lg text-[11px] transition-colors"
+                       :class="p.isTarget ? 'bg-accent/5 border-2 border-accent/20 my-1 py-2.5' : 'border border-transparent hover:bg-gray-50'">
+                    <span class="w-5 text-right font-semibold" :class="p.isTarget ? 'text-accent' : 'text-muted-2'" x-text="p.rank"></span>
+                    <div class="flex-1">
+                      <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full" :class="p.isTarget ? 'bg-accent' : 'bg-gray-300'" :style="'width:' + p.bar_pct + '%'"></div>
+                      </div>
+                    </div>
+                    <span class="w-20 text-right font-medium" :class="p.isTarget ? 'text-accent font-bold' : 'text-heading'" x-text="fmtAed(p.price)"></span>
+                    <span class="w-16 text-right text-muted" x-text="p.sqft ? fmt(p.sqft) + 'ft' : ''"></span>
+                    <span class="w-16 text-right text-muted-2" x-text="p.psqft ? fmt(p.psqft) + '/ft' : ''"></span>
+                    <template x-if="p.isTarget">
+                      <span class="text-[9px] text-accent font-bold bg-accent/10 px-2 py-0.5 rounded-full whitespace-nowrap">THIS LISTING</span>
+                    </template>
                   </div>
-                  <div class="flex justify-between text-[9px] text-muted mt-0.5">
-                    <span>Cheapest</span>
-                    <span x-text="'Rank ' + advisorResult.price_rank + ' of ' + advisorResult.market.count"></span>
-                    <span>Most expensive</span>
-                  </div>
-                </div>
+                </template>
+              </div>
+              <div class="flex justify-between text-[10px] text-muted mt-3 pt-3 border-t border-border-subtle">
+                <span x-text="'Rank ' + advisorResult.price_rank + ' of ' + advisorResult.market.count"></span>
+                <span :class="advisorResult.gap_pct < 0 ? 'text-up font-medium' : advisorResult.gap_pct > 5 ? 'text-down font-medium' : ''" x-text="advisorResult.gap_pct < 0 ? Math.abs(advisorResult.gap_pct) + '% below peer median' : advisorResult.gap_pct + '% above peer median'"></span>
               </div>
             </div>
           </div>
 
-          <!-- League table -->
-          <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-            <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Market position — <span x-text="advisorResult.listing.beds === 0 ? 'Studio' : advisorResult.listing.beds + ' BR'"></span> in <span x-text="advisorResult.market.community"></span></div>
-            <div class="space-y-0">
-              <!-- Cheaper listings -->
-              <template x-for="(c, i) in advisorResult.league?.cheaper || []" :key="'c'+i">
-                <div class="flex items-center gap-3 py-2 px-3 text-[11px] border-b border-border-subtle">
-                  <span class="w-6 text-muted text-right" x-text="c.rank"></span>
-                  <div class="flex-1 bg-gray-100 rounded-full h-1.5"><div class="bg-gray-300 h-full rounded-full" :style="'width:' + c.bar_pct + '%'"></div></div>
-                  <span class="w-20 text-right text-muted" x-text="fmtAed(c.price)"></span>
-                </div>
-              </template>
-              <!-- THIS listing -->
-              <div class="flex items-center gap-3 py-3 px-3 bg-accent/5 border-2 border-accent/20 rounded-lg my-1">
-                <span class="w-6 text-accent font-bold text-right" x-text="advisorResult.price_rank || '—'"></span>
-                <div class="flex-1 bg-gray-100 rounded-full h-2.5"><div class="bg-accent h-full rounded-full" :style="'width:' + advisorResult.price_rank_pct + '%'"></div></div>
-                <span class="w-20 text-right font-bold text-accent" x-text="'AED ' + fmtAed(advisorResult.listing.price)"></span>
-                <span class="text-[10px] text-accent font-semibold bg-accent/10 px-2 py-0.5 rounded">THIS LISTING</span>
-              </div>
-              <!-- More expensive -->
-              <template x-for="(c, i) in advisorResult.league?.expensive || []" :key="'e'+i">
-                <div class="flex items-center gap-3 py-2 px-3 text-[11px] border-b border-border-subtle">
-                  <span class="w-6 text-muted text-right" x-text="c.rank"></span>
-                  <div class="flex-1 bg-gray-100 rounded-full h-1.5"><div class="bg-gray-300 h-full rounded-full" :style="'width:' + c.bar_pct + '%'"></div></div>
-                  <span class="w-20 text-right text-muted" x-text="fmtAed(c.price)"></span>
-                </div>
-              </template>
-            </div>
-            <div class="flex justify-between text-[10px] text-muted mt-3">
-              <span x-text="'Rank ' + (advisorResult.price_rank || '—') + ' of ' + (advisorResult.market.count || '—') + ' listings'"></span>
-              <span x-text="advisorResult.gap_pct < 0 ? Math.abs(advisorResult.gap_pct) + '% below market' : advisorResult.gap_pct + '% above market'"></span>
-            </div>
-          </div>
-
-          <!-- Risk flags -->
+          <!-- Signals -->
           <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="advisorResult.flags.length > 0">
             <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-3">Signals</div>
-            <div class="space-y-2">
+            <div class="grid md:grid-cols-2 gap-2">
               <template x-for="f in advisorResult.flags" :key="f.text">
-                <div class="flex items-center gap-2 text-[12px]">
-                  <span class="w-2 h-2 rounded-full" :class="f.type === 'positive' ? 'bg-up' : f.type === 'warning' ? 'bg-amber-400' : 'bg-down'"></span>
+                <div class="flex items-start gap-2 text-[12px] p-2 rounded-lg" :class="f.type === 'positive' ? 'bg-up/5' : f.type === 'warning' ? 'bg-amber-50' : 'bg-down/5'">
+                  <span class="w-2 h-2 rounded-full mt-1 shrink-0" :class="f.type === 'positive' ? 'bg-up' : f.type === 'warning' ? 'bg-amber-400' : 'bg-down'"></span>
                   <span x-text="f.text"></span>
                 </div>
               </template>
@@ -1254,45 +1249,109 @@ function dashboard() {
         const community = locParts.length >= 3 ? locParts[locParts.length - 2] : locParts[0];
         const subCommunity = locParts.length >= 3 ? locParts[locParts.length - 3] : '';
         
-        this.advisorProgress = 85;
-        this.advisorStep = 'Comparing against market data…';
+        this.advisorProgress = 75;
+        this.advisorStep = 'Scraping comparable listings…';
         
-        // Compare with market data
-        const block = this.latest?.data?.[purpose];
-        const commData = block?.by_community?.[community] || {};
-        const bedKey = beds > 0 ? String(beds) : 'Studio';
-        const bedData = commData.beds?.[bedKey];
-        const marketAvg = (bedData && typeof bedData === 'object') ? bedData.market_avg_price || bedData.avg_price : commData.market_avg_price;
-        const marketCount = (bedData && typeof bedData === 'object') ? bedData.market_count || commData.market_total : commData.market_total;
-        const huspyAvg = (bedData && typeof bedData === 'object') ? bedData.avg_price : commData.avg_price;
+        // Scrape peer set: same sub-community + same beds
+        const bedSlug = beds === 0 ? 'studio-properties' : beds + '-bedroom-properties';
+        const commSlug = community.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/,'');
+        const subSlug = (subCommunity || buildingName || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/,'');
+        const purposeSlug = purpose === 'rent' ? 'to-rent' : 'for-sale';
         
-        const gapPct = marketAvg ? Math.round((price - marketAvg) / marketAvg * 1000) / 10 : null;
+        let peerUrl = subSlug ? `https://www.bayut.com/${purposeSlug}/${bedSlug}/dubai/${commSlug}/${subSlug}/` : `https://www.bayut.com/${purposeSlug}/${bedSlug}/dubai/${commSlug}/`;
+        let peerLocation = subCommunity || buildingName || community;
         
-        // Price rank (approximate based on gap)
-        const priceRankPct = gapPct != null ? Math.min(Math.max(50 + gapPct, 0), 100) : 50;
-        const priceRank = marketCount ? Math.round(priceRankPct / 100 * marketCount) : null;
+        const peerResp = await fetch(`https://app.scrapingbee.com/api/v1/?api_key=QNG91WITJC8K7U39RMHTB7CAVQOUGTK8C09PPFJESMCYT2MNGJY19FLUQWDK3NABEC4PWPVF5HWI2CR0&url=${encodeURIComponent(peerUrl)}&stealth_proxy=true&country_code=ae`);
+        const peerHtml = await peerResp.text();
+        const peerDoc = new DOMParser().parseFromString(peerHtml, 'text/html');
+        
+        // Extract peer prices
+        let peerListings = [];
+        peerDoc.querySelectorAll('[aria-label="Listing"]').forEach(card => {
+          const pEl = card.querySelector('[aria-label="Price"]');
+          const aEl = card.querySelector('[aria-label="Area"]');
+          const tEl = card.querySelector('[aria-label="Title"]');
+          if (pEl) {
+            const pp = parseInt(pEl.textContent.trim().replace(/,/g, ''));
+            const aa = aEl ? parseInt(aEl.textContent.trim().replace(/,/g, '').replace(/[^0-9]/g,'')) : 0;
+            peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0, title: tEl ? tEl.textContent.trim().substring(0,40) : '' });
+          }
+        });
+        
+        // If sub-community returned 0, fall back to community level
+        if (peerListings.length === 0 && subSlug) {
+          peerUrl = `https://www.bayut.com/${purposeSlug}/${bedSlug}/dubai/${commSlug}/`;
+          peerLocation = community;
+          const fallResp = await fetch(`https://app.scrapingbee.com/api/v1/?api_key=QNG91WITJC8K7U39RMHTB7CAVQOUGTK8C09PPFJESMCYT2MNGJY19FLUQWDK3NABEC4PWPVF5HWI2CR0&url=${encodeURIComponent(peerUrl)}&stealth_proxy=true&country_code=ae`);
+          const fallHtml = await fallResp.text();
+          const fallDoc = new DOMParser().parseFromString(fallHtml, 'text/html');
+          fallDoc.querySelectorAll('[aria-label="Listing"]').forEach(card => {
+            const pEl = card.querySelector('[aria-label="Price"]');
+            const aEl = card.querySelector('[aria-label="Area"]');
+            if (pEl) {
+              const pp = parseInt(pEl.textContent.trim().replace(/,/g, ''));
+              const aa = aEl ? parseInt(aEl.textContent.trim().replace(/,/g, '').replace(/[^0-9]/g,'')) : 0;
+              peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0 });
+            }
+          });
+          peerLocation = community + ' (community level)';
+        }
+        
+        this.advisorProgress = 90;
+        this.advisorStep = 'Calculating position…';
+        
+        peerListings.sort((a, b) => a.price - b.price);
+        const peerPrices = peerListings.map(p => p.price);
+        const peerMedian = peerPrices.length ? peerPrices[Math.floor(peerPrices.length / 2)] : 0;
+        const peerAvg = peerPrices.length ? Math.round(peerPrices.reduce((a,b) => a+b, 0) / peerPrices.length) : 0;
+        const marketCount = peerPrices.length;
+        
+        // Find rank
+        let priceRank = peerPrices.filter(p => p < price).length + 1;
+        const priceRankPct = marketCount > 0 ? Math.round(priceRank / marketCount * 100) : 50;
+        const gapPct = peerMedian ? Math.round((price - peerMedian) / peerMedian * 1000) / 10 : null;
+        
+        // Build peers list for display: insert our listing into the sorted list
+        const maxPrice = Math.max(...peerPrices, price);
+        let allPeers = peerListings.map((p, i) => ({ ...p, rank: i + 1, bar_pct: Math.round(p.price / maxPrice * 100), isTarget: false }));
+        // Insert this listing
+        const insertIdx = allPeers.filter(p => p.price < price).length;
+        allPeers.splice(insertIdx, 0, { price, sqft, psqft: psqft, rank: insertIdx + 1, bar_pct: Math.round(price / maxPrice * 100), isTarget: true });
+        // Re-rank
+        allPeers.forEach((p, i) => p.rank = i + 1);
+        priceRank = allPeers.findIndex(p => p.isTarget) + 1;
+        // Show max 15: those around our listing
+        const targetIdx = allPeers.findIndex(p => p.isTarget);
+        const startIdx = Math.max(0, targetIdx - 7);
+        const displayPeers = allPeers.slice(startIdx, startIdx + 15);
+        
+        const bedLabel = beds === 0 ? 'studio' : beds + ' bedroom';
         
         // Build flags
         const flags = [];
-        if (gapPct != null && gapPct < -10) flags.push({ type: 'positive', text: `Priced ${Math.abs(gapPct)}% below market average — strong spend candidate` });
-        if (gapPct != null && gapPct < -5 && gapPct >= -10) flags.push({ type: 'positive', text: `Priced ${Math.abs(gapPct)}% below market — competitive pricing` });
-        if (gapPct != null && gapPct > 10) flags.push({ type: 'negative', text: `Priced ${gapPct}% above market — spend may not generate ROI` });
-        if (gapPct != null && gapPct > 0 && gapPct <= 10) flags.push({ type: 'warning', text: `Slightly above market average — moderate spend potential` });
+        if (gapPct != null && gapPct < -10) flags.push({ type: 'positive', text: `Priced ${Math.abs(gapPct)}% below peer median — strong spend candidate` });
+        if (gapPct != null && gapPct < -5 && gapPct >= -10) flags.push({ type: 'positive', text: `Priced ${Math.abs(gapPct)}% below peers — competitive pricing` });
+        if (gapPct != null && gapPct > 10) flags.push({ type: 'negative', text: `Priced ${gapPct}% above peers — spend may not generate ROI at this price` });
+        if (gapPct != null && gapPct > 0 && gapPct <= 10) flags.push({ type: 'warning', text: `Slightly above peer median — moderate spend potential` });
         if (dom != null && dom < 7) flags.push({ type: 'positive', text: `Fresh listing (${dom} days) — highest promotion ROI window` });
-        if (dom != null && dom >= 7 && dom < 21) flags.push({ type: 'positive', text: `${dom} days on market — still in active window` });
+        if (dom != null && dom >= 7 && dom < 21) flags.push({ type: 'positive', text: `${dom} days on market — still in prime window` });
         if (dom != null && dom >= 30) flags.push({ type: 'warning', text: `${dom} days on market — investigate before spending` });
-        if (dom != null && dom >= 60) flags.push({ type: 'negative', text: `${dom} days stale — likely needs price adjustment, not spend` });
-        if (marketCount && marketCount < 10) flags.push({ type: 'warning', text: `Thin peer set (${marketCount} comparable listings) — lower confidence` });
-        if (marketCount && marketCount >= 50) flags.push({ type: 'positive', text: `Deep market (${marketCount} listings) — high-confidence comparison` });
-        if (furnishing && furnishing.toLowerCase().includes('furnished')) flags.push({ type: 'positive', text: 'Furnished — commands premium in rental/resale' });
+        if (dom != null && dom >= 60) flags.push({ type: 'negative', text: `Stale at ${dom} days — likely needs price cut, not spend` });
+        if (marketCount < 5) flags.push({ type: 'warning', text: `Thin peer set (${marketCount} comparables) — lower confidence` });
+        if (marketCount >= 15) flags.push({ type: 'positive', text: `Strong peer set (${marketCount} comparables) — high confidence` });
+        if (furnishing && furnishing.toLowerCase().includes('furnished')) flags.push({ type: 'positive', text: 'Furnished — commands premium vs unfurnished peers' });
+        if (priceRank <= 3 && marketCount >= 5) flags.push({ type: 'positive', text: `Ranked #${priceRank} cheapest of ${marketCount} — best value in this peer set` });
         
         // Score: 0-100
         let score = 50;
-        if (gapPct != null) score += Math.min(Math.abs(gapPct) * (gapPct < 0 ? 1 : -0.5), 30);
-        if (dom != null && dom < 14) score += 15;
+        if (gapPct != null) score += Math.min(Math.abs(gapPct) * (gapPct < 0 ? 1.2 : -0.7), 35);
+        if (dom != null && dom < 7) score += 15;
+        else if (dom != null && dom < 21) score += 8;
         if (dom != null && dom > 30) score -= 10;
         if (dom != null && dom > 60) score -= 15;
-        if (marketCount && marketCount >= 20) score += 5;
+        if (marketCount >= 10) score += 5;
+        if (marketCount < 5) score -= 5;
+        if (priceRank <= 3 && marketCount >= 5) score += 5;
         score = Math.max(0, Math.min(100, Math.round(score)));
         
         // Verdict
@@ -1300,43 +1359,26 @@ function dashboard() {
         if (score >= 75 && gapPct < -10) verdict = 'Signature';
         else if (score >= 60 && gapPct < -5) verdict = 'Hot';
         else if (gapPct > 10) verdict = 'Price first';
-        else if (score >= 50) verdict = 'Hot';
+        else if (score >= 50 && gapPct <= 5) verdict = 'Hot';
         if (dom != null && dom > 45 && gapPct > 0) verdict = 'Price first';
         
         // Reason
         let reason = '';
-        if (verdict === 'Signature') reason = `This listing is priced ${Math.abs(gapPct)}% below the ${bedKey === 'Studio' ? 'studio' : bedKey + ' bedroom'} market average in ${community}. ${dom != null && dom < 14 ? 'It\'s a fresh listing — maximum ROI from Signature spend.' : 'Strong value proposition for Signature promotion.'}`;
-        else if (verdict === 'Hot') reason = `Priced ${gapPct < 0 ? Math.abs(gapPct) + '% below' : gapPct + '% above'} market. ${dom != null && dom < 21 ? 'Active listing window — Hot promotion would increase visibility.' : 'Hot spend recommended to drive enquiries.'}`;
-        else if (verdict === 'Price first') reason = `Priced ${gapPct}% above the ${bedKey === 'Studio' ? 'studio' : bedKey + ' bedroom'} market average. ${dom != null && dom > 30 ? `At ${dom} days on market, ` : ''}Spending on promotion is unlikely to generate ROI at this price point. Recommend a price reduction conversation first.`;
-        else reason = `Market position is neutral. Monitor performance before committing spend.`;
+        if (verdict === 'Signature') reason = `Priced ${Math.abs(gapPct)}% below the ${bedLabel} peer median in ${peerLocation}. Rank #${priceRank} of ${marketCount}.${dom != null && dom < 14 ? ' Fresh listing — maximum ROI from Signature spend.' : ''}`;
+        else if (verdict === 'Hot') reason = `${gapPct < 0 ? Math.abs(gapPct) + '% below' : 'At'} peer median for ${bedLabel}s in ${peerLocation}.${dom != null && dom < 21 ? ' Active window — Hot promotion recommended.' : ' Hot spend would increase visibility.'}`;
+        else if (verdict === 'Price first') reason = `Priced ${gapPct}% above ${bedLabel} peers in ${peerLocation}.${dom != null && dom > 30 ? ` At ${dom} days, ` : ' '}Promotion unlikely to generate ROI. Price reduction conversation first.`;
+        else reason = `Market position is neutral for ${bedLabel}s in ${peerLocation}. Monitor before committing spend.`;
         
         clearInterval(progressTimer);
         this.advisorProgress = 100;
         this.advisorStep = 'Done';
         
-        // Build league table — show price distribution around this listing
-        const league = { cheaper: [], expensive: [] };
-        if (marketAvg && marketCount) {
-          const maxPrice = marketAvg * 2;
-          const minPrice = marketAvg * 0.3;
-          const rank = priceRank || Math.round(priceRankPct / 100 * marketCount);
-          // Generate 4 cheaper positions
-          for (let i = Math.max(1, rank - 4); i < rank; i++) {
-            const p = minPrice + (price - minPrice) * ((i - 1) / Math.max(rank - 1, 1)) * 0.95;
-            league.cheaper.push({ rank: i, price: Math.round(p), bar_pct: Math.round(p / maxPrice * 100) });
-          }
-          // Generate 4 more expensive positions
-          for (let i = rank + 1; i <= Math.min(rank + 4, marketCount); i++) {
-            const p = price + (maxPrice - price) * ((i - rank) / Math.max(marketCount - rank, 1)) * 0.6;
-            league.expensive.push({ rank: i, price: Math.round(p), bar_pct: Math.round(p / maxPrice * 100) });
-          }
-        }
-        
         this.advisorResult = {
-          verdict, score, reason, gap_pct: gapPct, flags, league,
+          verdict, score, reason, gap_pct: gapPct, flags,
+          peers: displayPeers,
           price_rank: priceRank, price_rank_pct: priceRankPct,
           listing: { price, beds, baths, sqft, psqft, type, location, agent, furnishing, dom, buildingName, purpose },
-          market: { avg_price: marketAvg, count: marketCount, huspy_avg: huspyAvg, community },
+          market: { avg_price: peerAvg, peer_median: peerMedian, count: marketCount, peer_location: peerLocation, community },
         };
       } catch(e) {
         this.advisorError = 'Failed to analyze listing: ' + e.message;
