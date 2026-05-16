@@ -970,5 +970,2651 @@
         "avg_price": 196833
       }
     }
+  },
+  "Tilal Al Ghaf": {
+    "sale": {
+      "4": {
+        "count": 186,
+        "avg_price": 7910416
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 1,
+        "avg_price": 7371428
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 4000000
+      },
+      "5": {
+        "count": 131,
+        "avg_price": 18324083
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "2": {
+        "count": 0,
+        "avg_price": 411600
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "4": {
+        "count": 384,
+        "avg_price": 329041
+      },
+      "5": {
+        "count": 83,
+        "avg_price": 667291
+      },
+      "3": {
+        "count": 357,
+        "avg_price": 199208
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 200000
+      }
+    }
+  },
+  "Jumeirah Beach Residence (JBR)": {
+    "sale": {
+      "Studio": {
+        "count": 37,
+        "avg_price": 2421166
+      },
+      "2": {
+        "count": 313,
+        "avg_price": 4525375
+      },
+      "3": {
+        "count": 232,
+        "avg_price": 6266329
+      },
+      "5": {
+        "count": 9,
+        "avg_price": 59538777
+      },
+      "4": {
+        "count": 84,
+        "avg_price": 10637291
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 52,
+        "avg_price": 88249
+      },
+      "1": {
+        "count": 280,
+        "avg_price": 127958
+      },
+      "4": {
+        "count": 143,
+        "avg_price": 489333
+      },
+      "3": {
+        "count": 373,
+        "avg_price": 271349
+      },
+      "2": {
+        "count": 672,
+        "avg_price": 153458
+      },
+      "5": {
+        "count": 10,
+        "avg_price": 1148700
+      }
+    }
+  },
+  "Jebel Ali": {
+    "sale": {
+      "1": {
+        "count": 480,
+        "avg_price": 941173
+      },
+      "Studio": {
+        "count": 544,
+        "avg_price": 538111
+      },
+      "2": {
+        "count": 198,
+        "avg_price": 1382453
+      },
+      "3": {
+        "count": 109,
+        "avg_price": 3039225
+      },
+      "4": {
+        "count": 159,
+        "avg_price": 7183541
+      },
+      "5": {
+        "count": 52,
+        "avg_price": 13018749
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 138,
+        "avg_price": 46833
+      },
+      "1": {
+        "count": 155,
+        "avg_price": 63165
+      },
+      "2": {
+        "count": 15,
+        "avg_price": 93933
+      },
+      "4": {
+        "count": 85,
+        "avg_price": 286041
+      },
+      "5": {
+        "count": 7,
+        "avg_price": 434285
+      },
+      "3": {
+        "count": 18,
+        "avg_price": 257444
+      }
+    }
+  },
+  "Bluewaters Island": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 78,
+        "avg_price": 7571372
+      },
+      "1": {
+        "count": 67,
+        "avg_price": 3817816
+      },
+      "4": {
+        "count": 16,
+        "avg_price": 20807812
+      },
+      "3": {
+        "count": 47,
+        "avg_price": 13187458
+      },
+      "5": {
+        "count": 1,
+        "avg_price": 46291666
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 33,
+        "avg_price": 577499
+      },
+      "2": {
+        "count": 65,
+        "avg_price": 429041
+      },
+      "1": {
+        "count": 56,
+        "avg_price": 305041
+      },
+      "4": {
+        "count": 22,
+        "avg_price": 1031136
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "The Meadows": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 16,
+        "avg_price": 11065312
+      },
+      "4": {
+        "count": 65,
+        "avg_price": 13108749
+      },
+      "5": {
+        "count": 65,
+        "avg_price": 15485833
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 21,
+        "avg_price": 373523
+      },
+      "5": {
+        "count": 93,
+        "avg_price": 582416
+      },
+      "4": {
+        "count": 56,
+        "avg_price": 560624
+      }
+    }
+  },
+  "The Lakes": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 1,
+        "avg_price": 8890031
+      },
+      "4": {
+        "count": 12,
+        "avg_price": 10487495
+      },
+      "3": {
+        "count": 41,
+        "avg_price": 9632708
+      },
+      "5": {
+        "count": 3,
+        "avg_price": 14683333
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 350000
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 41,
+        "avg_price": 322041
+      },
+      "4": {
+        "count": 3,
+        "avg_price": 330000
+      },
+      "5": {
+        "count": 2,
+        "avg_price": 570000
+      }
+    }
+  },
+  "Mohammed Bin Rashid City (MBR City)": {
+    "sale": {
+      "Studio": {
+        "count": 35,
+        "avg_price": 780583
+      },
+      "2": {
+        "count": 320,
+        "avg_price": 3389408
+      },
+      "4": {
+        "count": 487,
+        "avg_price": 5771323
+      },
+      "5": {
+        "count": 215,
+        "avg_price": 22236962
+      },
+      "3": {
+        "count": 100,
+        "avg_price": 4647495
+      },
+      "1": {
+        "count": 386,
+        "avg_price": 1572333
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 116,
+        "avg_price": 57750
+      },
+      "1": {
+        "count": 379,
+        "avg_price": 99416
+      },
+      "2": {
+        "count": 223,
+        "avg_price": 174957
+      },
+      "3": {
+        "count": 155,
+        "avg_price": 220166
+      },
+      "4": {
+        "count": 313,
+        "avg_price": 440583
+      },
+      "5": {
+        "count": 91,
+        "avg_price": 1349958
+      }
+    }
+  },
+  "Arabian Ranches 2": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 8122877
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 4000000
+      },
+      "4": {
+        "count": 61,
+        "avg_price": 8324957
+      },
+      "3": {
+        "count": 40,
+        "avg_price": 4907911
+      },
+      "5": {
+        "count": 24,
+        "avg_price": 9772763
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 318000
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 69,
+        "avg_price": 221249
+      },
+      "4": {
+        "count": 86,
+        "avg_price": 276416
+      },
+      "5": {
+        "count": 102,
+        "avg_price": 370416
+      }
+    }
+  },
+  "Dubai Media City": {
+    "sale": {
+      "1": {
+        "count": 25,
+        "avg_price": 3092716
+      },
+      "3": {
+        "count": 19,
+        "avg_price": 7225788
+      },
+      "4": {
+        "count": 2,
+        "avg_price": 15793500
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 20,
+        "avg_price": 4628499
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 1,
+        "avg_price": 150000
+      },
+      "3": {
+        "count": 11,
+        "avg_price": 315817
+      },
+      "1": {
+        "count": 13,
+        "avg_price": 156076
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 22,
+        "avg_price": 215862
+      },
+      "4": {
+        "count": 1,
+        "avg_price": 1300000
+      }
+    }
+  },
+  "Dubailand": {
+    "sale": {
+      "Studio": {
+        "count": 13,
+        "avg_price": 577761
+      },
+      "1": {
+        "count": 126,
+        "avg_price": 989408
+      },
+      "2": {
+        "count": 295,
+        "avg_price": 1637642
+      },
+      "3": {
+        "count": 620,
+        "avg_price": 3085958
+      },
+      "4": {
+        "count": 466,
+        "avg_price": 3612656
+      },
+      "5": {
+        "count": 169,
+        "avg_price": 5838583
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 52,
+        "avg_price": 44124
+      },
+      "1": {
+        "count": 163,
+        "avg_price": 73374
+      },
+      "2": {
+        "count": 108,
+        "avg_price": 117495
+      },
+      "3": {
+        "count": 449,
+        "avg_price": 164083
+      },
+      "4": {
+        "count": 337,
+        "avg_price": 195624
+      },
+      "5": {
+        "count": 89,
+        "avg_price": 344166
+      }
+    }
+  },
+  "Arabian Ranches": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 109,
+        "avg_price": 6344749
+      },
+      "2": {
+        "count": 30,
+        "avg_price": 3931374
+      },
+      "4": {
+        "count": 61,
+        "avg_price": 9262874
+      },
+      "5": {
+        "count": 66,
+        "avg_price": 14282914
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 0,
+        "avg_price": 255000
+      },
+      "2": {
+        "count": 52,
+        "avg_price": 170041
+      },
+      "3": {
+        "count": 175,
+        "avg_price": 258666
+      },
+      "4": {
+        "count": 94,
+        "avg_price": 412496
+      },
+      "5": {
+        "count": 88,
+        "avg_price": 656041
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "The Valley by Emaar": {
+    "sale": {
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 485,
+        "avg_price": 2872302
+      },
+      "2": {
+        "count": 1,
+        "avg_price": 3065881
+      },
+      "4": {
+        "count": 756,
+        "avg_price": 5031434
+      },
+      "5": {
+        "count": 349,
+        "avg_price": 8473051
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "4": {
+        "count": 276,
+        "avg_price": 169999
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 126999
+      },
+      "3": {
+        "count": 331,
+        "avg_price": 139245
+      }
+    }
+  },
+  "Arjan": {
+    "sale": {
+      "Studio": {
+        "count": 1190,
+        "avg_price": 671575
+      },
+      "3": {
+        "count": 156,
+        "avg_price": 2567795
+      },
+      "1": {
+        "count": 1429,
+        "avg_price": 1089666
+      },
+      "2": {
+        "count": 580,
+        "avg_price": 1686484
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 1602,
+        "avg_price": 51373
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 1380,
+        "avg_price": 108494
+      },
+      "4": {
+        "count": 3,
+        "avg_price": 349996
+      },
+      "3": {
+        "count": 321,
+        "avg_price": 160624
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "City Walk": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 2616000
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 6762722
+      }
+    }
+  },
+  "Green Community": {
+    "sale": {
+      "Studio": {
+        "count": 1,
+        "avg_price": 500000
+      },
+      "2": {
+        "count": 7,
+        "avg_price": 2435714
+      },
+      "1": {
+        "count": 3,
+        "avg_price": 1266333
+      },
+      "3": {
+        "count": 3,
+        "avg_price": 7591232
+      },
+      "4": {
+        "count": 20,
+        "avg_price": 7742250
+      },
+      "5": {
+        "count": 18,
+        "avg_price": 10544166
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 1,
+        "avg_price": 55000
+      },
+      "1": {
+        "count": 16,
+        "avg_price": 92687
+      },
+      "3": {
+        "count": 5,
+        "avg_price": 299000
+      },
+      "5": {
+        "count": 12,
+        "avg_price": 516666
+      },
+      "4": {
+        "count": 16,
+        "avg_price": 352187
+      },
+      "2": {
+        "count": 1,
+        "avg_price": 210499
+      }
+    }
+  },
+  "Sheikh Zayed Road": {
+    "sale": {
+      "1": {
+        "count": 183,
+        "avg_price": 3119214
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 60,
+        "avg_price": 9531624
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 103,
+        "avg_price": 4927020
+      },
+      "4": {
+        "count": 47,
+        "avg_price": 84849229
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 291,
+        "avg_price": 108062
+      },
+      "Studio": {
+        "count": 47,
+        "avg_price": 84977
+      },
+      "2": {
+        "count": 352,
+        "avg_price": 192016
+      },
+      "3": {
+        "count": 154,
+        "avg_price": 220253
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 3112500
+      },
+      "4": {
+        "count": 3,
+        "avg_price": 1773571
+      }
+    }
+  },
+  "Meydan": {
+    "sale": {
+      "Studio": {
+        "count": 696,
+        "avg_price": 905063
+      },
+      "4": {
+        "count": 24,
+        "avg_price": 6622495
+      },
+      "1": {
+        "count": 591,
+        "avg_price": 1589925
+      },
+      "2": {
+        "count": 432,
+        "avg_price": 2677542
+      },
+      "3": {
+        "count": 219,
+        "avg_price": 4460525
+      },
+      "5": {
+        "count": 42,
+        "avg_price": 36286916
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 1483,
+        "avg_price": 46291
+      },
+      "1": {
+        "count": 889,
+        "avg_price": 74416
+      },
+      "2": {
+        "count": 347,
+        "avg_price": 117166
+      },
+      "3": {
+        "count": 135,
+        "avg_price": 169582
+      },
+      "4": {
+        "count": 29,
+        "avg_price": 343286
+      },
+      "5": {
+        "count": 21,
+        "avg_price": 994094
+      }
+    }
+  },
+  "Dubai Sports City": {
+    "sale": {
+      "1": {
+        "count": 670,
+        "avg_price": 1266924
+      },
+      "Studio": {
+        "count": 468,
+        "avg_price": 609344
+      },
+      "4": {
+        "count": 42,
+        "avg_price": 6134583
+      },
+      "2": {
+        "count": 668,
+        "avg_price": 1523648
+      },
+      "5": {
+        "count": 52,
+        "avg_price": 14981041
+      },
+      "3": {
+        "count": 85,
+        "avg_price": 2566588
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 531,
+        "avg_price": 48624
+      },
+      "1": {
+        "count": 485,
+        "avg_price": 68770
+      },
+      "3": {
+        "count": 15,
+        "avg_price": 164333
+      },
+      "5": {
+        "count": 1,
+        "avg_price": 610624
+      },
+      "2": {
+        "count": 262,
+        "avg_price": 93083
+      },
+      "4": {
+        "count": 43,
+        "avg_price": 257291
+      }
+    }
+  },
+  "Nad Al Sheba 1": {
+    "sale": {
+      "2": {
+        "count": 91,
+        "avg_price": 2859840
+      },
+      "1": {
+        "count": 75,
+        "avg_price": 1671357
+      },
+      "Studio": {
+        "count": 13,
+        "avg_price": 1032337
+      },
+      "3": {
+        "count": 128,
+        "avg_price": 6705949
+      },
+      "5": {
+        "count": 152,
+        "avg_price": 16385241
+      },
+      "4": {
+        "count": 132,
+        "avg_price": 12520161
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 10,
+        "avg_price": 44600
+      },
+      "2": {
+        "count": 40,
+        "avg_price": 124333
+      },
+      "3": {
+        "count": 229,
+        "avg_price": 327704
+      },
+      "1": {
+        "count": 56,
+        "avg_price": 81791
+      },
+      "4": {
+        "count": 107,
+        "avg_price": 421791
+      },
+      "5": {
+        "count": 132,
+        "avg_price": 653749
+      }
+    }
+  },
+  "Madinat Jumeirah Living": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 6762722
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 6762722
+      }
+    }
+  },
+  "Bur Dubai": {
+    "sale": {
+      "1": {
+        "count": 72,
+        "avg_price": 1948750
+      },
+      "2": {
+        "count": 160,
+        "avg_price": 3060055
+      },
+      "Studio": {
+        "count": 3,
+        "avg_price": 63802518
+      },
+      "4": {
+        "count": 6,
+        "avg_price": 12036796
+      },
+      "3": {
+        "count": 75,
+        "avg_price": 4347082
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 16000000
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 217,
+        "avg_price": 44652
+      },
+      "1": {
+        "count": 547,
+        "avg_price": 79791
+      },
+      "2": {
+        "count": 602,
+        "avg_price": 109250
+      },
+      "3": {
+        "count": 181,
+        "avg_price": 146374
+      },
+      "4": {
+        "count": 39,
+        "avg_price": 187416
+      },
+      "5": {
+        "count": 4,
+        "avg_price": 421384
+      }
+    }
+  },
+  "Jumeirah Park": {
+    "sale": {
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 5901000
+      },
+      "4": {
+        "count": 64,
+        "avg_price": 10749999
+      },
+      "3": {
+        "count": 45,
+        "avg_price": 8153499
+      },
+      "5": {
+        "count": 40,
+        "avg_price": 15222583
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 145,
+        "avg_price": 325583
+      },
+      "5": {
+        "count": 80,
+        "avg_price": 605416
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 438000
+      },
+      "4": {
+        "count": 203,
+        "avg_price": 466874
+      }
+    }
+  },
+  "Jumeirah Golf Estates": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 34,
+        "avg_price": 2389539
+      },
+      "4": {
+        "count": 153,
+        "avg_price": 10267761
+      },
+      "3": {
+        "count": 82,
+        "avg_price": 4808421
+      },
+      "5": {
+        "count": 145,
+        "avg_price": 21864252
+      },
+      "1": {
+        "count": 26,
+        "avg_price": 1485416
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 47,
+        "avg_price": 156204
+      },
+      "1": {
+        "count": 19,
+        "avg_price": 97105
+      },
+      "4": {
+        "count": 42,
+        "avg_price": 578541
+      },
+      "3": {
+        "count": 46,
+        "avg_price": 291416
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "Dubai Internet City": {
+    "sale": {
+      "2": {
+        "count": 49,
+        "avg_price": 3637921
+      },
+      "1": {
+        "count": 33,
+        "avg_price": 2768099
+      },
+      "3": {
+        "count": 24,
+        "avg_price": 5645854
+      },
+      "4": {
+        "count": 47,
+        "avg_price": 14452813
+      },
+      "5": {
+        "count": 2,
+        "avg_price": 59040735
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "2": {
+        "count": 2,
+        "avg_price": 633571
+      },
+      "1": {
+        "count": 6,
+        "avg_price": 139833
+      },
+      "3": {
+        "count": 1,
+        "avg_price": 596249
+      },
+      "4": {
+        "count": 54,
+        "avg_price": 922286
+      },
+      "5": {
+        "count": 1,
+        "avg_price": 3300000
+      },
+      "Studio": {
+        "count": 1,
+        "avg_price": 63269
+      }
+    }
+  },
+  "The Greens": {
+    "sale": {
+      "Studio": {
+        "count": 6,
+        "avg_price": 945833
+      },
+      "1": {
+        "count": 88,
+        "avg_price": 1431875
+      },
+      "3": {
+        "count": 11,
+        "avg_price": 3277090
+      },
+      "4": {
+        "count": 2,
+        "avg_price": 5750000
+      },
+      "2": {
+        "count": 51,
+        "avg_price": 2413333
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 230,
+        "avg_price": 98624
+      },
+      "2": {
+        "count": 79,
+        "avg_price": 158708
+      },
+      "Studio": {
+        "count": 25,
+        "avg_price": 69958
+      },
+      "4": {
+        "count": 9,
+        "avg_price": 328333
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 52,
+        "avg_price": 188749
+      }
+    }
+  },
+  "Al Jaddaf": {
+    "sale": {
+      "Studio": {
+        "count": 314,
+        "avg_price": 1027699
+      },
+      "2": {
+        "count": 508,
+        "avg_price": 2309181
+      },
+      "1": {
+        "count": 698,
+        "avg_price": 1388578
+      },
+      "3": {
+        "count": 191,
+        "avg_price": 4058828
+      },
+      "4": {
+        "count": 2,
+        "avg_price": 69436361
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 182300000
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 715,
+        "avg_price": 73666
+      },
+      "Studio": {
+        "count": 291,
+        "avg_price": 69875
+      },
+      "3": {
+        "count": 82,
+        "avg_price": 185916
+      },
+      "2": {
+        "count": 361,
+        "avg_price": 126208
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "Dubai Investment Park (DIP)": {
+    "sale": {
+      "2": {
+        "count": 727,
+        "avg_price": 986861
+      },
+      "1": {
+        "count": 564,
+        "avg_price": 976464
+      },
+      "Studio": {
+        "count": 189,
+        "avg_price": 516694
+      },
+      "4": {
+        "count": 625,
+        "avg_price": 1902499
+      },
+      "5": {
+        "count": 162,
+        "avg_price": 10126583
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 8,
+        "avg_price": 43875
+      },
+      "2": {
+        "count": 32,
+        "avg_price": 91541
+      },
+      "3": {
+        "count": 14,
+        "avg_price": 147785
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 32,
+        "avg_price": 65583
+      }
+    }
+  },
+  "La Mer": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 6762722
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 6762722
+      }
+    }
+  },
+  "Expo City": {
+    "sale": {
+      "1": {
+        "count": 137,
+        "avg_price": 1665723
+      },
+      "2": {
+        "count": 149,
+        "avg_price": 2760963
+      },
+      "3": {
+        "count": 110,
+        "avg_price": 3786828
+      },
+      "4": {
+        "count": 27,
+        "avg_price": 7250879
+      },
+      "5": {
+        "count": 50,
+        "avg_price": 11385226
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 2,
+        "avg_price": 115000
+      },
+      "1": {
+        "count": 21,
+        "avg_price": 89666
+      },
+      "2": {
+        "count": 74,
+        "avg_price": 99250
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 22,
+        "avg_price": 140909
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "Palm Jebel Ali": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 5,
+        "avg_price": 2948700
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 3933333
+      },
+      "4": {
+        "count": 1,
+        "avg_price": 24152053
+      },
+      "3": {
+        "count": 1,
+        "avg_price": 24269571
+      },
+      "5": {
+        "count": 98,
+        "avg_price": 21488265
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 115000
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 120000
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 78599
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "Za'abeel 1": {
+    "sale": {
+      "2": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 6762722
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 2616000
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 6762722
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 2616000
+      }
+    }
+  },
+  "Dubai Islands": {
+    "sale": {
+      "Studio": {
+        "count": 8,
+        "avg_price": 1319500
+      },
+      "2": {
+        "count": 1381,
+        "avg_price": 3454792
+      },
+      "1": {
+        "count": 1017,
+        "avg_price": 2142576
+      },
+      "3": {
+        "count": 690,
+        "avg_price": 5615322
+      },
+      "4": {
+        "count": 205,
+        "avg_price": 7985346
+      },
+      "5": {
+        "count": 62,
+        "avg_price": 23155107
+      }
+    },
+    "rent": {
+      "2": {
+        "count": 3,
+        "avg_price": 180777
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 2,
+        "avg_price": 199000
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 2,
+        "avg_price": 176466
+      }
+    }
+  },
+  "Mirdif": {
+    "sale": {
+      "1": {
+        "count": 32,
+        "avg_price": 1489320
+      },
+      "2": {
+        "count": 163,
+        "avg_price": 1881677
+      },
+      "4": {
+        "count": 6,
+        "avg_price": 5210833
+      },
+      "3": {
+        "count": 37,
+        "avg_price": 3178626
+      },
+      "5": {
+        "count": 2,
+        "avg_price": 8680000
+      },
+      "Studio": {
+        "count": 4,
+        "avg_price": 700000
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 12,
+        "avg_price": 54749
+      },
+      "2": {
+        "count": 45,
+        "avg_price": 102500
+      },
+      "3": {
+        "count": 251,
+        "avg_price": 153541
+      },
+      "4": {
+        "count": 177,
+        "avg_price": 164874
+      },
+      "5": {
+        "count": 55,
+        "avg_price": 227083
+      },
+      "1": {
+        "count": 42,
+        "avg_price": 85245
+      }
+    }
+  },
+  "Jumeirah Village Triangle (JVT)": {
+    "sale": {
+      "Studio": {
+        "count": 787,
+        "avg_price": 623892
+      },
+      "1": {
+        "count": 1396,
+        "avg_price": 1105886
+      },
+      "2": {
+        "count": 566,
+        "avg_price": 2921884
+      },
+      "3": {
+        "count": 103,
+        "avg_price": 3866260
+      },
+      "5": {
+        "count": 16,
+        "avg_price": 9012187
+      },
+      "4": {
+        "count": 34,
+        "avg_price": 5179215
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 301,
+        "avg_price": 74499
+      },
+      "2": {
+        "count": 172,
+        "avg_price": 143163
+      },
+      "Studio": {
+        "count": 225,
+        "avg_price": 52124
+      },
+      "3": {
+        "count": 22,
+        "avg_price": 193408
+      },
+      "4": {
+        "count": 10,
+        "avg_price": 241999
+      },
+      "5": {
+        "count": 8,
+        "avg_price": 524375
+      }
+    }
+  },
+  "Dubai Production City (IMPZ)": {
+    "sale": {
+      "1": {
+        "count": 879,
+        "avg_price": 940626
+      },
+      "3": {
+        "count": 116,
+        "avg_price": 2102048
+      },
+      "2": {
+        "count": 398,
+        "avg_price": 1535452
+      },
+      "Studio": {
+        "count": 658,
+        "avg_price": 611999
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 21499999
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 28650000
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 243,
+        "avg_price": 65541
+      },
+      "Studio": {
+        "count": 295,
+        "avg_price": 43958
+      },
+      "2": {
+        "count": 178,
+        "avg_price": 100853
+      },
+      "3": {
+        "count": 25,
+        "avg_price": 137916
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "Dubai Maritime City": {
+    "sale": {
+      "1": {
+        "count": 701,
+        "avg_price": 1989124
+      },
+      "Studio": {
+        "count": 245,
+        "avg_price": 1725666
+      },
+      "3": {
+        "count": 124,
+        "avg_price": 5915196
+      },
+      "4": {
+        "count": 3,
+        "avg_price": 21904985
+      },
+      "2": {
+        "count": 485,
+        "avg_price": 3861053
+      },
+      "5": {
+        "count": 3,
+        "avg_price": 25426000
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 12,
+        "avg_price": 79732
+      },
+      "1": {
+        "count": 103,
+        "avg_price": 121666
+      },
+      "2": {
+        "count": 74,
+        "avg_price": 161458
+      },
+      "3": {
+        "count": 40,
+        "avg_price": 271458
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "Motor City": {
+    "sale": {
+      "1": {
+        "count": 894,
+        "avg_price": 1139508
+      },
+      "Studio": {
+        "count": 537,
+        "avg_price": 664576
+      },
+      "2": {
+        "count": 472,
+        "avg_price": 1795534
+      },
+      "4": {
+        "count": 18,
+        "avg_price": 6376374
+      },
+      "3": {
+        "count": 130,
+        "avg_price": 3556958
+      },
+      "5": {
+        "count": 9,
+        "avg_price": 10932777
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 30,
+        "avg_price": 59958
+      },
+      "1": {
+        "count": 143,
+        "avg_price": 76749
+      },
+      "2": {
+        "count": 139,
+        "avg_price": 121958
+      },
+      "3": {
+        "count": 74,
+        "avg_price": 203916
+      },
+      "5": {
+        "count": 2,
+        "avg_price": 452500
+      },
+      "4": {
+        "count": 5,
+        "avg_price": 375999
+      }
+    }
+  },
+  "Emirates Hills": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 1,
+        "avg_price": 14500000
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 3,
+        "avg_price": 73768794
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 75245000
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 10,
+        "avg_price": 1378999
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 2000000
+      }
+    }
+  },
+  "Al Wasl": {
+    "sale": {
+      "Studio": {
+        "count": 29,
+        "avg_price": 1105916
+      },
+      "1": {
+        "count": 321,
+        "avg_price": 2419344
+      },
+      "3": {
+        "count": 180,
+        "avg_price": 10522254
+      },
+      "2": {
+        "count": 372,
+        "avg_price": 4043845
+      },
+      "4": {
+        "count": 109,
+        "avg_price": 19554728
+      },
+      "5": {
+        "count": 24,
+        "avg_price": 56337260
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 1,
+        "avg_price": 145000
+      },
+      "1": {
+        "count": 307,
+        "avg_price": 154291
+      },
+      "2": {
+        "count": 338,
+        "avg_price": 252208
+      },
+      "3": {
+        "count": 69,
+        "avg_price": 415833
+      },
+      "4": {
+        "count": 10,
+        "avg_price": 777999
+      },
+      "5": {
+        "count": 10,
+        "avg_price": 2607998
+      }
+    }
+  },
+  "Dubai Festival City": {
+    "sale": {
+      "Studio": {
+        "count": 1,
+        "avg_price": 1450000
+      },
+      "1": {
+        "count": 3,
+        "avg_price": 2135833
+      },
+      "3": {
+        "count": 15,
+        "avg_price": 5023533
+      },
+      "4": {
+        "count": 2,
+        "avg_price": 8715256
+      },
+      "2": {
+        "count": 11,
+        "avg_price": 2868181
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 10,
+        "avg_price": 104300
+      },
+      "Studio": {
+        "count": 2,
+        "avg_price": 80000
+      },
+      "2": {
+        "count": 104,
+        "avg_price": 175958
+      },
+      "4": {
+        "count": 13,
+        "avg_price": 353376
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 63,
+        "avg_price": 233583
+      }
+    }
+  },
+  "Mina Rashid": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 236,
+        "avg_price": 2048407
+      },
+      "4": {
+        "count": 18,
+        "avg_price": 11360987
+      },
+      "2": {
+        "count": 278,
+        "avg_price": 3252541
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 118,
+        "avg_price": 6053281
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 67,
+        "avg_price": 113270
+      },
+      "3": {
+        "count": 53,
+        "avg_price": 310000
+      },
+      "4": {
+        "count": 2,
+        "avg_price": 450000
+      },
+      "2": {
+        "count": 191,
+        "avg_price": 134328
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "The Views": {
+    "sale": {
+      "Studio": {
+        "count": 9,
+        "avg_price": 1156666
+      },
+      "2": {
+        "count": 72,
+        "avg_price": 3266041
+      },
+      "3": {
+        "count": 24,
+        "avg_price": 4928620
+      },
+      "1": {
+        "count": 71,
+        "avg_price": 1873125
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "4": {
+        "count": 4,
+        "avg_price": 7975000
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 118,
+        "avg_price": 104374
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 141,
+        "avg_price": 177041
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 33,
+        "avg_price": 218083
+      },
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "DIFC": {
+    "sale": {
+      "1": {
+        "count": 145,
+        "avg_price": 3106874
+      },
+      "Studio": {
+        "count": 48,
+        "avg_price": 1660375
+      },
+      "2": {
+        "count": 126,
+        "avg_price": 3946458
+      },
+      "5": {
+        "count": 2,
+        "avg_price": 34366666
+      },
+      "4": {
+        "count": 9,
+        "avg_price": 18445944
+      },
+      "3": {
+        "count": 58,
+        "avg_price": 8116950
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 151,
+        "avg_price": 120541
+      },
+      "Studio": {
+        "count": 75,
+        "avg_price": 94416
+      },
+      "3": {
+        "count": 27,
+        "avg_price": 351166
+      },
+      "4": {
+        "count": 3,
+        "avg_price": 826666
+      },
+      "2": {
+        "count": 124,
+        "avg_price": 202707
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "Al Barari": {
+    "sale": {
+      "1": {
+        "count": 13,
+        "avg_price": 3676424
+      },
+      "Studio": {
+        "count": 1,
+        "avg_price": 1800000
+      },
+      "2": {
+        "count": 21,
+        "avg_price": 6251218
+      },
+      "3": {
+        "count": 17,
+        "avg_price": 9527761
+      },
+      "4": {
+        "count": 69,
+        "avg_price": 15278245
+      },
+      "5": {
+        "count": 30,
+        "avg_price": 34490958
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 26,
+        "avg_price": 191999
+      },
+      "Studio": {
+        "count": 3,
+        "avg_price": 113333
+      },
+      "3": {
+        "count": 7,
+        "avg_price": 1002142
+      },
+      "2": {
+        "count": 46,
+        "avg_price": 367833
+      },
+      "4": {
+        "count": 185,
+        "avg_price": 576375
+      },
+      "5": {
+        "count": 42,
+        "avg_price": 1024833
+      }
+    }
+  },
+  "Discovery Gardens": {
+    "sale": {
+      "1": {
+        "count": 270,
+        "avg_price": 906104
+      },
+      "2": {
+        "count": 201,
+        "avg_price": 1280625
+      },
+      "Studio": {
+        "count": 186,
+        "avg_price": 548916
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 58089016
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 60500000
+      }
+    },
+    "rent": {
+      "1": {
+        "count": 173,
+        "avg_price": 67037
+      },
+      "2": {
+        "count": 46,
+        "avg_price": 100874
+      },
+      "Studio": {
+        "count": 379,
+        "avg_price": 49291
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "3": {
+        "count": 1,
+        "avg_price": 120000
+      }
+    }
+  },
+  "DAMAC Lagoons": {
+    "sale": {
+      "Studio": {
+        "count": 134,
+        "avg_price": 709103
+      },
+      "2": {
+        "count": 192,
+        "avg_price": 2029555
+      },
+      "1": {
+        "count": 384,
+        "avg_price": 1275437
+      },
+      "3": {
+        "count": 79,
+        "avg_price": 2578374
+      },
+      "4": {
+        "count": 630,
+        "avg_price": 2895468
+      },
+      "5": {
+        "count": 385,
+        "avg_price": 3785374
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 137999
+      },
+      "3": {
+        "count": 100,
+        "avg_price": 162916
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 165999
+      },
+      "4": {
+        "count": 568,
+        "avg_price": 171750
+      },
+      "5": {
+        "count": 294,
+        "avg_price": 229166
+      }
+    }
+  },
+  "Dubai Harbour": {
+    "sale": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 537,
+        "avg_price": 5637563
+      },
+      "3": {
+        "count": 265,
+        "avg_price": 9904456
+      },
+      "1": {
+        "count": 476,
+        "avg_price": 3022529
+      },
+      "5": {
+        "count": 15,
+        "avg_price": 35041429
+      },
+      "4": {
+        "count": 79,
+        "avg_price": 27414473
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 598,
+        "avg_price": 223541
+      },
+      "1": {
+        "count": 557,
+        "avg_price": 144791
+      },
+      "3": {
+        "count": 170,
+        "avg_price": 421411
+      },
+      "4": {
+        "count": 16,
+        "avg_price": 657812
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
+  },
+  "Dubai South": {
+    "sale": {
+      "1": {
+        "count": 794,
+        "avg_price": 1046806
+      },
+      "Studio": {
+        "count": 634,
+        "avg_price": 668639
+      },
+      "2": {
+        "count": 962,
+        "avg_price": 1511229
+      },
+      "4": {
+        "count": 415,
+        "avg_price": 4170410
+      },
+      "5": {
+        "count": 170,
+        "avg_price": 7171314
+      },
+      "3": {
+        "count": 669,
+        "avg_price": 3070035
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 187,
+        "avg_price": 43207
+      },
+      "2": {
+        "count": 225,
+        "avg_price": 78141
+      },
+      "4": {
+        "count": 414,
+        "avg_price": 166416
+      },
+      "1": {
+        "count": 253,
+        "avg_price": 62249
+      },
+      "3": {
+        "count": 372,
+        "avg_price": 121745
+      },
+      "5": {
+        "count": 37,
+        "avg_price": 306458
+      }
+    }
+  },
+  "Sobha Hartland 2": {
+    "sale": {
+      "Studio": {
+        "count": 1,
+        "avg_price": 1500000
+      },
+      "2": {
+        "count": 203,
+        "avg_price": 2849086
+      },
+      "1": {
+        "count": 375,
+        "avg_price": 1792442
+      },
+      "3": {
+        "count": 45,
+        "avg_price": 4805012
+      },
+      "4": {
+        "count": 10,
+        "avg_price": 9422560
+      },
+      "5": {
+        "count": 40,
+        "avg_price": 27745306
+      }
+    },
+    "rent": {
+      "Studio": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "1": {
+        "count": 0,
+        "avg_price": 104999
+      },
+      "3": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "4": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "5": {
+        "count": 0,
+        "avg_price": 0
+      },
+      "2": {
+        "count": 0,
+        "avg_price": 0
+      }
+    }
   }
 }
