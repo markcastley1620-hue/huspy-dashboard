@@ -343,8 +343,7 @@
               <th class="text-left px-5 py-2.5 font-semibold">Name</th>
               <th class="text-left px-3 py-2.5 font-semibold">Bedrooms</th>
               <th class="text-right px-3 py-2.5 font-semibold">Listings</th>
-              <th class="text-right px-3 py-2.5 font-semibold">Huspy avg</th>
-              <th class="text-right px-5 py-2.5 font-semibold">Market avg</th>
+              <th class="text-right px-5 py-2.5 font-semibold" x-text="selectedBed != null ? (selectedBed === '0' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Avg price'"></th>
             </tr>
           </thead>
           <tbody>
@@ -359,8 +358,7 @@
                   </div>
                 </td>
                 <td class="px-3 py-2.5 text-right font-semibold" x-text="s.count"></td>
-                <td class="px-3 py-2.5 text-right text-heading" x-text="fmtAed(s.avg_price)"></td>
-                <td class="px-5 py-2.5 text-right text-muted" x-text="fmtAed(commNode()?.market_avg_price)"></td>
+                <td class="px-5 py-2.5 text-right text-heading font-medium" x-text="fmtAed(s.avg_price)"></td>
               </tr>
             </template>
           </tbody>
@@ -658,17 +656,38 @@ function dashboard() {
     },
     commDetailSubs() {
       const subs = this.commNode()?.sub_communities || {};
+      const bed = this.selectedBed;
       let rows = Object.entries(subs).map(([name, s]) => {
         const beds = s.beds || {};
         const bedBadges = Object.entries(beds)
-          .sort((a, b) => b[1] - a[1])
+          .sort((a, b) => {
+            const ac = typeof a[1] === 'object' ? a[1].count : a[1];
+            const bc = typeof b[1] === 'object' ? b[1].count : b[1];
+            return bc - ac;
+          })
           .slice(0, 4)
-          .map(([b, n]) => ({ key: b, label: b === '0' || b === 'Studio' ? 'Stu' : b + 'BR', count: n }));
-        return { name, count: s.count||0, avg_price: s.avg_price, bedBadges, beds };
+          .map(([b, v]) => {
+            const count = typeof v === 'object' ? v.count : v;
+            return { key: b, label: b === '0' || b === 'Studio' ? 'Stu' : b + 'BR', count };
+          });
+        // If bedroom selected, show that bed's avg price; otherwise show overall
+        let avgPrice = s.avg_price;
+        let count = s.count || 0;
+        if (bed != null && beds[bed]) {
+          const bd = beds[bed];
+          if (typeof bd === 'object') {
+            avgPrice = bd.avg_price ?? s.avg_price;
+            count = bd.count ?? count;
+          }
+        }
+        return { name, count, avg_price: avgPrice, bedBadges, beds, fullCount: s.count||0 };
       }).sort((a,b) => b.count - a.count);
-      // Filter by selected bedroom
-      if (this.selectedBed != null) {
-        rows = rows.filter(r => r.beds[this.selectedBed] > 0);
+      if (bed != null) {
+        rows = rows.filter(r => {
+          const bd = r.beds[bed];
+          const c = typeof bd === 'object' ? bd?.count : bd;
+          return c > 0;
+        });
       }
       return rows;
     },
