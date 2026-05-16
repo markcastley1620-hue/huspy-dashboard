@@ -690,7 +690,8 @@
                 <th class="text-left px-3 py-2.5 font-semibold">Location</th>
                 <th class="text-right px-3 py-2.5 font-semibold">Beds</th>
                 <th class="text-right px-3 py-2.5 font-semibold">Price</th>
-                <th class="text-right px-3 py-2.5 font-semibold">Market avg</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Peer avg</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Peer set</th>
                 <th class="text-right px-3 py-2.5 font-semibold">Gap</th>
                 <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
                 <th class="text-left px-3 py-2.5 font-semibold">Action</th>
@@ -708,6 +709,10 @@
                   <td class="px-3 py-2.5 text-right" x-text="o.beds === 0 ? 'Studio' : o.beds + ' BR'"></td>
                   <td class="px-3 py-2.5 text-right font-semibold" x-text="fmtAed(o.price)"></td>
                   <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(o.market_avg)"></td>
+                  <td class="px-3 py-2.5 text-[10px]">
+                    <div class="text-muted" x-text="o.peer_level"></div>
+                    <span class="font-medium" :class="(o.market_count||0) < 5 ? 'text-amber-500' : 'text-muted'" x-text="(o.market_count||0) + ' peers' + ((o.market_count||0) < 5 ? ' ⚠' : '')"></span>
+                  </td>
                   <td class="px-3 py-2.5 text-right text-up font-semibold" x-text="o.gap_pct + '%'"></td>
                   <td class="px-3 py-2.5 text-right" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
                   <td class="px-3 py-2.5">
@@ -734,7 +739,8 @@
                 <th class="text-left px-3 py-2.5 font-semibold">Location</th>
                 <th class="text-right px-3 py-2.5 font-semibold">Beds</th>
                 <th class="text-right px-3 py-2.5 font-semibold">Price</th>
-                <th class="text-right px-3 py-2.5 font-semibold">Market avg</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Peer avg</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Peer set</th>
                 <th class="text-right px-3 py-2.5 font-semibold">Gap</th>
                 <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
                 <th class="text-right px-5 py-2.5 font-semibold">Score</th>
@@ -751,6 +757,10 @@
                   <td class="px-3 py-2.5 text-right" x-text="o.beds === 0 ? 'Studio' : o.beds + ' BR'"></td>
                   <td class="px-3 py-2.5 text-right font-semibold" x-text="fmtAed(o.price)"></td>
                   <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(o.market_avg)"></td>
+                  <td class="px-3 py-2.5 text-[10px]">
+                    <div class="text-muted" x-text="o.peer_level"></div>
+                    <span class="font-medium" :class="(o.market_count||0) < 5 ? 'text-amber-500' : 'text-muted'" x-text="(o.market_count||0) + ' peers' + ((o.market_count||0) < 5 ? ' ⚠' : '')"></span>
+                  </td>
                   <td class="px-3 py-2.5 text-right text-down font-semibold" x-text="'+' + o.gap_pct + '%'"></td>
                   <td class="px-3 py-2.5 text-right" :class="(o.dom||0) > 30 ? 'text-down font-semibold' : ''" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
                   <td class="px-5 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
