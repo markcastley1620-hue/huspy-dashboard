@@ -227,7 +227,7 @@
                 </tr>
               </template>
               <template x-if="filteredRows().length === 0">
-                <tr><td colspan="6" class="px-5 py-12 text-center text-muted text-[13px]">No communities match filters.</td></tr>
+                <tr><td colspan="8" class="px-5 py-12 text-center text-muted text-[13px]">No communities match filters.</td></tr>
               </template>
             </tbody>
           </table>
@@ -275,7 +275,10 @@
         <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commDetailBeds().length">
           <div class="flex items-center justify-between mb-4">
             <div class="text-[11px] font-semibold text-muted uppercase tracking-wider">Bedrooms</div>
-            <button x-show="selectedBed != null" @click="selectedBed = null" class="text-[10px] text-accent font-medium hover:underline">Clear filter</button>
+            <div class="flex items-center gap-3">
+              <span class="text-[10px] text-muted">Huspy · <span class="text-muted-2">Market</span></span>
+              <button x-show="selectedBed != null" @click="selectedBed = null" class="text-[10px] text-accent font-medium hover:underline">Clear filter</button>
+            </div>
           </div>
           <div class="space-y-2">
             <template x-for="b in commDetailBeds()" :key="b.label">
@@ -285,7 +288,8 @@
                   <div class="h-full rounded-full bar-anim" :class="selectedBed === b.key ? 'bg-accent' : 'bg-accent/60'" :style="'width:' + b.pct + '%'"></div>
                 </div>
                 <span class="w-8 text-right font-semibold text-heading" x-text="b.count"></span>
-                <span class="w-14 text-right text-muted text-[11px]" x-text="fmtAed(b.avg_price)"></span>
+                <span class="w-16 text-right text-heading text-[11px] font-medium" x-text="fmtAed(b.avg_price)"></span>
+                <span class="w-16 text-right text-muted text-[11px]" x-text="fmtAed(commNode()?.market_avg_price)"></span>
               </div>
             </template>
           </div>
@@ -339,7 +343,8 @@
               <th class="text-left px-5 py-2.5 font-semibold">Name</th>
               <th class="text-left px-3 py-2.5 font-semibold">Bedrooms</th>
               <th class="text-right px-3 py-2.5 font-semibold">Listings</th>
-              <th class="text-right px-5 py-2.5 font-semibold">Avg price</th>
+              <th class="text-right px-3 py-2.5 font-semibold">Huspy avg</th>
+              <th class="text-right px-5 py-2.5 font-semibold">Market avg</th>
             </tr>
           </thead>
           <tbody>
@@ -354,7 +359,8 @@
                   </div>
                 </td>
                 <td class="px-3 py-2.5 text-right font-semibold" x-text="s.count"></td>
-                <td class="px-5 py-2.5 text-right text-muted" x-text="fmtAed(s.avg_price)"></td>
+                <td class="px-3 py-2.5 text-right text-heading" x-text="fmtAed(s.avg_price)"></td>
+                <td class="px-5 py-2.5 text-right text-muted" x-text="fmtAed(commNode()?.market_avg_price)"></td>
               </tr>
             </template>
           </tbody>
@@ -402,7 +408,8 @@
               <th class="text-right px-3 py-3 font-semibold cursor-pointer" @click="toggleSort('count')">Huspy</th>
               <th class="text-right px-3 py-3 font-semibold cursor-pointer" @click="toggleSort('market')">Market</th>
               <th class="text-right px-3 py-3 font-semibold cursor-pointer" @click="toggleSort('share')">Share</th>
-              <th class="text-right px-3 py-3 font-semibold">Avg price</th>
+              <th class="text-right px-3 py-3 font-semibold">Huspy avg</th>
+              <th class="text-right px-3 py-3 font-semibold">Market avg</th>
               <th class="text-right px-5 py-3 font-semibold cursor-pointer" @click="toggleSort('delta')">Δ pp</th>
             </tr>
           </thead>
@@ -414,7 +421,8 @@
                 <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Huspy" x-text="fmt(r.count)"></td>
                 <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
                 <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : '—'"></td>
-                <td class="px-3 py-3 text-right text-muted" data-label="Avg price" x-text="fmtAed(r.avg_price)"></td>
+                <td class="px-3 py-3 text-right text-heading" data-label="Huspy avg" x-text="fmtAed(r.avg_price)"></td>
+                <td class="px-3 py-3 text-right text-muted" data-label="Market avg" x-text="fmtAed(r.market_avg)"></td>
                 <td class="px-5 py-3 text-right" data-label="Δ pp">
                   <span x-show="r.delta != null && r.delta > 0" class="inline-flex items-center text-up bg-up-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↑ +<span x-text="r.delta.toFixed(2)"></span>pp</span>
                   <span x-show="r.delta != null && r.delta < 0" class="inline-flex items-center text-down bg-down-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↓ <span x-text="r.delta.toFixed(2)"></span>pp</span>
@@ -533,7 +541,7 @@ function dashboard() {
           .map(([t, d]) => ({ name: t, abbr: this.abbrevMap[t] || t.slice(0,4), count: d.total }));
         return {
           name, count: node.count || 0, market: node.market_total ?? null,
-          share, avg_price: node.avg_price ?? null,
+          share, avg_price: node.avg_price ?? null, market_avg: node.market_avg_price ?? null,
           delta: share != null && prevShare != null ? +(share - prevShare).toFixed(4) : null,
           topTypes, smallN: node.count < 5 && share != null && share > 2,
         };
