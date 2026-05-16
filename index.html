@@ -668,17 +668,17 @@
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3" x-show="latest?.data?.opportunities">
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Underpriced</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="latest?.data?.opportunities?.summary?.underpriced_count || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="latest?.data?.opportunities?.summary?.[mode]?.underpriced || 0"></div>
           <div class="text-[11px] text-muted mt-1">recommend spend</div>
         </div>
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Overpriced</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="latest?.data?.opportunities?.summary?.overpriced_count || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="latest?.data?.opportunities?.summary?.[mode]?.overpriced || 0"></div>
           <div class="text-[11px] text-muted mt-1">need price talk</div>
         </div>
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Stale (30+ days)</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-amber-500" x-text="latest?.data?.opportunities?.summary?.stale_count || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-amber-500" x-text="latest?.data?.opportunities?.summary?.[mode]?.stale || 0"></div>
           <div class="text-[11px] text-muted mt-1">need review</div>
         </div>
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
@@ -715,7 +715,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="o in (latest?.data?.opportunities?.underpriced || [])" :key="o.url">
+              <template x-for="o in (latest?.data?.opportunities?.[mode]?.underpriced || [])" :key="o.url">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
@@ -763,7 +763,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="o in (latest?.data?.opportunities?.overpriced || [])" :key="o.url">
+              <template x-for="o in (latest?.data?.opportunities?.[mode]?.overpriced || [])" :key="o.url">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
@@ -804,7 +804,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="o in (latest?.data?.opportunities?.stale || [])" :key="o.url">
+              <template x-for="o in (latest?.data?.opportunities?.[mode]?.stale || [])" :key="o.url">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
