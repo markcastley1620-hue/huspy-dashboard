@@ -379,8 +379,8 @@
           </thead>
           <tbody>
             <template x-for="a in commDetailAgents()" :key="a.name">
-              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
-                <td class="px-5 py-2.5 font-medium" x-text="a.name"></td>
+              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50 cursor-pointer" @click="selectAgent(a.name)">
+                <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" x-text="a.name"></td>
                 <td class="px-3 py-2.5">
                   <div class="flex gap-1 flex-wrap">
                     <template x-for="b in a.bedBadges" :key="b.label">
@@ -457,16 +457,68 @@
               <th class="text-left px-5 py-3 font-semibold w-8">#</th>
               <th class="text-left px-3 py-3 font-semibold">Agent</th>
               <th class="text-right px-3 py-3 font-semibold">Listings</th>
+              <th class="text-right px-3 py-3 font-semibold">Avg price</th>
               <th class="text-right px-5 py-3 font-semibold">Share</th>
             </tr>
           </thead>
           <tbody>
             <template x-for="(a, i) in agentRows()" :key="a.name">
-              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
+              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50 cursor-pointer" @click="selectAgent(a.name)">
                 <td class="px-5 py-3 text-muted" data-label="#" x-text="i + 1"></td>
-                <td class="px-3 py-3 font-medium" data-label="Agent" x-text="a.name"></td>
+                <td class="px-3 py-3 font-medium hover:text-accent transition-colors" data-label="Agent" x-text="a.name"></td>
                 <td class="px-3 py-3 text-right font-semibold" data-label="Listings" x-text="a.count"></td>
+                <td class="px-3 py-3 text-right text-heading" data-label="Avg price" x-text="fmtAed(a.avg_price)"></td>
                 <td class="px-5 py-3 text-right text-muted" data-label="Share" x-text="a.share.toFixed(1) + '%'"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==================== AGENT DETAIL ==================== -->
+    <div x-show="!loading && view==='agent-detail'" x-cloak class="space-y-6 fade-in">
+      <div>
+        <button @click="navigate('agents')" class="text-[12px] text-accent hover:text-accent-dim font-medium transition-colors">← All agents</button>
+        <h1 class="text-[22px] font-bold tracking-tight text-heading mt-2" x-text="selectedAgent"></h1>
+        <p class="text-[12px] text-muted mt-1" x-text="(latest?.snapshot_date || '') + '  ·  ' + mode"></p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <template x-for="s in agentDetailStats()" :key="s.label">
+          <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+            <div class="text-[10px] uppercase tracking-widest text-muted font-semibold" x-text="s.label"></div>
+            <div class="text-[22px] font-bold mt-1.5 leading-none text-heading" x-text="s.value"></div>
+          </div>
+        </template>
+      </div>
+
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Communities</div>
+        <table class="w-full text-[12px]">
+          <thead class="text-muted bg-gray-50">
+            <tr class="border-b border-border">
+              <th class="text-left px-5 py-2.5 font-semibold">Community</th>
+              <th class="text-left px-3 py-2.5 font-semibold">Bedrooms</th>
+              <th class="text-right px-3 py-2.5 font-semibold">Listings</th>
+              <th class="text-right px-3 py-2.5 font-semibold">Avg price</th>
+              <th class="text-right px-5 py-2.5 font-semibold">Share of community</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="c in agentDetailComms()" :key="c.name">
+              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50 cursor-pointer" @click="selectCommunity(c.name)">
+                <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" x-text="c.name"></td>
+                <td class="px-3 py-2.5">
+                  <div class="flex gap-1 flex-wrap">
+                    <template x-for="b in c.bedBadges" :key="b.label">
+                      <span class="inline-flex rounded-md bg-blue-50 text-blue-600 px-1.5 py-0.5 text-[10px] font-medium" x-text="b.label + ' ' + b.count"></span>
+                    </template>
+                  </div>
+                </td>
+                <td class="px-3 py-2.5 text-right font-semibold" x-text="c.count"></td>
+                <td class="px-3 py-2.5 text-right text-heading" x-text="fmtAed(c.avg_price)"></td>
+                <td class="px-5 py-2.5 text-right text-muted" x-text="c.share != null ? c.share.toFixed(1) + '%' : '—'"></td>
               </tr>
             </template>
           </tbody>
@@ -488,6 +540,7 @@ function dashboard() {
     latest: null,
     previous: null,
     selectedCommunity: null,
+    selectedAgent: null,
     selectedBed: null,
     search: '',
     minMarket: 0,
@@ -589,9 +642,17 @@ function dashboard() {
       const b = this.block(); if (!b) return [];
       const merged = {};
       for (const c of Object.values(b.by_community || {}))
-        for (const a of (c.agents || [])) { if (!merged[a.name]) merged[a.name] = { name: a.name, count: 0 }; merged[a.name].count += a.count; }
+        for (const a of (c.agents || [])) {
+          if (a.name === 'Unattributed') continue;
+          if (!merged[a.name]) merged[a.name] = { name: a.name, count: 0, prices: [] };
+          merged[a.name].count += a.count;
+          if (a.avg_price) merged[a.name].prices.push({ avg: a.avg_price, n: a.count });
+        }
       const total = b.total || 1;
-      return Object.values(merged).map(a => ({ ...a, share: a.count / total * 100 })).sort((a, b) => b.count - a.count);
+      return Object.values(merged).map(a => {
+        const wavg = a.prices.length ? a.prices.reduce((s, p) => s + p.avg * p.n, 0) / a.prices.reduce((s, p) => s + p.n, 0) : null;
+        return { name: a.name, count: a.count, share: a.count / total * 100, avg_price: wavg };
+      }).sort((a, b) => b.count - a.count);
     },
     commAvgPrice() {
       const n = this.commNode();
@@ -608,7 +669,50 @@ function dashboard() {
       return which === 'huspy' ? (h / max * 100) : (m / max * 100);
     },
     selectCommunity(name) { this.selectedCommunity = name; this.selectedBed = null; this.view = 'community-detail'; window.scrollTo(0, 0); },
+    selectAgent(name) { this.selectedAgent = name; this.view = 'agent-detail'; window.scrollTo(0, 0); },
     toggleBedFilter(bed) { this.selectedBed = this.selectedBed === bed ? null : bed; },
+
+    agentDetailStats() {
+      const b = this.block(); if (!b) return [];
+      let totalListings = 0, totalValue = 0, comms = new Set();
+      for (const [cName, c] of Object.entries(b.by_community || {})) {
+        for (const a of (c.agents || [])) {
+          if (a.name === this.selectedAgent) {
+            totalListings += a.count;
+            if (a.avg_price) totalValue += a.avg_price * a.count;
+            comms.add(cName);
+          }
+        }
+      }
+      const avg = totalListings > 0 ? totalValue / totalListings : null;
+      return [
+        { label: 'Listings', value: this.fmt(totalListings) },
+        { label: 'Communities', value: comms.size },
+        { label: 'Avg price', value: this.fmtAed(avg) },
+        { label: 'Portfolio share', value: b.total ? (totalListings / b.total * 100).toFixed(1) + '%' : '—' },
+      ];
+    },
+
+    agentDetailComms() {
+      const b = this.block(); if (!b) return [];
+      const rows = [];
+      for (const [cName, c] of Object.entries(b.by_community || {})) {
+        for (const a of (c.agents || [])) {
+          if (a.name === this.selectedAgent) {
+            const beds = a.beds || {};
+            const bedBadges = Object.entries(beds)
+              .sort((x, y) => (typeof y[1]==='object'?y[1].count:y[1]) - (typeof x[1]==='object'?x[1].count:x[1]))
+              .slice(0, 4)
+              .map(([bk, v]) => ({ label: bk==='0'||bk==='Studio'?'Stu':bk+'BR', count: typeof v==='object'?v.count:v }));
+            rows.push({
+              name: cName, count: a.count, avg_price: a.avg_price,
+              share: c.count ? a.count / c.count * 100 : null, bedBadges,
+            });
+          }
+        }
+      }
+      return rows.sort((a, b) => b.count - a.count);
+    },
     commNode() { return this.block()?.by_community?.[this.selectedCommunity] || {}; },
     commDetailStats() {
       const n = this.commNode();
@@ -706,7 +810,7 @@ function dashboard() {
       return rows;
     },
     commDetailAgents() {
-      const agents = this.commNode()?.agents || [];
+      const agents = (this.commNode()?.agents || []).filter(a => a.name !== 'Unattributed');
       const bed = this.selectedBed;
       return agents.slice(0, 20).map(a => {
         const beds = a.beds || {};
