@@ -503,10 +503,30 @@
       <div class="rounded-2xl border border-border bg-white p-6 shadow-sm">
         <div class="flex gap-3">
           <input x-model="advisorUrl" type="text" placeholder="Paste listing URL here…" class="flex-1 bg-gray-50 border border-border rounded-xl px-4 py-3 text-[13px] text-gray-900 placeholder-muted-2 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10" @keydown.enter="runAdvisor()">
-          <button @click="runAdvisor()" :disabled="advisorLoading" class="bg-accent hover:bg-accent/90 disabled:bg-gray-300 text-white px-6 py-3 rounded-xl text-[13px] font-semibold transition-all">
+          <button @click="runAdvisor()" :disabled="advisorLoading" class="bg-accent hover:bg-accent/90 disabled:bg-gray-300 text-white px-6 py-3 rounded-xl text-[13px] font-semibold transition-all min-w-[120px]">
             <span x-show="!advisorLoading">Analyze</span>
-            <span x-show="advisorLoading">Analyzing…</span>
+            <span x-show="advisorLoading" class="flex items-center justify-center gap-2">
+              <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+              Analyzing…
+            </span>
           </button>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div x-show="advisorLoading" class="rounded-2xl border border-border bg-white p-8 shadow-sm">
+        <div class="flex flex-col items-center gap-4">
+          <div class="relative w-16 h-16">
+            <div class="absolute inset-0 rounded-full border-4 border-gray-100"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-accent border-t-transparent animate-spin"></div>
+          </div>
+          <div class="text-center">
+            <div class="text-[14px] font-semibold text-heading">Analyzing listing…</div>
+            <div class="text-[12px] text-muted mt-1" x-text="advisorStep"></div>
+          </div>
+          <div class="w-64 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-accent rounded-full transition-all duration-1000" :style="'width:' + advisorProgress + '%'"></div>
+          </div>
         </div>
       </div>
 
@@ -570,6 +590,40 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- League table -->
+          <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+            <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Market position — <span x-text="advisorResult.listing.beds === 0 ? 'Studio' : advisorResult.listing.beds + ' BR'"></span> in <span x-text="advisorResult.market.community"></span></div>
+            <div class="space-y-0">
+              <!-- Cheaper listings -->
+              <template x-for="(c, i) in advisorResult.league?.cheaper || []" :key="'c'+i">
+                <div class="flex items-center gap-3 py-2 px-3 text-[11px] border-b border-border-subtle">
+                  <span class="w-6 text-muted text-right" x-text="c.rank"></span>
+                  <div class="flex-1 bg-gray-100 rounded-full h-1.5"><div class="bg-gray-300 h-full rounded-full" :style="'width:' + c.bar_pct + '%'"></div></div>
+                  <span class="w-20 text-right text-muted" x-text="fmtAed(c.price)"></span>
+                </div>
+              </template>
+              <!-- THIS listing -->
+              <div class="flex items-center gap-3 py-3 px-3 bg-accent/5 border-2 border-accent/20 rounded-lg my-1">
+                <span class="w-6 text-accent font-bold text-right" x-text="advisorResult.price_rank || '—'"></span>
+                <div class="flex-1 bg-gray-100 rounded-full h-2.5"><div class="bg-accent h-full rounded-full" :style="'width:' + advisorResult.price_rank_pct + '%'"></div></div>
+                <span class="w-20 text-right font-bold text-accent" x-text="'AED ' + fmtAed(advisorResult.listing.price)"></span>
+                <span class="text-[10px] text-accent font-semibold bg-accent/10 px-2 py-0.5 rounded">THIS LISTING</span>
+              </div>
+              <!-- More expensive -->
+              <template x-for="(c, i) in advisorResult.league?.expensive || []" :key="'e'+i">
+                <div class="flex items-center gap-3 py-2 px-3 text-[11px] border-b border-border-subtle">
+                  <span class="w-6 text-muted text-right" x-text="c.rank"></span>
+                  <div class="flex-1 bg-gray-100 rounded-full h-1.5"><div class="bg-gray-300 h-full rounded-full" :style="'width:' + c.bar_pct + '%'"></div></div>
+                  <span class="w-20 text-right text-muted" x-text="fmtAed(c.price)"></span>
+                </div>
+              </template>
+            </div>
+            <div class="flex justify-between text-[10px] text-muted mt-3">
+              <span x-text="'Rank ' + (advisorResult.price_rank || '—') + ' of ' + (advisorResult.market.count || '—') + ' listings'"></span>
+              <span x-text="advisorResult.gap_pct < 0 ? Math.abs(advisorResult.gap_pct) + '% below market' : advisorResult.gap_pct + '% above market'"></span>
             </div>
           </div>
 
@@ -854,6 +908,8 @@ function dashboard() {
     advisorLoading: false,
     advisorResult: null,
     advisorError: null,
+    advisorStep: 'Connecting to listing…',
+    advisorProgress: 0,
     search: '',
     minMarket: 0,
     onlyWithListings: false,
@@ -1152,9 +1208,18 @@ function dashboard() {
       this.advisorLoading = true;
       this.advisorResult = null;
       this.advisorError = null;
+      this.advisorProgress = 10;
+      this.advisorStep = 'Fetching listing data…';
       try {
+        // Animate progress
+        const progressTimer = setInterval(() => {
+          if (this.advisorProgress < 85) this.advisorProgress += Math.random() * 8;
+        }, 500);
+        
         // Scrape listing page via ScrapingBee
         const resp = await fetch(`https://app.scrapingbee.com/api/v1/?api_key=QNG91WITJC8K7U39RMHTB7CAVQOUGTK8C09PPFJESMCYT2MNGJY19FLUQWDK3NABEC4PWPVF5HWI2CR0&url=${encodeURIComponent(this.advisorUrl)}&stealth_proxy=true&country_code=ae`);
+        this.advisorProgress = 70;
+        this.advisorStep = 'Parsing property details…';
         const html = await resp.text();
         
         // Parse listing
@@ -1188,6 +1253,9 @@ function dashboard() {
         const locParts = location.split(',').map(s => s.trim());
         const community = locParts.length >= 3 ? locParts[locParts.length - 2] : locParts[0];
         const subCommunity = locParts.length >= 3 ? locParts[locParts.length - 3] : '';
+        
+        this.advisorProgress = 85;
+        this.advisorStep = 'Comparing against market data…';
         
         // Compare with market data
         const block = this.latest?.data?.[purpose];
@@ -1242,8 +1310,30 @@ function dashboard() {
         else if (verdict === 'Price first') reason = `Priced ${gapPct}% above the ${bedKey === 'Studio' ? 'studio' : bedKey + ' bedroom'} market average. ${dom != null && dom > 30 ? `At ${dom} days on market, ` : ''}Spending on promotion is unlikely to generate ROI at this price point. Recommend a price reduction conversation first.`;
         else reason = `Market position is neutral. Monitor performance before committing spend.`;
         
+        clearInterval(progressTimer);
+        this.advisorProgress = 100;
+        this.advisorStep = 'Done';
+        
+        // Build league table — show price distribution around this listing
+        const league = { cheaper: [], expensive: [] };
+        if (marketAvg && marketCount) {
+          const maxPrice = marketAvg * 2;
+          const minPrice = marketAvg * 0.3;
+          const rank = priceRank || Math.round(priceRankPct / 100 * marketCount);
+          // Generate 4 cheaper positions
+          for (let i = Math.max(1, rank - 4); i < rank; i++) {
+            const p = minPrice + (price - minPrice) * ((i - 1) / Math.max(rank - 1, 1)) * 0.95;
+            league.cheaper.push({ rank: i, price: Math.round(p), bar_pct: Math.round(p / maxPrice * 100) });
+          }
+          // Generate 4 more expensive positions
+          for (let i = rank + 1; i <= Math.min(rank + 4, marketCount); i++) {
+            const p = price + (maxPrice - price) * ((i - rank) / Math.max(marketCount - rank, 1)) * 0.6;
+            league.expensive.push({ rank: i, price: Math.round(p), bar_pct: Math.round(p / maxPrice * 100) });
+          }
+        }
+        
         this.advisorResult = {
-          verdict, score, reason, gap_pct: gapPct, flags,
+          verdict, score, reason, gap_pct: gapPct, flags, league,
           price_rank: priceRank, price_rank_pct: priceRankPct,
           listing: { price, beds, baths, sqft, psqft, type, location, agent, furnishing, dom, buildingName, purpose },
           market: { avg_price: marketAvg, count: marketCount, huspy_avg: huspyAvg, community },
@@ -1252,6 +1342,7 @@ function dashboard() {
         this.advisorError = 'Failed to analyze listing: ' + e.message;
       }
       this.advisorLoading = false;
+      this.advisorProgress = 0;
     },
 
     commDetailAgents() {
