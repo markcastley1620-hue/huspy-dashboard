@@ -112,18 +112,28 @@ def transform_snapshot(snapshot: dict) -> dict:
             sub_community_data = {}
             for sc, sc_listings in sorted(sub_comms.items(), key=lambda x: -len(x[1])):
                 sc_prices = [l["price_num"] for l in sc_listings if l.get("price_num")]
-                # Bedroom breakdown per sub-community
-                sc_beds = defaultdict(int)
+                # Bedroom breakdown per sub-community with avg price
+                sc_beds = defaultdict(lambda: {"count": 0, "prices": []})
                 for l in sc_listings:
                     b = l.get("bedrooms")
                     if b is not None:
-                        sc_beds[str(b) if b > 0 else "Studio"] += 1
+                        key = str(b) if b > 0 else "Studio"
+                        sc_beds[key]["count"] += 1
+                        if l.get("price_num"):
+                            sc_beds[key]["prices"].append(l["price_num"])
+                beds_out = {}
+                for bk in sorted(sc_beds.keys()):
+                    bd = sc_beds[bk]
+                    beds_out[bk] = {
+                        "count": bd["count"],
+                        "avg_price": int(sum(bd["prices"]) / len(bd["prices"])) if bd["prices"] else None,
+                    }
                 sub_community_data[sc] = {
                     "count": len(sc_listings),
                     "avg_price": int(sum(sc_prices) / len(sc_prices)) if sc_prices else 0,
                     "share_pct": None,
                     "market_total": None,
-                    "beds": dict(sorted(sc_beds.items())),
+                    "beds": beds_out,
                 }
 
             # Property type breakdown
