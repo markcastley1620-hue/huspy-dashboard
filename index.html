@@ -273,13 +273,16 @@
 
       <div class="grid md:grid-cols-2 gap-4">
         <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commDetailBeds().length">
-          <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Bedrooms</div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="text-[11px] font-semibold text-muted uppercase tracking-wider">Bedrooms</div>
+            <button x-show="selectedBed != null" @click="selectedBed = null" class="text-[10px] text-accent font-medium hover:underline">Clear filter</button>
+          </div>
           <div class="space-y-2">
             <template x-for="b in commDetailBeds()" :key="b.label">
-              <div class="flex items-center gap-3 text-[12px]">
-                <span class="w-14 text-right text-muted font-medium" x-text="b.label"></span>
+              <div class="flex items-center gap-3 text-[12px] cursor-pointer rounded-lg px-1 py-0.5 transition-colors" :class="selectedBed === b.key ? 'bg-accent/5 ring-1 ring-accent/20' : 'hover:bg-gray-50'" @click="toggleBedFilter(b.key)">
+                <span class="w-14 text-right font-medium" :class="selectedBed === b.key ? 'text-accent' : 'text-muted'" x-text="b.label"></span>
                 <div class="flex-1 bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                  <div class="bg-accent h-full rounded-full bar-anim" :style="'width:' + b.pct + '%'"></div>
+                  <div class="h-full rounded-full bar-anim" :class="selectedBed === b.key ? 'bg-accent' : 'bg-accent/60'" :style="'width:' + b.pct + '%'"></div>
                 </div>
                 <span class="w-8 text-right font-semibold text-heading" x-text="b.count"></span>
               </div>
@@ -345,7 +348,7 @@
                 <td class="px-3 py-2.5">
                   <div class="flex gap-1 flex-wrap">
                     <template x-for="b in s.bedBadges" :key="b.label">
-                      <span class="inline-flex rounded-md bg-blue-50 text-blue-600 px-1.5 py-0.5 text-[10px] font-medium" x-text="b.label + ' ' + b.count"></span>
+                      <span @click.stop="toggleBedFilter(b.key)" class="inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-medium cursor-pointer transition-colors" :class="selectedBed === b.key ? 'bg-accent text-white' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'" x-text="b.label + ' ' + b.count"></span>
                     </template>
                   </div>
                 </td>
@@ -464,6 +467,7 @@ function dashboard() {
     latest: null,
     previous: null,
     selectedCommunity: null,
+    selectedBed: null,
     search: '',
     minMarket: 0,
     onlyWithListings: false,
@@ -575,7 +579,8 @@ function dashboard() {
       const max = Math.max(h, m, 1);
       return which === 'huspy' ? (h / max * 100) : (m / max * 100);
     },
-    selectCommunity(name) { this.selectedCommunity = name; this.view = 'community-detail'; window.scrollTo(0, 0); },
+    selectCommunity(name) { this.selectedCommunity = name; this.selectedBed = null; this.view = 'community-detail'; window.scrollTo(0, 0); },
+    toggleBedFilter(bed) { this.selectedBed = this.selectedBed === bed ? null : bed; },
     commNode() { return this.block()?.by_community?.[this.selectedCommunity] || {}; },
     commDetailStats() {
       const n = this.commNode();
@@ -604,7 +609,7 @@ function dashboard() {
       const beds = this.commNode()?.beds || {};
       const entries = Object.entries(beds).sort((a, b) => b[1] - a[1]);
       const max = Math.max(...entries.map(([,n]) => n), 1);
-      return entries.map(([b, n]) => ({ label: b==='0'||b==='Studio' ? 'Studio' : b+' BR', count: n, pct: n/max*100 }));
+      return entries.map(([b, n]) => ({ key: b, label: b==='0'||b==='Studio' ? 'Studio' : b+' BR', count: n, pct: n/max*100 }));
     },
     commDetailBands() {
       const bands = this.commNode()?.price_bands || {};
@@ -614,17 +619,19 @@ function dashboard() {
     },
     commDetailSubs() {
       const subs = this.commNode()?.sub_communities || {};
-      // Enrich with bedroom data from raw listings
-      const listings = this.latest?.data?.listings_by_sub?.[this.selectedCommunity] || {};
-      return Object.entries(subs).map(([name, s]) => {
-        // Get bed counts from the sub-community node if available, else from listings
-        const beds = s.beds || listings[name]?.beds || {};
+      let rows = Object.entries(subs).map(([name, s]) => {
+        const beds = s.beds || {};
         const bedBadges = Object.entries(beds)
           .sort((a, b) => b[1] - a[1])
-          .slice(0, 3)
-          .map(([b, n]) => ({ label: b === '0' || b === 'Studio' ? 'Stu' : b + 'BR', count: n }));
-        return { name, count: s.count||0, avg_price: s.avg_price, bedBadges };
+          .slice(0, 4)
+          .map(([b, n]) => ({ key: b, label: b === '0' || b === 'Studio' ? 'Stu' : b + 'BR', count: n }));
+        return { name, count: s.count||0, avg_price: s.avg_price, bedBadges, beds };
       }).sort((a,b) => b.count - a.count);
+      // Filter by selected bedroom
+      if (this.selectedBed != null) {
+        rows = rows.filter(r => r.beds[this.selectedBed] > 0);
+      }
+      return rows;
     },
     commDetailAgents() { return (this.commNode()?.agents || []).slice(0, 20); },
   };
