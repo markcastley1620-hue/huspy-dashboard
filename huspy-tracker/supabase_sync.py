@@ -76,7 +76,7 @@ def transform_snapshot(snapshot: dict) -> dict:
             # Agents breakdown
             agent_counts = defaultdict(int)
             for l in comm_listings:
-                a = l.get("agent") or "Unattributed"
+                a = l.get("agent") or l.get("agent_name") or "Unattributed"
                 agent_counts[a] += 1
 
             agents = []
@@ -108,11 +108,18 @@ def transform_snapshot(snapshot: dict) -> dict:
             sub_community_data = {}
             for sc, sc_listings in sorted(sub_comms.items(), key=lambda x: -len(x[1])):
                 sc_prices = [l["price_num"] for l in sc_listings if l.get("price_num")]
+                # Bedroom breakdown per sub-community
+                sc_beds = defaultdict(int)
+                for l in sc_listings:
+                    b = l.get("bedrooms")
+                    if b is not None:
+                        sc_beds[str(b) if b > 0 else "Studio"] += 1
                 sub_community_data[sc] = {
                     "count": len(sc_listings),
                     "avg_price": int(sum(sc_prices) / len(sc_prices)) if sc_prices else 0,
                     "share_pct": None,
                     "market_total": None,
+                    "beds": dict(sorted(sc_beds.items())),
                 }
 
             # Property type breakdown
