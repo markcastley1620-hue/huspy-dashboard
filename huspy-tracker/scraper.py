@@ -101,7 +101,6 @@ def parse_listing_card(card) -> dict | None:
     # Known community overrides — some 5-part locations need the parent
     COMMUNITY_OVERRIDES = {
         'Kingdom of Sheba': 'Palm Jumeirah',
-        'Jumeirah Islands': 'Palm Jumeirah',
         'Old Town': 'Downtown Dubai',
         'Opera District': 'Downtown Dubai',
         'Golf Town': 'DAMAC Hills',
