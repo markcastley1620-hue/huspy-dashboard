@@ -346,6 +346,7 @@
               <th class="text-right px-3 py-2.5 font-semibold" x-text="selectedBed != null ? (selectedBed === '0' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Huspy avg'"></th>
               <th class="text-right px-3 py-2.5 font-semibold">Market avg</th>
               <th class="text-right px-3 py-2.5 font-semibold">Market</th>
+              <th class="text-right px-3 py-2.5 font-semibold">Diff</th>
               <th class="text-right px-5 py-2.5 font-semibold">Share</th>
             </tr>
           </thead>
@@ -364,6 +365,15 @@
                 <td class="px-3 py-2.5 text-right text-heading font-medium" x-text="fmtAed(s.avg_price)"></td>
                 <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(s.market_avg_price)"></td>
                 <td class="px-3 py-2.5 text-right text-muted" x-text="s.market_count != null ? fmt(s.market_count) : '—'"></td>
+                <td class="px-3 py-2.5 text-right text-[11px]">
+                  <template x-if="s.avg_price && s.market_avg_price">
+                    <div>
+                      <span :class="s.avg_price > s.market_avg_price ? 'text-down' : 'text-up'" class="font-semibold" x-text="((s.avg_price - s.market_avg_price) > 0 ? '+' : '') + fmtAed(s.avg_price - s.market_avg_price)"></span>
+                      <span class="text-muted ml-1" x-text="'(' + ((s.avg_price - s.market_avg_price) > 0 ? '+' : '') + ((s.avg_price - s.market_avg_price) / s.market_avg_price * 100).toFixed(1) + '%)'" ></span>
+                    </div>
+                  </template>
+                  <template x-if="!s.avg_price || !s.market_avg_price"><span class="text-muted">—</span></template>
+                </td>
                 <td class="px-5 py-2.5 text-right font-semibold" x-text="s.market_count ? (s.count / s.market_count * 100).toFixed(2) + '%' : '—'"></td>
               </tr>
             </template>
