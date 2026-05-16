@@ -276,7 +276,7 @@
           <div class="flex items-center justify-between mb-4">
             <div class="text-[11px] font-semibold text-muted uppercase tracking-wider">Bedrooms</div>
             <div class="flex items-center gap-3">
-              <span class="text-[10px] text-muted">Huspy avg · <span class="text-muted-2">Market avg (all beds)</span></span>
+              <span class="text-[10px] text-muted">Huspy avg · <span class="text-muted-2">Market avg</span></span>
               <button x-show="selectedBed != null" @click="selectedBed = null" class="text-[10px] text-accent font-medium hover:underline">Clear filter</button>
             </div>
           </div>
@@ -289,7 +289,7 @@
                 </div>
                 <span class="w-8 text-right font-semibold text-heading" x-text="b.count"></span>
                 <span class="w-16 text-right text-heading text-[11px] font-medium" x-text="fmtAed(b.avg_price)"></span>
-                <span class="w-16 text-right text-muted text-[11px]" x-text="fmtAed(commNode()?.market_avg_price)"></span>
+                <span class="w-16 text-right text-muted text-[11px]" x-text="fmtAed(b.market_avg_price)"></span>
               </div>
             </template>
           </div>
@@ -311,7 +311,7 @@
       </div>
 
       <!-- Pricing comparison -->
-      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commNode()?.avg_price || commNode()?.market_avg_price">
+      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commAvgPrice() || commMarketAvgPrice()">
         <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Price comparison</div>
         <div class="grid grid-cols-2 gap-6">
           <div>
@@ -322,15 +322,15 @@
             </div>
           </div>
           <div>
-            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold mb-1" x-text="selectedBed != null ? 'Market avg (all beds)' : 'Market avg'"></div>
-            <div class="text-[24px] font-bold text-muted" x-text="fmtAed(commNode()?.market_avg_price)"></div>
+            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold mb-1" x-text="selectedBed != null ? 'Market ' + (selectedBed === '0' || selectedBed === 'Studio' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Market avg'"></div>
+            <div class="text-[24px] font-bold text-muted" x-text="fmtAed(commMarketAvgPrice())"></div>
             <div class="mt-2 h-3 rounded-full overflow-hidden bg-gray-100">
               <div class="h-full rounded-full bg-gray-400 bar-anim" :style="'width:' + priceBarPct('market') + '%'"></div>
             </div>
           </div>
         </div>
-        <div class="mt-3 text-[11px] font-medium" :class="commAvgPrice() > (commNode()?.market_avg_price || 0) ? 'text-down' : 'text-up'" x-show="commNode()?.market_avg_price">
-          <span x-text="(() => { const h = commAvgPrice(), m = commNode()?.market_avg_price || 1, pct = Math.abs((h-m)/m*100).toFixed(1), lbl = selectedBed != null ? 'Huspy '+(selectedBed==='0'?'Studio':selectedBed+' BR') : 'Huspy'; const mktLbl = selectedBed != null ? ' (market avg is all beds)' : ''; return lbl+' priced '+pct+'% '+(h>m?'above':'below')+' market average'+mktLbl; })()"></span>
+        <div class="mt-3 text-[11px] font-medium" :class="commAvgPrice() > commMarketAvgPrice() ? 'text-down' : 'text-up'" x-show="commMarketAvgPrice()">
+          <span x-text="(() => { const h = commAvgPrice(), m = commMarketAvgPrice() || 1, pct = Math.abs((h-m)/m*100).toFixed(1), bedLbl = selectedBed != null ? (selectedBed==='0'?'Studio':selectedBed+' BR')+' ' : ''; return 'Huspy '+bedLbl+'priced '+pct+'% '+(h>m?'above':'below')+' market '+bedLbl+'average'; })()"></span>
         </div>
       </div>
 
@@ -662,9 +662,17 @@ function dashboard() {
       }
       return n?.avg_price || 0;
     },
+    commMarketAvgPrice() {
+      const n = this.commNode();
+      const bed = this.selectedBed;
+      if (bed != null && n?.beds?.[bed] && typeof n.beds[bed] === 'object' && n.beds[bed].market_avg_price != null) {
+        return n.beds[bed].market_avg_price;
+      }
+      return n?.market_avg_price || 0;
+    },
     priceBarPct(which) {
       const h = this.commAvgPrice();
-      const m = this.commNode()?.market_avg_price || 0;
+      const m = this.commMarketAvgPrice();
       const max = Math.max(h, m, 1);
       return which === 'huspy' ? (h / max * 100) : (m / max * 100);
     },
@@ -732,16 +740,20 @@ function dashboard() {
         const bedLabel = bed === '0' || bed === 'Studio' ? 'Studio' : bed + ' BR';
         label = 'Huspy ' + bedLabel + ' avg';
       }
-      const mktLabel = bed != null ? 'Market avg (all beds)' : 'Market avg price';
+      const mktAvg = this.commMarketAvgPrice();
+      const bedLabel2 = bed != null ? (bed === '0' || bed === 'Studio' ? 'Studio' : bed + ' BR') : null;
+      const mktLabel = bedLabel2 ? 'Market ' + bedLabel2 + ' avg' : 'Market avg price';
+      const huspyCount = bed != null && n.beds?.[bed] ? (typeof n.beds[bed] === 'object' ? n.beds[bed].count : n.beds[bed]) : n.count;
+      const mktCount = bed != null && n.beds?.[bed] && typeof n.beds[bed] === 'object' ? n.beds[bed].market_count : n.market_total;
       const stats = [
-        { label: 'Huspy listings', value: this.fmt(bed != null && n.beds?.[bed] ? (typeof n.beds[bed] === 'object' ? n.beds[bed].count : n.beds[bed]) : n.count) },
-        { label: 'Market listings', value: n.market_total != null ? this.fmt(n.market_total) : '—' },
-        { label: 'Market share', value: n.share_pct != null ? n.share_pct.toFixed(2) + '%' : '—' },
+        { label: 'Huspy listings', value: this.fmt(huspyCount) },
+        { label: bedLabel2 ? 'Market ' + bedLabel2 + ' listings' : 'Market listings', value: mktCount != null ? this.fmt(mktCount) : '—' },
+        { label: 'Market share', value: mktCount ? ((huspyCount / mktCount) * 100).toFixed(2) + '%' : (n.share_pct != null ? n.share_pct.toFixed(2) + '%' : '—') },
         { label: label, value: this.fmtAed(avgPrice) },
-        { label: mktLabel, value: this.fmtAed(n.market_avg_price) },
+        { label: mktLabel, value: this.fmtAed(mktAvg) },
       ];
-      if (avgPrice && n.market_avg_price) {
-        const v = ((avgPrice - n.market_avg_price) / n.market_avg_price) * 100;
+      if (avgPrice && mktAvg) {
+        const v = ((avgPrice - mktAvg) / mktAvg) * 100;
         stats.push({ label: 'Price position', value: (v > 0 ? '+' : '') + v.toFixed(1) + '%', sub: v > 0 ? 'above market' : v < 0 ? 'below market' : 'at market', subColor: v > 0 ? 'text-down' : v < 0 ? 'text-up' : 'text-muted' });
       } else if (n.price_vs_market_pct != null && bed == null) {
         const v = n.price_vs_market_pct;
@@ -762,10 +774,11 @@ function dashboard() {
       const entries = Object.entries(beds).map(([b, v]) => {
         const count = typeof v === 'object' ? v.count : v;
         const avg = typeof v === 'object' ? v.avg_price : null;
-        return [b, count, avg];
+        const mktAvg = typeof v === 'object' ? v.market_avg_price : null;
+        return [b, count, avg, mktAvg];
       }).sort((a, b) => b[1] - a[1]);
       const max = Math.max(...entries.map(([,n]) => n), 1);
-      return entries.map(([b, n, avg]) => ({ key: b, label: b==='0'||b==='Studio' ? 'Studio' : b+' BR', count: n, pct: n/max*100, avg_price: avg }));
+      return entries.map(([b, n, avg, mktAvg]) => ({ key: b, label: b==='0'||b==='Studio' ? 'Studio' : b+' BR', count: n, pct: n/max*100, avg_price: avg, market_avg_price: mktAvg }));
     },
     commDetailBands() {
       const bands = this.commNode()?.price_bands || {};
