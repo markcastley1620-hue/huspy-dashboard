@@ -276,7 +276,7 @@
           <div class="flex items-center justify-between mb-4">
             <div class="text-[11px] font-semibold text-muted uppercase tracking-wider">Bedrooms</div>
             <div class="flex items-center gap-3">
-              <span class="text-[10px] text-muted">Huspy · <span class="text-muted-2">Market</span></span>
+              <span class="text-[10px] text-muted">Huspy avg · <span class="text-muted-2">Market avg (all beds)</span></span>
               <button x-show="selectedBed != null" @click="selectedBed = null" class="text-[10px] text-accent font-medium hover:underline">Clear filter</button>
             </div>
           </div>
@@ -315,14 +315,14 @@
         <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Price comparison</div>
         <div class="grid grid-cols-2 gap-6">
           <div>
-            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold mb-1" x-text="selectedBed != null ? (selectedBed === '0' || selectedBed === 'Studio' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Huspy avg'"></div>
+            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold mb-1" x-text="selectedBed != null ? 'Huspy ' + (selectedBed === '0' || selectedBed === 'Studio' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Huspy avg'"></div>
             <div class="text-[24px] font-bold text-heading" x-text="fmtAed(commAvgPrice())"></div>
             <div class="mt-2 h-3 rounded-full overflow-hidden bg-gray-100">
               <div class="h-full rounded-full bg-accent bar-anim" :style="'width:' + priceBarPct('huspy') + '%'"></div>
             </div>
           </div>
           <div>
-            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold mb-1">Market avg</div>
+            <div class="text-[10px] uppercase tracking-wider text-muted font-semibold mb-1" x-text="selectedBed != null ? 'Market avg (all beds)' : 'Market avg'"></div>
             <div class="text-[24px] font-bold text-muted" x-text="fmtAed(commNode()?.market_avg_price)"></div>
             <div class="mt-2 h-3 rounded-full overflow-hidden bg-gray-100">
               <div class="h-full rounded-full bg-gray-400 bar-anim" :style="'width:' + priceBarPct('market') + '%'"></div>
@@ -330,7 +330,7 @@
           </div>
         </div>
         <div class="mt-3 text-[11px] font-medium" :class="commAvgPrice() > (commNode()?.market_avg_price || 0) ? 'text-down' : 'text-up'" x-show="commNode()?.market_avg_price">
-          <span x-text="(() => { const h = commAvgPrice(), m = commNode()?.market_avg_price || 1, pct = Math.abs((h-m)/m*100).toFixed(1), lbl = selectedBed != null ? (selectedBed==='0'?'Studio':selectedBed+' BR')+' listings' : 'Huspy'; return lbl+' priced '+pct+'% '+(h>m?'above':'below')+' market average'; })()"></span>
+          <span x-text="(() => { const h = commAvgPrice(), m = commNode()?.market_avg_price || 1, pct = Math.abs((h-m)/m*100).toFixed(1), lbl = selectedBed != null ? 'Huspy '+(selectedBed==='0'?'Studio':selectedBed+' BR') : 'Huspy'; const mktLbl = selectedBed != null ? ' (market avg is all beds)' : ''; return lbl+' priced '+pct+'% '+(h>m?'above':'below')+' market average'+mktLbl; })()"></span>
         </div>
       </div>
 
@@ -730,14 +730,15 @@ function dashboard() {
           avgPrice = n.avg_price; // fallback
         }
         const bedLabel = bed === '0' || bed === 'Studio' ? 'Studio' : bed + ' BR';
-        label = bedLabel + ' avg price';
+        label = 'Huspy ' + bedLabel + ' avg';
       }
+      const mktLabel = bed != null ? 'Market avg (all beds)' : 'Market avg price';
       const stats = [
         { label: 'Huspy listings', value: this.fmt(bed != null && n.beds?.[bed] ? (typeof n.beds[bed] === 'object' ? n.beds[bed].count : n.beds[bed]) : n.count) },
         { label: 'Market listings', value: n.market_total != null ? this.fmt(n.market_total) : '—' },
         { label: 'Market share', value: n.share_pct != null ? n.share_pct.toFixed(2) + '%' : '—' },
         { label: label, value: this.fmtAed(avgPrice) },
-        { label: 'Market avg price', value: this.fmtAed(n.market_avg_price) },
+        { label: mktLabel, value: this.fmtAed(n.market_avg_price) },
       ];
       if (avgPrice && n.market_avg_price) {
         const v = ((avgPrice - n.market_avg_price) / n.market_avg_price) * 100;
