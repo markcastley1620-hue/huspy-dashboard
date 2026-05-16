@@ -369,13 +369,27 @@
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Agent leaderboard</div>
         <table class="w-full text-[12px]">
           <thead class="text-muted bg-gray-50">
-            <tr class="border-b border-border"><th class="text-left px-5 py-2.5 font-semibold">Agent</th><th class="text-right px-3 py-2.5 font-semibold">Listings</th><th class="text-right px-5 py-2.5 font-semibold">Share</th></tr>
+            <tr class="border-b border-border">
+              <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
+              <th class="text-left px-3 py-2.5 font-semibold">Bedrooms</th>
+              <th class="text-right px-3 py-2.5 font-semibold">Listings</th>
+              <th class="text-right px-3 py-2.5 font-semibold" x-text="selectedBed != null ? (selectedBed === '0' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Avg price'"></th>
+              <th class="text-right px-5 py-2.5 font-semibold">Share</th>
+            </tr>
           </thead>
           <tbody>
             <template x-for="a in commDetailAgents()" :key="a.name">
               <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
                 <td class="px-5 py-2.5 font-medium" x-text="a.name"></td>
-                <td class="px-3 py-2.5 text-right" x-text="a.count"></td>
+                <td class="px-3 py-2.5">
+                  <div class="flex gap-1 flex-wrap">
+                    <template x-for="b in a.bedBadges" :key="b.label">
+                      <span @click.stop="toggleBedFilter(b.key)" class="inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-medium cursor-pointer transition-colors" :class="selectedBed === b.key ? 'bg-accent text-white' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'" x-text="b.label + ' ' + b.count"></span>
+                    </template>
+                  </div>
+                </td>
+                <td class="px-3 py-2.5 text-right font-semibold" x-text="a.count"></td>
+                <td class="px-3 py-2.5 text-right text-heading font-medium" x-text="fmtAed(a.avg_price)"></td>
                 <td class="px-5 py-2.5 text-right text-muted" x-text="a.share_pct != null ? a.share_pct.toFixed(1) + '%' : '—'"></td>
               </tr>
             </template>
@@ -691,7 +705,29 @@ function dashboard() {
       }
       return rows;
     },
-    commDetailAgents() { return (this.commNode()?.agents || []).slice(0, 20); },
+    commDetailAgents() {
+      const agents = this.commNode()?.agents || [];
+      const bed = this.selectedBed;
+      return agents.slice(0, 20).map(a => {
+        const beds = a.beds || {};
+        const bedBadges = Object.entries(beds)
+          .sort((x, y) => (typeof y[1]==='object'?y[1].count:y[1]) - (typeof x[1]==='object'?x[1].count:x[1]))
+          .slice(0, 4)
+          .map(([b, v]) => ({ key: b, label: b==='0'||b==='Studio'?'Stu':b+'BR', count: typeof v==='object'?v.count:v }));
+        let avgPrice = a.avg_price;
+        let count = a.count;
+        if (bed != null && beds[bed] && typeof beds[bed] === 'object') {
+          avgPrice = beds[bed].avg_price ?? a.avg_price;
+          count = beds[bed].count ?? a.count;
+        }
+        return { ...a, avg_price: avgPrice, count, bedBadges };
+      }).filter(a => {
+        if (bed == null) return true;
+        const bd = (a.beds || {})[bed];
+        const c = typeof bd === 'object' ? bd?.count : bd;
+        return c > 0;
+      }).sort((a, b) => b.count - a.count);
+    },
   };
 }
 </script>
