@@ -80,8 +80,13 @@ def parse_listing_card(card) -> dict | None:
     loc_parts = [p.strip() for p in location_text.split(",") if p.strip()]
 
     tower = sub_community = community = city = None
+    # City is always last. Community is second-to-last.
+    # Everything before that is tower/sub-community detail.
     if len(loc_parts) >= 4:
-        tower, sub_community, community, city = loc_parts[0], loc_parts[1], loc_parts[2], loc_parts[3]
+        city = loc_parts[-1]
+        community = loc_parts[-2]
+        sub_community = loc_parts[-3]
+        tower = loc_parts[0] if len(loc_parts) >= 5 else None
     elif len(loc_parts) == 3:
         sub_community, community, city = loc_parts[0], loc_parts[1], loc_parts[2]
     elif len(loc_parts) == 2:
