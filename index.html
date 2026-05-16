@@ -345,7 +345,8 @@
               <th class="text-right px-3 py-2.5 font-semibold">Listings</th>
               <th class="text-right px-3 py-2.5 font-semibold" x-text="selectedBed != null ? (selectedBed === '0' ? 'Studio' : selectedBed + ' BR') + ' avg' : 'Huspy avg'"></th>
               <th class="text-right px-3 py-2.5 font-semibold">Market avg</th>
-              <th class="text-right px-5 py-2.5 font-semibold">Market</th>
+              <th class="text-right px-3 py-2.5 font-semibold">Market</th>
+              <th class="text-right px-5 py-2.5 font-semibold">Share</th>
             </tr>
           </thead>
           <tbody>
@@ -362,7 +363,8 @@
                 <td class="px-3 py-2.5 text-right font-semibold" x-text="s.count"></td>
                 <td class="px-3 py-2.5 text-right text-heading font-medium" x-text="fmtAed(s.avg_price)"></td>
                 <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(s.market_avg_price)"></td>
-                <td class="px-5 py-2.5 text-right text-muted" x-text="s.market_count != null ? fmt(s.market_count) : '—'"></td>
+                <td class="px-3 py-2.5 text-right text-muted" x-text="s.market_count != null ? fmt(s.market_count) : '—'"></td>
+                <td class="px-5 py-2.5 text-right font-semibold" x-text="s.market_count ? (s.count / s.market_count * 100).toFixed(2) + '%' : '—'"></td>
               </tr>
             </template>
           </tbody>
