@@ -104,8 +104,20 @@ def parse_listing_card(card) -> dict | None:
         'Old Town': 'Downtown Dubai',
         'Opera District': 'Downtown Dubai',
         'Golf Town': 'DAMAC Hills',
+        'JVC District 10': 'Jumeirah Village Circle (JVC)',
+        'JVC District 11': 'Jumeirah Village Circle (JVC)',
+        'JVC District 12': 'Jumeirah Village Circle (JVC)',
+        'JVC District 13': 'Jumeirah Village Circle (JVC)',
+        'JVC District 14': 'Jumeirah Village Circle (JVC)',
+        'JVC District 15': 'Jumeirah Village Circle (JVC)',
+        'JVC District 16': 'Jumeirah Village Circle (JVC)',
+        'JVC District 18': 'Jumeirah Village Circle (JVC)',
     }
     if community in COMMUNITY_OVERRIDES:
+        # For JVC Districts: community becomes JVC, sub_community becomes the district
+        # tower stays as is (the actual building name)
+        if not tower:
+            tower = sub_community
         sub_community = community
         community = COMMUNITY_OVERRIDES[community]
 
