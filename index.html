@@ -276,7 +276,7 @@
           <div class="flex items-center justify-between mb-4">
             <div class="text-[11px] font-semibold text-muted uppercase tracking-wider">Bedrooms</div>
             <div class="flex items-center gap-3">
-              <span class="text-[10px] text-muted">Huspy avg · <span class="text-muted-2">Market avg</span></span>
+              <span class="text-[10px] text-muted">Huspy avg · <span class="text-muted-2">Peer med</span> · <span class="text-muted-2">Market avg</span></span>
               <button x-show="selectedBed != null" @click="selectedBed = null" class="text-[10px] text-accent font-medium hover:underline">Clear filter</button>
             </div>
           </div>
@@ -289,6 +289,7 @@
                 </div>
                 <span class="w-8 text-right font-semibold text-heading" x-text="b.count"></span>
                 <span class="w-16 text-right text-heading text-[11px] font-medium" x-text="fmtAed(b.avg_price)"></span>
+                <span class="w-16 text-right text-accent/70 text-[11px] font-medium" x-text="fmtAed(b.peer_median)"></span>
                 <span class="w-16 text-right text-muted text-[11px]" x-text="fmtAed(b.market_avg_price)"></span>
               </div>
             </template>
@@ -331,6 +332,48 @@
         </div>
         <div class="mt-3 text-[11px] font-medium" :class="commAvgPrice() > commMarketAvgPrice() ? 'text-down' : 'text-up'" x-show="commMarketAvgPrice()">
           <span x-text="(() => { const h = commAvgPrice(), m = commMarketAvgPrice() || 1, pct = Math.abs((h-m)/m*100).toFixed(1), bedLbl = selectedBed != null ? (selectedBed==='0'?'Studio':selectedBed+' BR')+' ' : ''; return 'Huspy '+bedLbl+'priced '+pct+'% '+(h>m?'above':'below')+' market '+bedLbl+'average'; })()"></span>
+        </div>
+      </div>
+
+      <!-- Share over time -->
+      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="commShareHistory().length > 1">
+        <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Share over time</div>
+        <div class="relative h-40">
+          <template x-if="commShareHistory().length > 1">
+            <div class="h-full flex items-end gap-1">
+              <template x-for="(pt, i) in commShareHistory()" :key="pt.date">
+                <div class="flex-1 flex flex-col items-center justify-end h-full">
+                  <div class="text-[10px] font-semibold text-heading mb-1" x-text="pt.share != null ? pt.share.toFixed(2) + '%' : '—'"></div>
+                  <div class="w-full rounded-t-md bar-anim" :class="i === commShareHistory().length - 1 ? 'bg-accent' : 'bg-accent/30'" :style="'height:' + (pt.barPct || 2) + '%'"></div>
+                  <div class="text-[9px] text-muted mt-1 whitespace-nowrap" x-text="pt.label"></div>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-border">
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Listings trend</div>
+            <div class="flex items-center gap-2 mt-1">
+              <template x-for="(pt, i) in commShareHistory()" :key="'l'+pt.date">
+                <span class="text-[11px] font-medium" :class="i === commShareHistory().length - 1 ? 'text-heading' : 'text-muted-2'" x-text="pt.count"></span>
+              </template>
+            </div>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Price trend</div>
+            <div class="flex items-center gap-2 mt-1">
+              <template x-for="(pt, i) in commShareHistory()" :key="'p'+pt.date">
+                <span class="text-[11px] font-medium" :class="i === commShareHistory().length - 1 ? 'text-heading' : 'text-muted-2'" x-text="fmtAed(pt.avg_price)"></span>
+              </template>
+            </div>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Δ share (first → last)</div>
+            <div class="mt-1" x-show="commShareHistory().length >= 2">
+              <span class="text-[13px] font-bold" :class="(commShareHistory().at(-1)?.share || 0) - (commShareHistory()[0]?.share || 0) >= 0 ? 'text-up' : 'text-down'" x-text="((d) => (d >= 0 ? '+' : '') + d.toFixed(2) + 'pp')((commShareHistory().at(-1)?.share || 0) - (commShareHistory()[0]?.share || 0))"></span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -465,30 +508,78 @@
 
     <!-- ==================== AGENTS ==================== -->
     <div x-show="!loading && view==='agents'" x-cloak class="space-y-6 fade-in">
-      <h1 class="text-[22px] font-bold tracking-tight text-heading">Agents</h1>
+      <div>
+        <h1 class="text-[22px] font-bold tracking-tight text-heading">Agents</h1>
+        <p class="text-[12px] text-muted mt-1" x-text="agentRows().length + ' agents  ·  ' + (latest?.snapshot_date || '')"></p>
+      </div>
+
+      <!-- Agent KPIs -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Total agents</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-heading" x-text="agentRows().length"></div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Top agent share</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-heading" x-text="agentRows().length ? agentRows()[0].share.toFixed(1) + '%' : '—'"></div>
+          <div class="text-[11px] text-muted mt-1" x-text="agentRows().length ? agentRows()[0].name : ''"></div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Multi-community</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-heading" x-text="agentRows().filter(a => a.communities > 1).length"></div>
+          <div class="text-[11px] text-muted mt-1">agents in 2+ areas</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Avg listings / agent</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-heading" x-text="agentRows().length ? (agentRows().reduce((s,a) => s + a.count, 0) / agentRows().length).toFixed(1) : '—'"></div>
+        </div>
+      </div>
+
+      <!-- Search + filters -->
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="relative flex-1 min-w-[200px] max-w-xs">
+          <input x-model="agentSearch" type="text" placeholder="Search agents…" class="w-full bg-white border border-border rounded-lg px-3 py-2 text-[12px] text-gray-900 placeholder-muted-2 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm">
+        </div>
+        <label class="flex items-center gap-1.5 text-[11px] text-muted cursor-pointer select-none">
+          <input type="checkbox" x-model="agentMultiComm" class="rounded border-gray-300 text-accent focus:ring-accent/20 w-3.5 h-3.5">
+          <span class="font-medium">Multi-community only</span>
+        </label>
+      </div>
+
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
         <table class="w-full text-[12px] mobile-cards">
-          <thead class="text-muted bg-gray-50/80 ">
+          <thead class="text-muted bg-gray-50/80">
             <tr class="border-b border-border">
               <th class="text-left px-5 py-3 font-semibold w-8">#</th>
-              <th class="text-left px-3 py-3 font-semibold">Agent</th>
-              <th class="text-right px-3 py-3 font-semibold">Listings</th>
-              <th class="text-right px-3 py-3 font-semibold">Avg price</th>
-              <th class="text-right px-5 py-3 font-semibold">Share</th>
+              <th class="text-left px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('name')">Agent <span x-show="agentSortCol==='name'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
+              <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('count')">Listings <span x-show="agentSortCol==='count'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
+              <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('communities')">Communities <span x-show="agentSortCol==='communities'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
+              <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('avg_price')">Avg price <span x-show="agentSortCol==='avg_price'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
+              <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('price_position')">vs Peer med <span x-show="agentSortCol==='price_position'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
+              <th class="text-right px-5 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('share')">Share <span x-show="agentSortCol==='share'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
             </tr>
           </thead>
           <tbody>
-            <template x-for="(a, i) in agentRows()" :key="a.name">
+            <template x-for="(a, i) in filteredAgentRows()" :key="a.name">
               <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50 cursor-pointer" @click="selectAgent(a.name)">
                 <td class="px-5 py-3 text-muted" data-label="#" x-text="i + 1"></td>
                 <td class="px-3 py-3 font-medium hover:text-accent transition-colors" data-label="Agent" x-text="a.name"></td>
                 <td class="px-3 py-3 text-right font-semibold" data-label="Listings" x-text="a.count"></td>
+                <td class="px-3 py-3 text-right text-muted" data-label="Communities" x-text="a.communities"></td>
                 <td class="px-3 py-3 text-right text-heading" data-label="Avg price" x-text="fmtAed(a.avg_price)"></td>
+                <td class="px-3 py-3 text-right" data-label="vs Peer med">
+                  <span x-show="a.price_position != null && a.price_position < 0" class="text-up font-semibold" x-text="a.price_position.toFixed(1) + '%'"></span>
+                  <span x-show="a.price_position != null && a.price_position > 0" class="text-down font-semibold" x-text="'+' + a.price_position.toFixed(1) + '%'"></span>
+                  <span x-show="a.price_position != null && a.price_position === 0" class="text-muted">0%</span>
+                  <span x-show="a.price_position == null" class="text-muted-2">—</span>
+                </td>
                 <td class="px-5 py-3 text-right text-muted" data-label="Share" x-text="a.share.toFixed(1) + '%'"></td>
               </tr>
             </template>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
 
@@ -921,10 +1012,15 @@ function dashboard() {
     view: 'overview',
     latest: null,
     previous: null,
+    allSnapshots: [],
     selectedCommunity: null,
     selectedAgent: null,
     selectedBed: null,
     oppTab: 'underpriced',
+    agentSearch: '',
+    agentMultiComm: false,
+    agentSortCol: 'count',
+    agentSortDir: 'desc',
     advisorUrl: '',
     advisorLoading: false,
     advisorResult: null,
@@ -941,8 +1037,9 @@ function dashboard() {
 
     async init() {
       const headers = { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` };
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/market_intel_snapshots?select=id,snapshot_date,generated_at,data&order=snapshot_date.desc&limit=2`, { headers });
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/market_intel_snapshots?select=id,snapshot_date,generated_at,data&order=snapshot_date.desc&limit=30`, { headers });
       const rows = await res.json();
+      this.allSnapshots = rows || [];
       this.latest = rows[0] || null;
       this.previous = rows[1] || null;
       this.loading = false;
@@ -1029,19 +1126,53 @@ function dashboard() {
     maxDelta() { const m = this.movers(); return Math.max(...[...m.up, ...m.down].map(r => Math.abs(r.delta)), 0.01); },
     agentRows() {
       const b = this.block(); if (!b) return [];
+      const peerMeds = this.latest?.data?.peer_medians?.[this.mode] || {};
       const merged = {};
-      for (const c of Object.values(b.by_community || {}))
+      for (const [cName, c] of Object.entries(b.by_community || {}))
         for (const a of (c.agents || [])) {
           if (a.name === 'Unattributed') continue;
-          if (!merged[a.name]) merged[a.name] = { name: a.name, count: 0, prices: [] };
+          if (!merged[a.name]) merged[a.name] = { name: a.name, count: 0, prices: [], comms: new Set(), peerComps: [] };
           merged[a.name].count += a.count;
+          merged[a.name].comms.add(cName);
           if (a.avg_price) merged[a.name].prices.push({ avg: a.avg_price, n: a.count });
+          const commMeds = peerMeds[cName] || {};
+          for (const [bedKey, bedData] of Object.entries(a.beds || {})) {
+            const bk = bedKey === '0' ? 'Studio' : bedKey;
+            const bedCount = typeof bedData === 'object' ? bedData.count : bedData;
+            const bedAvg = typeof bedData === 'object' ? bedData.avg_price : null;
+            if (bedAvg && commMeds[bk]?.median) {
+              merged[a.name].peerComps.push({ agentAvg: bedAvg, peerMed: commMeds[bk].median, n: bedCount });
+            }
+          }
         }
       const total = b.total || 1;
       return Object.values(merged).map(a => {
         const wavg = a.prices.length ? a.prices.reduce((s, p) => s + p.avg * p.n, 0) / a.prices.reduce((s, p) => s + p.n, 0) : null;
-        return { name: a.name, count: a.count, share: a.count / total * 100, avg_price: wavg };
+        let pricePos = null;
+        if (a.peerComps.length) {
+          const totalN = a.peerComps.reduce((s, c) => s + c.n, 0);
+          pricePos = a.peerComps.reduce((s, c) => s + ((c.agentAvg - c.peerMed) / c.peerMed * 100) * c.n, 0) / totalN;
+          pricePos = Math.round(pricePos * 10) / 10;
+        }
+        return { name: a.name, count: a.count, communities: a.comms.size, share: a.count / total * 100, avg_price: wavg, price_position: pricePos };
       }).sort((a, b) => b.count - a.count);
+    },
+    filteredAgentRows() {
+      let rows = this.agentRows();
+      if (this.agentSearch) { const q = this.agentSearch.toLowerCase(); rows = rows.filter(r => r.name.toLowerCase().includes(q)); }
+      if (this.agentMultiComm) rows = rows.filter(r => r.communities > 1);
+      const col = this.agentSortCol, dir = this.agentSortDir === 'asc' ? 1 : -1;
+      rows.sort((a, b) => {
+        if (col === 'name') return dir * (a.name || '').localeCompare(b.name || '');
+        let av = a[col], bv = b[col];
+        if (av == null) return 1; if (bv == null) return -1;
+        return dir * (av - bv);
+      });
+      return rows;
+    },
+    toggleAgentSort(col) {
+      if (this.agentSortCol === col) this.agentSortDir = this.agentSortDir === 'desc' ? 'asc' : 'desc';
+      else { this.agentSortCol = col; this.agentSortDir = 'desc'; }
     },
     commAvgPrice() {
       const n = this.commNode();
@@ -1160,20 +1291,41 @@ function dashboard() {
     },
     commDetailBeds() {
       const beds = this.commNode()?.beds || {};
+      const peerMeds = this.latest?.data?.peer_medians?.[this.mode]?.[this.selectedCommunity] || {};
       const entries = Object.entries(beds).map(([b, v]) => {
         const count = typeof v === 'object' ? v.count : v;
         const avg = typeof v === 'object' ? v.avg_price : null;
         const mktAvg = typeof v === 'object' ? v.market_avg_price : null;
-        return [b, count, avg, mktAvg];
+        const bk = b === '0' ? 'Studio' : b;
+        const peerMed = peerMeds[bk]?.median || null;
+        return [b, count, avg, mktAvg, peerMed];
       }).sort((a, b) => b[1] - a[1]);
       const max = Math.max(...entries.map(([,n]) => n), 1);
-      return entries.map(([b, n, avg, mktAvg]) => ({ key: b, label: b==='0'||b==='Studio' ? 'Studio' : b+' BR', count: n, pct: n/max*100, avg_price: avg, market_avg_price: mktAvg }));
+      return entries.map(([b, n, avg, mktAvg, peerMed]) => ({ key: b, label: b==='0'||b==='Studio' ? 'Studio' : b+' BR', count: n, pct: n/max*100, avg_price: avg, market_avg_price: mktAvg, peer_median: peerMed }));
     },
     commDetailBands() {
       const bands = this.commNode()?.price_bands || {};
       const entries = Object.entries(bands);
       const max = Math.max(...entries.map(([,n]) => n), 1);
       return entries.map(([b, n]) => ({ label: b, count: n, pct: n/max*100 }));
+    },
+    commShareHistory() {
+      if (!this.selectedCommunity || !this.allSnapshots?.length) return [];
+      const pts = [];
+      // Reverse so oldest first
+      const snaps = [...this.allSnapshots].reverse();
+      for (const snap of snaps) {
+        const comm = snap.data?.[this.mode]?.by_community?.[this.selectedCommunity];
+        if (!comm) continue;
+        const share = comm.share_pct ?? null;
+        const count = comm.count || 0;
+        const avg = comm.avg_price || null;
+        pts.push({ date: snap.snapshot_date, label: snap.snapshot_date.slice(5), share, count, avg_price: avg });
+      }
+      // Compute bar heights relative to max share
+      const maxShare = Math.max(...pts.map(p => p.share || 0), 0.01);
+      for (const p of pts) p.barPct = p.share != null ? Math.max(p.share / maxShare * 85, 2) : 2;
+      return pts;
     },
     commDetailSubs() {
       const subs = this.commNode()?.sub_communities || {};
