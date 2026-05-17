@@ -144,6 +144,8 @@ SUB_TO_PARENT = {
 def scrape_community_market(community: str, slug: str, purpose: str, pages: int = 2) -> dict:
     """Scrape market data for a community. purpose = 'for-sale' or 'for-rent'."""
     all_prices = []
+    all_by_bed = {}
+    all_by_bed_type = {}
     total_market = 0
 
     for page in range(1, pages + 1):
@@ -172,21 +174,65 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
                 if m:
                     total_market = int(m.group(1).replace(",", ""))
 
-            # Get prices from listing cards
+            # Get prices, beds, and type from listing cards
             for card in soup.find_all(attrs={"aria-label": "Listing"}):
                 price_el = card.find(attrs={"aria-label": "Price"})
-                if price_el:
-                    p = price_el.get_text(strip=True).replace(",", "")
-                    try:
-                        all_prices.append(int(p))
-                    except ValueError:
-                        pass
+                if not price_el:
+                    continue
+                p = price_el.get_text(strip=True).replace(",", "")
+                try:
+                    price_val = int(p)
+                except ValueError:
+                    continue
+                all_prices.append(price_val)
+
+                # Extract beds
+                beds_el = card.find(attrs={"aria-label": "Beds"})
+                beds_text = beds_el.get_text(strip=True) if beds_el else ""
+                beds = None
+                if "Studio" in beds_text:
+                    beds = 0
+                else:
+                    bm = re.search(r"(\d+)", beds_text)
+                    if bm:
+                        beds = int(bm.group(1))
+
+                # Extract type
+                type_el = card.find(attrs={"aria-label": "Type"})
+                ptype = type_el.get_text(strip=True) if type_el else None
+
+                if beds is not None:
+                    bed_key = str(beds) if beds > 0 else "Studio"
+                    all_by_bed.setdefault(bed_key, []).append(price_val)
+                    if ptype:
+                        all_by_bed_type.setdefault(f"{bed_key}|{ptype}", []).append(price_val)
 
         except Exception as e:
             print(f"    Error scraping {community} {purpose} p{page}: {e}")
 
+    from statistics import median as stat_median
     avg_price = int(sum(all_prices) / len(all_prices)) if all_prices else 0
     median_price = sorted(all_prices)[len(all_prices) // 2] if all_prices else 0
+
+    # Per-bed market medians
+    by_bed = {}
+    for bed_key, prices in all_by_bed.items():
+        by_bed[bed_key] = {
+            "count": len(prices),
+            "avg_price": int(sum(prices) / len(prices)),
+            "median_price": int(stat_median(prices)),
+            "min_price": min(prices),
+            "max_price": max(prices),
+        }
+
+    # Per-bed+type market medians
+    by_bed_type = {}
+    for bt_key, prices in all_by_bed_type.items():
+        by_bed_type[bt_key] = {
+            "count": len(prices),
+            "avg_price": int(sum(prices) / len(prices)),
+            "median_price": int(stat_median(prices)),
+        }
 
     return {
         "community": community,
@@ -197,6 +243,8 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
         "median_price": median_price,
         "min_price": min(all_prices) if all_prices else 0,
         "max_price": max(all_prices) if all_prices else 0,
+        "by_bed": by_bed,
+        "by_bed_type": by_bed_type,
     }
 
 

@@ -46,93 +46,106 @@ def get_price_band(price: int, purpose: str) -> str:
             return "15M+"
 
 
-def compute_opportunities(snapshot: dict) -> dict:
-    """Compute peer medians, deal scores, and opportunity lists per listing."""
+def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
+    """Compute deal scores using MARKET medians as the benchmark, not Huspy internals.
+
+    Priority for market comparison:
+    1. Market by_bed_type (community + bed + type) — tightest comp
+    2. Market by_bed (community + bed) — good comp
+    3. Market community-level avg — fallback
+    """
     from statistics import median as stat_median
     listings = snapshot.get("listings", [])
+    mkt = market_data or {}
 
-    # Build peer groups: community + purpose + bedrooms + type
-    # Primary: community + type (e.g. Arabian Ranches · Townhouse · 3BR)
-    # Fallback: community only (e.g. Arabian Ranches · 3BR) — mixes types
-    peer_groups_typed = defaultdict(list)   # (community, purpose, beds, type)
-    peer_groups_untyped = defaultdict(list) # (community, purpose, beds)
-    for l in listings:
-        if l.get('price_num') and l.get('community') and l.get('bedrooms') is not None:
-            peer_groups_untyped[(l['community'], l['purpose'], l['bedrooms'])].append(l)
-            if l.get('type'):
-                peer_groups_typed[(l['community'], l['purpose'], l['bedrooms'], l['type'])].append(l)
+    def get_market_benchmark(community, purpose, beds, ptype):
+        """Get market median/avg for a listing from market scraper data."""
+        comm_data = mkt.get(purpose, {}).get(community, {})
+        if not comm_data:
+            return None, None, None, None
 
-    # Sub-community peer groups (typed + untyped)
-    sub_peer_typed = defaultdict(list)
-    sub_peer_untyped = defaultdict(list)
-    for l in listings:
-        if l.get('price_num') and l.get('sub_community') and l.get('bedrooms') is not None:
-            sub_peer_untyped[(l['sub_community'], l['community'], l['purpose'], l['bedrooms'])].append(l)
-            if l.get('type'):
-                sub_peer_typed[(l['sub_community'], l['community'], l['purpose'], l['bedrooms'], l['type'])].append(l)
+        bed_key = str(beds) if beds > 0 else 'Studio'
+        bt_key = f"{bed_key}|{ptype}" if ptype else None
 
-    def score_listing(l, peers, peer_level):
-        """Score 0-100 for deal quality. Higher = better candidate for spend."""
-        prices = sorted([p['price_num'] for p in peers])
-        med = stat_median(prices)
-        avg = sum(prices) / len(prices)
+        # Try bed+type first (tightest comp, most reliable)
+        if bt_key and bt_key in comm_data.get('by_bed_type', {}):
+            bt = comm_data['by_bed_type'][bt_key]
+            if bt.get('count', 0) >= 2:
+                return bt.get('median_price'), bt.get('avg_price'), bt.get('count', 0), f"{community} · {ptype} · {bed_key} BR (market)"
+
+        # Try bed only — but only if the listing has no type, or the bed group
+        # isn't dominated by a different property type
+        if bed_key in comm_data.get('by_bed', {}):
+            bd = comm_data['by_bed'][bed_key]
+            if bd.get('count', 0) >= 3:
+                # Check if there's a type-specific group that covers most of the bed group
+                # If so, using the untyped group would be misleading for our listing's type
+                if ptype:
+                    # If a bed+type entry exists for a DIFFERENT type with most of the count,
+                    # the bed-only median is biased toward that other type — skip
+                    other_typed_counts = sum(
+                        v.get('count', 0)
+                        for k, v in comm_data.get('by_bed_type', {}).items()
+                        if k.startswith(f"{bed_key}|") and k != bt_key
+                    )
+                    if other_typed_counts >= bd['count'] * 0.6:
+                        return None, None, None, None
+                return bd.get('median_price'), bd.get('avg_price'), bd.get('count', 0), f"{community} · {bed_key} BR (market)"
+
+        return None, None, None, None
+
+    def score_listing(l, market_median, market_avg, market_count, peer_level):
+        """Score 0-100 based on market comparison. Higher = better deal."""
         price = l['price_num']
-        gap_pct = round((price - med) / med * 100, 1) if med else 0
-        rank = sum(1 for p in prices if p < price) + 1
-        rank_pctile = round((1 - (rank - 1) / len(prices)) * 100) if len(prices) else 50
-        promoted = sum(1 for p in peers if p.get('promo'))
+        gap_pct = round((price - market_median) / market_median * 100, 1) if market_median else 0
+        dom = l.get('dom')
 
         score = 50
-        # Price position (biggest weight)
-        if rank == 1 and len(prices) >= 3: score += 25
-        elif rank_pctile >= 80: score += 20
-        elif rank_pctile >= 60: score += 10
-        elif rank_pctile <= 30: score -= 15
-        # Gap from median
-        if gap_pct < 0: score += min(abs(gap_pct) * 0.8, 15)
-        if gap_pct > 10: score -= min(gap_pct * 0.8, 20)
-        # DOM
-        dom = l.get('dom')
+        # Price position vs market (biggest weight)
+        if gap_pct < -20: score += 25
+        elif gap_pct < -10: score += 18
+        elif gap_pct < -5: score += 10
+        elif gap_pct > 20: score -= 20
+        elif gap_pct > 10: score -= 12
+        elif gap_pct > 5: score -= 5
+        # DOM freshness
         if dom is not None:
-            if dom < 7: score += 12
-            elif dom < 21: score += 6
-            if dom > 30: score -= 10
-            if dom > 60: score -= 15
-        # Peer set quality
-        if len(prices) >= 10: score += 3
-        if len(prices) < 3: score -= 8
-        # Competition
-        if promoted == 0 and len(prices) >= 3: score += 5
+            if dom < 7: score += 10
+            elif dom < 21: score += 5
+            if dom > 30: score -= 8
+            if dom > 60: score -= 12
+        # Market data confidence
+        if market_count and market_count >= 10: score += 5
+        elif market_count and market_count >= 5: score += 2
+        elif market_count and market_count < 3: score -= 10
 
         score = max(0, min(100, round(score)))
 
         # Verdict
         verdict = 'Monitor'
-        if score >= 65: verdict = 'Signature'
-        elif score >= 50: verdict = 'Hot'
-        elif gap_pct > 10 and (dom or 0) > 14: verdict = 'Price first'
-        if dom and dom > 45 and gap_pct > 5: verdict = 'Price first'
-        if gap_pct > 20: verdict = 'Price first'
+        if gap_pct < -10 and score >= 60: verdict = 'Signature'
+        elif gap_pct < -5 and score >= 50: verdict = 'Hot'
+        elif gap_pct > 15: verdict = 'Overpriced'
+        elif gap_pct > 5 and (dom or 0) > 21: verdict = 'Price review'
+        if dom and dom > 45 and gap_pct > 5: verdict = 'Price review'
 
         return {
             'listing_id': l.get('listing_id'),
             'url': l.get('url'),
-            'agent': l.get('agent') or 'Unknown',
+            'agent': l.get('agent') or None,
             'community': l.get('community'),
             'sub_community': l.get('sub_community'),
             'beds': l.get('bedrooms'),
             'type': l.get('type'),
             'price': l['price_num'],
             'title': l.get('title', ''),
-            'peer_median': int(med),
-            'market_avg': int(avg),
-            'market_count': len(prices),
+            'market_median': int(market_median) if market_median else None,
+            'market_avg': int(market_avg) if market_avg else None,
+            'market_count': market_count or 0,
             'peer_level': peer_level,
             'gap_pct': gap_pct,
-            'rank': rank,
             'dom': dom,
             'promo': l.get('promo'),
-            'promoted_peers': promoted,
             'score': score,
             'action': verdict,
         }
@@ -141,50 +154,28 @@ def compute_opportunities(snapshot: dict) -> dict:
     for l in listings:
         if not l.get('price_num') or l.get('bedrooms') is None:
             continue
-        beds_label = f"{l['bedrooms']} BR" if l['bedrooms'] else 'Studio'
-        ptype = l.get('type') or ''
-
-        # Peer selection priority (most specific → least specific):
-        # 1. Sub-community + type (e.g. Al Reem · Townhouse · 3BR)
-        # 2. Community + type (e.g. Arabian Ranches · Townhouse · 3BR)
-        # 3. Sub-community untyped (e.g. Al Reem · 3BR)
-        # 4. Community untyped (e.g. Arabian Ranches · 3BR)
-        peers = None
-        peer_level = ''
-        sub_typed_key = (l.get('sub_community'), l.get('community'), l['purpose'], l['bedrooms'], ptype)
-        comm_typed_key = (l.get('community'), l['purpose'], l['bedrooms'], ptype)
-        sub_untyped_key = (l.get('sub_community'), l.get('community'), l['purpose'], l['bedrooms'])
-        comm_untyped_key = (l.get('community'), l['purpose'], l['bedrooms'])
-
-        if l.get('sub_community') and ptype and sub_typed_key in sub_peer_typed and len(sub_peer_typed[sub_typed_key]) >= 3:
-            peers = sub_peer_typed[sub_typed_key]
-            peer_level = f"{l['sub_community']} · {ptype} · {beds_label}"
-        elif ptype and comm_typed_key in peer_groups_typed and len(peer_groups_typed[comm_typed_key]) >= 3:
-            peers = peer_groups_typed[comm_typed_key]
-            peer_level = f"{l['community']} · {ptype} · {beds_label}"
-        elif l.get('sub_community') and sub_untyped_key in sub_peer_untyped and len(sub_peer_untyped[sub_untyped_key]) >= 3:
-            peers = sub_peer_untyped[sub_untyped_key]
-            peer_level = f"{l['sub_community']} · {beds_label}"
-        elif comm_untyped_key in peer_groups_untyped and len(peer_groups_untyped[comm_untyped_key]) >= 3:
-            peers = peer_groups_untyped[comm_untyped_key]
-            peer_level = f"{l['community']} · {beds_label}"
-        else:
+        # Skip unattributed listings — no actionable agent
+        if not l.get('agent'):
             continue
-        # Flag if peer group mixes property types (less reliable comparison)
-        peer_types = set(p.get('type') for p in peers if p.get('type'))
-        mixed_types = len(peer_types) > 1
-        # Skip if mixed types and very small peer set — comparison is unreliable
-        if mixed_types and len(peers) < 5:
+
+        community = l.get('community')
+        if not community:
             continue
-        scored = score_listing(l, peers, peer_level)
-        scored['mixed_types'] = mixed_types
+
+        med, avg, count, peer_level = get_market_benchmark(
+            community, l['purpose'], l['bedrooms'], l.get('type'))
+
+        if med is None:
+            continue
+
+        scored = score_listing(l, med, avg, count, peer_level)
         results[l['purpose']].append(scored)
 
     # Sort and categorize
     opps = {}
     for purpose in ['sale', 'rent']:
         all_scored = results[purpose]
-        underpriced = sorted([s for s in all_scored if s['gap_pct'] < -5 and s['score'] >= 50], key=lambda x: -x['score'])
+        underpriced = sorted([s for s in all_scored if s['gap_pct'] < -5 and s['score'] >= 45], key=lambda x: -x['score'])
         overpriced = sorted([s for s in all_scored if s['gap_pct'] > 10], key=lambda x: x['gap_pct'], reverse=True)
         stale = sorted([s for s in all_scored if (s['dom'] or 0) >= 30], key=lambda x: -(x['dom'] or 0))
         opps[purpose] = {
@@ -193,8 +184,7 @@ def compute_opportunities(snapshot: dict) -> dict:
             'stale': stale,
         }
 
-    # Coverage gaps: large market communities where Huspy has low share
-    # (this will be filled after market enrichment if available)
+    # Coverage gaps
     coverage_gaps = []
 
     summary = {
@@ -230,7 +220,7 @@ def compute_peer_medians(snapshot: dict) -> dict:
     return medians
 
 
-def transform_snapshot(snapshot: dict) -> dict:
+def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
     """Transform raw snapshot into the dashboard schema."""
     listings = snapshot.get("listings", [])
     date_str = snapshot.get("date", datetime.utcnow().strftime("%Y-%m-%d"))
@@ -366,8 +356,8 @@ def transform_snapshot(snapshot: dict) -> dict:
 
         return result
 
-    # Compute opportunities and peer medians
-    opportunities = compute_opportunities(snapshot)
+    # Compute opportunities (market-based) and Huspy peer medians
+    opportunities = compute_opportunities(snapshot, market_data=market_data)
     peer_medians = compute_peer_medians(snapshot)
 
     return {
@@ -421,13 +411,27 @@ def upsert_to_supabase(date_str: str, data: dict) -> bool:
     return resp.status_code in (200, 201)
 
 
-def sync_snapshot(snapshot_path: str) -> bool:
+def sync_snapshot(snapshot_path: str, market_path: str = None) -> bool:
     """Load a snapshot file, transform, and push to Supabase."""
     with open(snapshot_path) as f:
         snapshot = json.load(f)
 
+    # Try to find market data
+    market_data = None
+    if market_path:
+        with open(market_path) as f:
+            market_data = json.load(f)
+    else:
+        # Auto-find latest market file
+        data_dir = os.path.dirname(snapshot_path)
+        market_files = sorted([f for f in os.listdir(data_dir) if f.startswith('market_') and f.endswith('.json')], reverse=True)
+        if market_files:
+            with open(os.path.join(data_dir, market_files[0])) as f:
+                market_data = json.load(f)
+            print(f"  Using market data: {market_files[0]}")
+
     date_str = snapshot.get("date")
-    data = transform_snapshot(snapshot)
+    data = transform_snapshot(snapshot, market_data=market_data)
 
     print(f"  Syncing {date_str}: {data['sale']['total']} sale, {data['rent']['total']} rent, "
           f"{len(data['sale']['by_community'])} sale communities, {len(data['rent']['by_community'])} rent communities")
