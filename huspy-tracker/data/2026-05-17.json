@@ -184,7 +184,7 @@
       "agent": "Amie Squire",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -210,7 +210,7 @@
       "agent": "Rosie Thompson",
       "listed_date": "2026-05-04",
       "dom": 13,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -340,7 +340,7 @@
       "agent": "Amie Squire",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -366,7 +366,7 @@
       "agent": "Vishal Nagesh",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -548,7 +548,7 @@
       "agent": "Rosie Thompson",
       "listed_date": "2026-05-02",
       "dom": 15,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -652,7 +652,7 @@
       "agent": "Sana Ullah",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -730,7 +730,7 @@
       "agent": "Robert Daniel",
       "listed_date": "2026-05-06",
       "dom": 11,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -756,7 +756,7 @@
       "agent": "Sean Preston",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -1042,7 +1042,7 @@
       "agent": "Owen Kemp",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -1120,7 +1120,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -1510,7 +1510,7 @@
       "agent": "Azaan Majeed",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -1588,7 +1588,7 @@
       "agent": null,
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -1666,7 +1666,7 @@
       "agent": "Toni Williams",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -1692,7 +1692,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-14",
       "dom": 3,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -1770,7 +1770,7 @@
       "agent": "Dionne Preston",
       "listed_date": "2026-05-14",
       "dom": 3,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -1796,7 +1796,7 @@
       "agent": "Zoe King",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -1848,7 +1848,7 @@
       "agent": "Alessandro De Cicco",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -1978,7 +1978,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2004,7 +2004,7 @@
       "agent": null,
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -2056,7 +2056,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2082,7 +2082,7 @@
       "agent": null,
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -2134,7 +2134,7 @@
       "agent": null,
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -2160,7 +2160,7 @@
       "agent": null,
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -2238,7 +2238,7 @@
       "agent": null,
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -2264,7 +2264,7 @@
       "agent": null,
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -2316,7 +2316,7 @@
       "agent": "Darya Haretskaya",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -2342,7 +2342,7 @@
       "agent": "Alex Holland",
       "listed_date": "2026-05-06",
       "dom": 11,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2446,7 +2446,7 @@
       "agent": "Nina Soknic",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2498,7 +2498,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-09",
       "dom": 8,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2550,7 +2550,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2576,7 +2576,7 @@
       "agent": "Daniela Motta",
       "listed_date": "2026-05-17",
       "dom": 0,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2602,7 +2602,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-04-29",
       "dom": 18,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2628,7 +2628,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2654,7 +2654,7 @@
       "agent": "Rosie Thompson",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -2732,7 +2732,7 @@
       "agent": "Sema Abourian",
       "listed_date": "2026-04-30",
       "dom": 17,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -3044,7 +3044,7 @@
       "agent": null,
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -3070,7 +3070,7 @@
       "agent": null,
       "listed_date": "2026-05-10",
       "dom": 7,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -3174,7 +3174,7 @@
       "agent": null,
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -3200,7 +3200,7 @@
       "agent": "Vishal Nagesh",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -3252,7 +3252,7 @@
       "agent": null,
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -3304,7 +3304,7 @@
       "agent": null,
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -3382,7 +3382,7 @@
       "agent": null,
       "listed_date": "2026-05-10",
       "dom": 7,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -3408,7 +3408,7 @@
       "agent": null,
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -3486,7 +3486,7 @@
       "agent": "Jeremy Herron",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -3616,7 +3616,7 @@
       "agent": "Jeremy Herron",
       "listed_date": "2026-04-21",
       "dom": 26,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -3668,7 +3668,7 @@
       "agent": "Lee Jenkinson",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -3928,7 +3928,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-06",
       "dom": 11,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -3954,7 +3954,7 @@
       "agent": "Sema Abourian",
       "listed_date": "2026-04-30",
       "dom": 17,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4006,7 +4006,7 @@
       "agent": "Jamie Thubron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4058,7 +4058,7 @@
       "agent": "Jeremy Herron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4110,7 +4110,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4136,7 +4136,7 @@
       "agent": "Rosie Thompson",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4162,7 +4162,7 @@
       "agent": "Jamie Thubron",
       "listed_date": "2026-04-30",
       "dom": 17,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4318,7 +4318,7 @@
       "agent": "Youssef Nabulsi",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4344,7 +4344,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4396,7 +4396,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4448,7 +4448,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4526,7 +4526,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4552,7 +4552,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-10",
       "dom": 7,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4656,7 +4656,7 @@
       "agent": "Rosie Thompson",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -4760,7 +4760,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": true
@@ -4838,7 +4838,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": true
@@ -4864,7 +4864,7 @@
       "agent": null,
       "listed_date": "2026-05-01",
       "dom": 16,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -4942,7 +4942,7 @@
       "agent": null,
       "listed_date": "2026-05-09",
       "dom": 8,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -4968,7 +4968,7 @@
       "agent": null,
       "listed_date": "2026-05-09",
       "dom": 8,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -4994,7 +4994,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -5228,7 +5228,7 @@
       "agent": "Vishal Nagesh",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -5332,7 +5332,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -5358,7 +5358,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -5384,7 +5384,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -5436,7 +5436,7 @@
       "agent": null,
       "listed_date": "2026-05-17",
       "dom": 0,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -5774,7 +5774,7 @@
       "agent": "Jamie Thubron",
       "listed_date": "2026-05-02",
       "dom": 15,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -5852,7 +5852,7 @@
       "agent": "Ali Vatanzadeh",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -5878,7 +5878,7 @@
       "agent": "Niall Gleeson",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -6138,7 +6138,7 @@
       "agent": "Jeremy Herron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -6424,7 +6424,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -6554,7 +6554,7 @@
       "agent": "Ali Vatanzadeh",
       "listed_date": "2026-05-14",
       "dom": 3,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -6580,7 +6580,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -6632,7 +6632,7 @@
       "agent": "Jamie Thubron",
       "listed_date": "2026-05-16",
       "dom": 1,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -6788,7 +6788,7 @@
       "agent": "Andreas Maschke",
       "listed_date": "2026-04-19",
       "dom": 28,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -6814,7 +6814,7 @@
       "agent": "Lewis Leer",
       "listed_date": "2026-05-01",
       "dom": 16,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -6996,7 +6996,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-09",
       "dom": 8,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7100,7 +7100,7 @@
       "agent": null,
       "listed_date": "2026-04-29",
       "dom": 18,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -7126,7 +7126,7 @@
       "agent": null,
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -7308,7 +7308,7 @@
       "agent": "Zoe King",
       "listed_date": "2026-05-14",
       "dom": 3,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7334,7 +7334,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7412,7 +7412,7 @@
       "agent": "Lewis Leer",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7490,7 +7490,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7672,7 +7672,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7776,7 +7776,7 @@
       "agent": "Mohaned Salih",
       "listed_date": "2026-05-01",
       "dom": 16,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7802,7 +7802,7 @@
       "agent": "Jamie Thubron",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7880,7 +7880,7 @@
       "agent": "Ali Vatanzadeh",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -7932,7 +7932,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -8166,7 +8166,7 @@
       "agent": "Cihan Cetin",
       "listed_date": "2026-04-19",
       "dom": 28,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -8192,7 +8192,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -8322,7 +8322,7 @@
       "agent": "Robert Daniel",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -8556,7 +8556,7 @@
       "agent": "Zoe King",
       "listed_date": "2026-04-30",
       "dom": 17,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -8608,7 +8608,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-14",
       "dom": 3,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -8686,7 +8686,7 @@
       "agent": "Benjamin Larrad",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -8764,7 +8764,7 @@
       "agent": "Zoe King",
       "listed_date": "2026-05-06",
       "dom": 11,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -8868,7 +8868,7 @@
       "agent": "Jeremy Herron",
       "listed_date": "2026-05-16",
       "dom": 1,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -9076,7 +9076,7 @@
       "agent": "Mohaned Salih",
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -9232,7 +9232,7 @@
       "agent": "Ali Vatanzadeh",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -9362,7 +9362,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -9544,7 +9544,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -9570,7 +9570,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -9674,7 +9674,7 @@
       "agent": "Hristo Kyomerov",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -9830,7 +9830,7 @@
       "agent": "Blake Kennedy",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -9908,7 +9908,7 @@
       "agent": "Mohaned Salih",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -9986,7 +9986,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -10168,7 +10168,7 @@
       "agent": null,
       "listed_date": "2026-05-06",
       "dom": 11,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -10350,7 +10350,7 @@
       "agent": null,
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -10376,7 +10376,7 @@
       "agent": null,
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -10402,7 +10402,7 @@
       "agent": null,
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -10818,7 +10818,7 @@
       "agent": "Edward Turner",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -11104,7 +11104,7 @@
       "agent": "Joanna Plunkett",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -11182,7 +11182,7 @@
       "agent": "Amy Mcneill",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -11312,7 +11312,7 @@
       "agent": "Adam McGrane",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -11338,7 +11338,7 @@
       "agent": "Jeremy Herron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -11728,7 +11728,7 @@
       "agent": "Daniel Shearer",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -11832,7 +11832,7 @@
       "agent": "Amanda Pereira",
       "listed_date": "2026-05-17",
       "dom": 0,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -11858,7 +11858,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -11884,7 +11884,7 @@
       "agent": "Liam Rehbein",
       "listed_date": "2026-04-17",
       "dom": 30,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12196,7 +12196,7 @@
       "agent": "Safi Commons",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12378,7 +12378,7 @@
       "agent": "Amy Mcneill",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12430,7 +12430,7 @@
       "agent": "Danial Hatampour",
       "listed_date": "2026-04-24",
       "dom": 23,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12456,7 +12456,7 @@
       "agent": "Benjamin Rae",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12534,7 +12534,7 @@
       "agent": "Dionne Preston",
       "listed_date": "2026-05-10",
       "dom": 7,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12742,7 +12742,7 @@
       "agent": "Liam Rehbein",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12768,7 +12768,7 @@
       "agent": "Feras Idris",
       "listed_date": "2026-05-04",
       "dom": 13,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12794,7 +12794,7 @@
       "agent": "Numan Asif",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -12846,7 +12846,7 @@
       "agent": "Mohaned Salih",
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -13106,7 +13106,7 @@
       "agent": "Darya Haretskaya",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": true
@@ -13210,7 +13210,7 @@
       "agent": "Benjamin Larrad",
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -13236,7 +13236,7 @@
       "agent": "Amy Mcneill",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -13522,7 +13522,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -13574,7 +13574,7 @@
       "agent": "Amy Mcneill",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -13704,7 +13704,7 @@
       "agent": "Dionne Preston",
       "listed_date": "2026-05-10",
       "dom": 7,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -13860,7 +13860,7 @@
       "agent": "Dionne Preston",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -14068,7 +14068,7 @@
       "agent": null,
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -14172,7 +14172,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": true
@@ -14198,7 +14198,7 @@
       "agent": "Dionne Preston",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -14380,7 +14380,7 @@
       "agent": "Jeremy Herron",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -14640,7 +14640,7 @@
       "agent": "Tim John Doyle",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -14978,7 +14978,7 @@
       "agent": "Mohammed Salih",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -15134,7 +15134,7 @@
       "agent": "Cihan Cetin",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -15446,7 +15446,7 @@
       "agent": "Sana Ullah",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -15602,7 +15602,7 @@
       "agent": "Emelia Tehrani",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -16122,7 +16122,7 @@
       "agent": "Saniya Doni",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -16304,7 +16304,7 @@
       "agent": "Liam Rehbein",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -16954,7 +16954,7 @@
       "agent": "Daniela Motta",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -17032,7 +17032,7 @@
       "agent": "Blake Kennedy",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -17058,7 +17058,7 @@
       "agent": "Edward Turner",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -17370,7 +17370,7 @@
       "agent": "Jeremy Herron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -17578,7 +17578,7 @@
       "agent": "Liam Rehbein",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": true
@@ -17786,7 +17786,7 @@
       "agent": "Mohaned Salih",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -17812,7 +17812,7 @@
       "agent": "Tim John Doyle",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -17838,7 +17838,7 @@
       "agent": "Azaan Majeed",
       "listed_date": "2026-05-06",
       "dom": 11,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -17942,7 +17942,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -18072,7 +18072,7 @@
       "agent": "Amanda Pereira",
       "listed_date": "2026-05-17",
       "dom": 0,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -18358,7 +18358,7 @@
       "agent": "Daniela Motta",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -18514,7 +18514,7 @@
       "agent": "Saniya Doni",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -19112,7 +19112,7 @@
       "agent": "Mohammed Salih",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -19294,7 +19294,7 @@
       "agent": "Zoe King",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -19528,7 +19528,7 @@
       "agent": "Alex Holland",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -19554,7 +19554,7 @@
       "agent": "Daniela Motta",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -19684,7 +19684,7 @@
       "agent": "Jamie Thubron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -19892,7 +19892,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-10",
       "dom": 7,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -19996,7 +19996,7 @@
       "agent": "Jamie Thubron",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -20152,7 +20152,7 @@
       "agent": "Alex Holland",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -20256,7 +20256,7 @@
       "agent": "Daniela Motta",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -20438,7 +20438,7 @@
       "agent": "Lily Tamondong",
       "listed_date": "2026-05-17",
       "dom": 0,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -20750,7 +20750,7 @@
       "agent": "Liam Rehbein",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -20932,7 +20932,7 @@
       "agent": null,
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -21322,7 +21322,7 @@
       "agent": null,
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -21348,7 +21348,7 @@
       "agent": null,
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -21634,7 +21634,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -21686,7 +21686,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -21764,7 +21764,7 @@
       "agent": "Edward Turner",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -22362,7 +22362,7 @@
       "agent": null,
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -22518,7 +22518,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -23194,7 +23194,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -23246,7 +23246,7 @@
       "agent": "Bradley Carroll",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -23376,7 +23376,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -24208,7 +24208,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -24338,7 +24338,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -24806,7 +24806,7 @@
       "agent": "Jack Eardley",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -24936,7 +24936,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -25352,7 +25352,7 @@
       "agent": "Sema Abourian",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -25378,7 +25378,7 @@
       "agent": "Daniela Motta",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -25560,7 +25560,7 @@
       "agent": "Lily Tamondong",
       "listed_date": "2026-05-06",
       "dom": 11,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -25664,7 +25664,7 @@
       "agent": "Dunia El Boutaybi",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -25794,7 +25794,7 @@
       "agent": "Azaan Majeed",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -25924,7 +25924,7 @@
       "agent": "Azaan Majeed",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26054,7 +26054,7 @@
       "agent": "Azaan Majeed",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26080,7 +26080,7 @@
       "agent": "Lily Tamondong",
       "listed_date": "2026-05-04",
       "dom": 13,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26106,7 +26106,7 @@
       "agent": "Lily Tamondong",
       "listed_date": "2026-05-01",
       "dom": 16,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26288,7 +26288,7 @@
       "agent": "Dunia El Boutaybi",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26392,7 +26392,7 @@
       "agent": "Carlota Ruiz",
       "listed_date": "2026-04-30",
       "dom": 17,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26522,7 +26522,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26678,7 +26678,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26704,7 +26704,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26730,7 +26730,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26756,7 +26756,7 @@
       "agent": "Lily Tamondong",
       "listed_date": "2026-04-22",
       "dom": 25,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26808,7 +26808,7 @@
       "agent": "Carlota Ruiz",
       "listed_date": "2026-04-27",
       "dom": 20,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -26860,7 +26860,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -27302,7 +27302,7 @@
       "agent": "Dunia El Boutaybi",
       "listed_date": "2026-05-14",
       "dom": 3,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -27432,7 +27432,7 @@
       "agent": "Dunia El Boutaybi",
       "listed_date": "2026-04-15",
       "dom": 32,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -27848,7 +27848,7 @@
       "agent": "Zoe King",
       "listed_date": "2026-04-11",
       "dom": 36,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -27900,7 +27900,7 @@
       "agent": "Zoe King",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -28056,7 +28056,7 @@
       "agent": "Carlota Ruiz",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -28680,7 +28680,7 @@
       "agent": "Lily Tamondong",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -28758,7 +28758,7 @@
       "agent": "Ali Vatanzadeh",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -28888,7 +28888,7 @@
       "agent": "Tim John Doyle",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -29148,7 +29148,7 @@
       "agent": "Tim John Doyle",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -29200,7 +29200,7 @@
       "agent": "Sean Preston",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -29278,7 +29278,7 @@
       "agent": "Tim John Doyle",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -29798,7 +29798,7 @@
       "agent": "Amy Mcneill",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -29902,7 +29902,7 @@
       "agent": null,
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -30318,7 +30318,7 @@
       "agent": "Owen Kemp",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -30968,7 +30968,7 @@
       "agent": "Robert Daniel",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -31332,7 +31332,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -31436,7 +31436,7 @@
       "agent": null,
       "listed_date": "2026-05-08",
       "dom": 9,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -32138,7 +32138,7 @@
       "agent": null,
       "listed_date": "2026-04-25",
       "dom": 22,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -32606,7 +32606,7 @@
       "agent": "Mohaned Salih",
       "listed_date": "2026-04-20",
       "dom": 27,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -32710,7 +32710,7 @@
       "agent": "Shady Al Abed",
       "listed_date": "2026-05-16",
       "dom": 1,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -32970,7 +32970,7 @@
       "agent": "Andreas Maschke",
       "listed_date": "2026-05-09",
       "dom": 8,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -33022,7 +33022,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -33152,7 +33152,7 @@
       "agent": "Mohammed Salih",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -33178,7 +33178,7 @@
       "agent": "Vishal Nagesh",
       "listed_date": "2026-05-07",
       "dom": 10,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -33360,7 +33360,7 @@
       "agent": null,
       "listed_date": "2026-05-16",
       "dom": 1,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -33542,7 +33542,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-10",
       "dom": 7,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -33698,7 +33698,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -33828,7 +33828,7 @@
       "agent": "Sana Ullah",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -33880,7 +33880,7 @@
       "agent": "Jamie Thubron",
       "listed_date": "2026-04-28",
       "dom": 19,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -33984,7 +33984,7 @@
       "agent": "Rosie Thompson",
       "listed_date": "2026-04-18",
       "dom": 29,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34192,7 +34192,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34374,7 +34374,7 @@
       "agent": "Mohammed Salih",
       "listed_date": "2026-05-05",
       "dom": 12,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34426,7 +34426,7 @@
       "agent": "Jamie Thubron",
       "listed_date": "2026-05-02",
       "dom": 15,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34478,7 +34478,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": true
@@ -34556,7 +34556,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": true
@@ -34712,7 +34712,7 @@
       "agent": "Bradley Carroll",
       "listed_date": "2026-04-28",
       "dom": 19,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34764,7 +34764,7 @@
       "agent": "Sema Abourian",
       "listed_date": "2026-04-30",
       "dom": 17,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34790,7 +34790,7 @@
       "agent": "Emma Solan",
       "listed_date": "2026-05-09",
       "dom": 8,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34816,7 +34816,7 @@
       "agent": "Vishal Nagesh",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34868,7 +34868,7 @@
       "agent": "Sema Abourian",
       "listed_date": "2026-05-10",
       "dom": 7,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -34972,7 +34972,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -35336,7 +35336,7 @@
       "agent": "Jeremy Herron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -35388,7 +35388,7 @@
       "agent": "Jeremy Herron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -35492,7 +35492,7 @@
       "agent": "Sana Ullah",
       "listed_date": "2026-04-27",
       "dom": 20,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -35596,7 +35596,7 @@
       "agent": "Emma Solan",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -35622,7 +35622,7 @@
       "agent": "Robert Daniel",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -35674,7 +35674,7 @@
       "agent": "Jeremy Herron",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -35752,7 +35752,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -35960,7 +35960,7 @@
       "agent": "Lewis Leer",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -36298,7 +36298,7 @@
       "agent": "Amy Mcneill",
       "listed_date": "2026-05-11",
       "dom": 6,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -36350,7 +36350,7 @@
       "agent": "Azaan Majeed",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -36558,7 +36558,7 @@
       "agent": "Cihan Cetin",
       "listed_date": "2026-05-17",
       "dom": 0,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -36974,7 +36974,7 @@
       "agent": "Robert Daniel",
       "listed_date": "2026-05-16",
       "dom": 1,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -37000,7 +37000,7 @@
       "agent": "Dionne Preston",
       "listed_date": "2026-05-14",
       "dom": 3,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -37026,7 +37026,7 @@
       "agent": "Liam Rehbein",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -37156,7 +37156,7 @@
       "agent": "Alessandro De Cicco",
       "listed_date": "2026-04-22",
       "dom": 25,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -37234,7 +37234,7 @@
       "agent": "Liam Rehbein",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -37260,7 +37260,7 @@
       "agent": "Daniela Motta",
       "listed_date": "2026-05-13",
       "dom": 4,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -37546,7 +37546,7 @@
       "agent": "Amanda Pereira",
       "listed_date": "2026-05-12",
       "dom": 5,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -37572,7 +37572,7 @@
       "agent": "Cihan Cetin",
       "listed_date": "2026-05-17",
       "dom": 0,
-      "promo": null,
+      "promo": "Hot",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -37702,7 +37702,7 @@
       "agent": "Mohaned Salih",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": true
@@ -37780,7 +37780,7 @@
       "agent": "Carlota Ruiz",
       "listed_date": "2026-04-30",
       "dom": 17,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -37806,7 +37806,7 @@
       "agent": "Dunia El Boutaybi",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": true
@@ -37910,7 +37910,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -38014,7 +38014,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": true
@@ -38118,7 +38118,7 @@
       "agent": "Sahil Kumar",
       "listed_date": "2026-04-23",
       "dom": 24,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -38274,7 +38274,7 @@
       "agent": "Dylan Madden",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": true
@@ -38378,7 +38378,7 @@
       "agent": "Jack Eardley",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -38950,7 +38950,7 @@
       "agent": null,
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": false,
       "trubroker": false,
       "off_plan": false
@@ -39132,7 +39132,7 @@
       "agent": "Jack Eardley",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -39392,7 +39392,7 @@
       "agent": "Mohaned Salih",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -39860,7 +39860,7 @@
       "agent": "Owen Kemp",
       "listed_date": "2026-05-16",
       "dom": 1,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -39990,7 +39990,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-05-16",
       "dom": 1,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -40692,7 +40692,7 @@
       "agent": "Sean Preston",
       "listed_date": "2026-04-29",
       "dom": 18,
-      "promo": null,
+      "promo": "Hot",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -40900,7 +40900,7 @@
       "agent": "Zoe King",
       "listed_date": "2026-05-16",
       "dom": 1,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -41082,7 +41082,7 @@
       "agent": "Alessandro De Cicco",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -41186,7 +41186,7 @@
       "agent": "Rania Jaoudi",
       "listed_date": null,
       "dom": null,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
@@ -41238,7 +41238,7 @@
       "agent": "Katie Duckham",
       "listed_date": "2026-05-15",
       "dom": 2,
-      "promo": null,
+      "promo": "Signature",
       "verified": true,
       "trubroker": true,
       "off_plan": false
