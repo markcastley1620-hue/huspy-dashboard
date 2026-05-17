@@ -9,7 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from scraper import scrape_all_listings, save_snapshot
-from market_scraper import scrape_market_data, save_market_data
+from market_scraper import scrape_market_data, save_market_data, scrape_important_subs, COMMUNITY_SLUGS
 from supabase_sync import transform_snapshot, upsert_to_supabase
 from report import generate_report
 
@@ -192,6 +192,12 @@ def run():
     print()
 
     # 3. Sync to Supabase (with market data enrichment)
+    # 2b. Sub-community market scrape for important sub-communities
+    print("Scraping important sub-communities...")
+    market_result = scrape_important_subs(result, COMMUNITY_SLUGS, market_result, concurrency=10)
+    save_market_data(market_result)
+    print()
+
     print("Syncing to Supabase...")
     data = transform_snapshot(result)
     date_str = result["date"]

@@ -345,3 +345,138 @@ if __name__ == "__main__":
     data = scrape_market_data()
     path = save_market_data(data)
     print(f"  Saved to {path}")
+
+
+# Sub-community slug mapping for direct Bayut scraping
+# Format: (community_slug, sub_community_slug) -> allows URL construction
+# Bayut pattern: bayut.com/for-sale/apartments/dubai/{community_slug}/{sub_slug}/
+def _slugify(name):
+    """Convert a sub-community name to a Bayut URL slug."""
+    import re
+    s = name.lower().strip()
+    s = re.sub(r'[()]', '', s)
+    s = re.sub(r'[^a-z0-9]+', '-', s)
+    s = s.strip('-')
+    return s
+
+
+def scrape_sub_community_market(community_slug, sub_slug, purpose, pages=2):
+    """Scrape market data for a specific sub-community."""
+    from statistics import median as stat_median
+    all_prices = []
+    by_bed = {}
+    by_bed_type = {}
+
+    for page in range(1, pages + 1):
+        url = f"https://www.bayut.com/{purpose}/property/dubai/{community_slug}/{sub_slug}/"
+        if page > 1:
+            url += f"?page={page}"
+        try:
+            resp = requests.get("https://app.scrapingbee.com/api/v1/", params={
+                "api_key": API_KEY, "url": url, "stealth_proxy": "true", "country_code": "ae",
+            }, timeout=120)
+            if resp.status_code != 200:
+                continue
+            soup = BeautifulSoup(resp.text, "lxml")
+            for card in soup.find_all(attrs={"aria-label": "Listing"}):
+                price_el = card.find(attrs={"aria-label": "Price"})
+                if not price_el:
+                    continue
+                try:
+                    price_val = int(price_el.get_text(strip=True).replace(",", ""))
+                except ValueError:
+                    continue
+                all_prices.append(price_val)
+                beds_el = card.find(attrs={"aria-label": "Beds"})
+                beds_text = beds_el.get_text(strip=True) if beds_el else ""
+                beds = None
+                if "Studio" in beds_text:
+                    beds = 0
+                else:
+                    bm = re.search(r"(\d+)", beds_text)
+                    if bm:
+                        beds = int(bm.group(1))
+                type_el = card.find(attrs={"aria-label": "Type"})
+                ptype = type_el.get_text(strip=True) if type_el else None
+                if beds is not None:
+                    bed_key = str(beds) if beds > 0 else "Studio"
+                    by_bed.setdefault(bed_key, []).append(price_val)
+                    if ptype:
+                        by_bed_type.setdefault(f"{bed_key}|{ptype}", []).append(price_val)
+        except Exception as e:
+            print(f"    Error scraping sub-comm {sub_slug}: {e}")
+
+    if not all_prices:
+        return None
+
+    result_by_bed = {}
+    for bk, prices in by_bed.items():
+        result_by_bed[bk] = {
+            "count": len(prices), "median_price": int(stat_median(prices)), "prices": sorted(prices),
+        }
+    result_by_bt = {}
+    for btk, prices in by_bed_type.items():
+        result_by_bt[btk] = {
+            "count": len(prices), "median_price": int(stat_median(prices)), "prices": sorted(prices),
+        }
+    return {
+        "sample_size": len(all_prices),
+        "median_price": int(stat_median(all_prices)),
+        "by_bed": result_by_bed,
+        "by_bed_type": result_by_bt,
+    }
+
+
+def scrape_important_subs(snapshot, community_slugs, market_data, concurrency=10, min_listings=3):
+    """Scrape sub-community market data for sub-communities with enough Huspy listings."""
+    from collections import Counter
+
+    sub_counts = Counter()
+    for l in snapshot.get('listings', []):
+        if l.get('sub_community') and l.get('community'):
+            sub_counts[(l['community'], l['sub_community'], l['purpose'])] += 1
+
+    important = [(k, v) for k, v in sub_counts.items() if v >= min_listings]
+    if not important:
+        print("  No important sub-communities to scrape")
+        return market_data
+
+    print(f"  Scraping {len(important)} important sub-communities...")
+
+    tasks = []
+    for (comm, sub, purpose), count in important:
+        comm_slug = community_slugs.get(comm)
+        if not comm_slug:
+            continue
+        sub_slug = _slugify(sub)
+        bayut_purpose = "for-sale" if purpose == "sale" else "to-rent"
+        tasks.append((comm, sub, purpose, comm_slug, sub_slug, bayut_purpose))
+
+    credits = 0
+    with ThreadPoolExecutor(max_workers=concurrency) as executor:
+        def _fetch(task):
+            comm, sub, purpose, comm_slug, sub_slug, bayut_purpose = task
+            return (comm, sub, purpose, scrape_sub_community_market(comm_slug, sub_slug, bayut_purpose, pages=2))
+
+        futures = {executor.submit(_fetch, t): t for t in tasks}
+        done = 0
+        found = 0
+        for future in as_completed(futures):
+            comm, sub, purpose, result = future.result()
+            done += 1
+            credits += 2 * 75
+            if result and result['sample_size'] > 0:
+                found += 1
+                # Inject into market_data
+                comm_data = market_data.setdefault(purpose, {}).setdefault(comm, {})
+                for bk, bv in result.get('by_bed', {}).items():
+                    sub_key = f"{sub}|{bk}"
+                    comm_data.setdefault('by_sub_bed', {})[sub_key] = bv
+                for btk, btv in result.get('by_bed_type', {}).items():
+                    sub_key = f"{sub}|{btk}"
+                    comm_data.setdefault('by_sub', {})[sub_key] = btv
+            if done % 20 == 0:
+                print(f"    Sub-comm progress: {done}/{len(tasks)} ({found} found)")
+
+    print(f"  Sub-communities scraped: {found}/{len(tasks)} found data | ~{credits} credits")
+    return market_data
