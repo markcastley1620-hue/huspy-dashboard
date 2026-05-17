@@ -91,7 +91,7 @@
     <div x-show="!loading && view==='overview'" x-cloak class="space-y-6 fade-in">
       <div>
         <h1 class="text-[22px] font-bold tracking-tight text-heading">Market Overview</h1>
-        <p class="text-[12px] text-muted mt-1" x-text="'Snapshot ' + (latest?.snapshot_date || '—') + (previous ? '  ·  vs ' + previous.snapshot_date : '')"></p>
+        <p class="text-[12px] text-muted mt-1" x-text="'Snapshot ' + (latest?.snapshot_date || 'N/A') + (previous ? '  ·  vs ' + previous.snapshot_date : '')"></p>
       </div>
 
       <!-- KPIs -->
@@ -109,7 +109,7 @@
         <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold" x-text="mode + ' listings'"></div>
           <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="fmt(block()?.total)"></div>
-          <div class="flex items-center gap-1 mt-2" x-show="prevBlock()">
+          <div class="flex items-center gap-1 mt-2" x-show="prevBlock() && block()?.total != null && prevBlock()?.total != null && latest?.snapshot_date !== previous?.snapshot_date">
             <span :class="(block()?.total - prevBlock()?.total) >= 0 ? 'text-up' : 'text-down'" class="text-[11px] font-semibold" x-text="deltaStr(block()?.total, prevBlock()?.total)"></span>
             <span class="text-[11px] text-muted">vs prev</span>
           </div>
@@ -220,8 +220,8 @@
                     </div>
                   </td>
                   <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Huspy" x-text="fmt(r.count)"></td>
-                  <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
-                  <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : '—'"></td>
+                  <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : 'N/A'"></td>
+                  <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : 'N/A'"></td>
                   <td class="px-5 py-3 text-right" data-label="Δ pp">
                     <span x-show="r.delta != null && r.delta > 0" class="inline-flex items-center gap-0.5 text-up bg-up-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↑ +<span x-text="r.delta.toFixed(2)"></span>pp</span>
                     <span x-show="r.delta != null && r.delta < 0" class="inline-flex items-center gap-0.5 text-down bg-down-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↓ <span x-text="r.delta.toFixed(2)"></span>pp</span>
@@ -410,8 +410,8 @@
                 </td>
                 <td class="px-3 py-2.5 text-right font-semibold" data-label="Listings" x-text="s.count"></td>
                 <td class="px-3 py-2.5 text-right text-heading font-medium" data-label="Huspy avg" x-text="fmtAed(s.avg_price)"></td>
-                <td class="px-3 py-2.5 text-right text-muted" data-label="Market avg" x-text="fmtAed(s.market_avg_price)"></td>
-                <td class="px-3 py-2.5 text-right text-muted" data-label="Market" x-text="s.market_count != null ? fmt(s.market_count) : '—'"></td>
+                <td class="px-3 py-2.5 text-right text-muted" data-label="Market avg"><span x-show="s.market_avg_price != null && s.market_avg_price !== 0" x-text="fmtAed(s.market_avg_price)"></span><span x-show="s.market_avg_price === 0" class="text-heading">AED 0</span><span x-show="s.market_avg_price == null" class="text-muted-2 text-[10px]">No data</span></td>
+                <td class="px-3 py-2.5 text-right text-muted" data-label="Market" x-text="s.market_count != null ? fmt(s.market_count) : 'N/A'"></td>
                 <td class="px-3 py-2.5 text-right text-[11px]" data-label="Diff">
                   <template x-if="s.avg_price && s.market_avg_price">
                     <div>
@@ -419,11 +419,12 @@
                       <span class="text-muted ml-1" x-text="'(' + ((s.avg_price - s.market_avg_price) > 0 ? '+' : '') + ((s.avg_price - s.market_avg_price) / s.market_avg_price * 100).toFixed(1) + '%)'" ></span>
                     </div>
                   </template>
-                  <template x-if="!s.avg_price || !s.market_avg_price"><span class="text-muted">—</span></template>
+                  <template x-if="!s.avg_price || !s.market_avg_price"><span class="text-muted-2 text-[10px]">No data</span></template>
                 </td>
-                <td class="px-5 py-2.5 text-right font-semibold" data-label="Share" x-text="s.market_count ? (s.count / s.market_count * 100).toFixed(2) + '%' : '—'"></td>
+                <td class="px-5 py-2.5 text-right font-semibold" data-label="Share" x-text="s.market_count ? (s.count / s.market_count * 100).toFixed(2) + '%' : 'N/A'"></td>
               </tr>
             </template>
+            <template x-if="!commDetailSubs()?.length"><tr><td colspan="8" class="px-5 py-8 text-center text-muted text-[13px]">No sub-community data available</td></tr></template>
           </tbody>
         </table>
         </div>
@@ -497,8 +498,8 @@
                 <td class="px-5 py-3 font-medium" data-label="Community"><span x-text="r.name"></span><template x-if="r.smallN"><span class="ml-1.5 text-[9px] bg-amber-50 text-amber-600 border border-amber-200 rounded-full px-1.5 py-0.5 font-semibold">low n</span></template></td>
                 <td class="px-3 py-3" data-label="Types"><div class="flex gap-1 flex-wrap"><template x-for="t in r.topTypes" :key="t.name"><span class="inline-flex rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-500 font-medium" x-text="t.abbr + ' ' + t.count"></span></template></div></td>
                 <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Huspy" x-text="fmt(r.count)"></td>
-                <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
-                <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : '—'"></td>
+                <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : 'N/A'"></td>
+                <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : 'N/A'"></td>
                 <td class="px-3 py-3 text-right text-heading" data-label="Huspy avg" x-text="fmtAed(r.avg_price)"></td>
                 <td class="px-3 py-3 text-right text-muted" data-label="Market avg" x-text="fmtAed(r.market_avg)"></td>
                 <td class="px-5 py-3 text-right" data-label="Δ pp">
@@ -802,18 +803,18 @@
       <div class="grid grid-cols-2 md:grid-cols-3 gap-3" x-show="latest?.data?.opportunities">
         <div class="rounded-2xl border border-accent/30 bg-accent/5 p-4 shadow-sm">
           <div class="text-[10px] uppercase tracking-widest text-accent font-semibold">🚨 Fresh Deals</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-accent" x-text="latest?.data?.opportunities?.new_underpriced?.[mode]?.length || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-accent" x-text="(latest?.data?.opportunities?.new_underpriced?.[mode]?.length) ?? 0"></div>
           <div class="text-[11px] text-accent/70 mt-1">&lt;7 days + below market</div>
         </div>
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">🎯 Agent Efficiency</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-heading" x-text="latest?.data?.opportunities?.agent_efficiency?.[mode]?.length || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-heading" x-text="(latest?.data?.opportunities?.agent_efficiency?.[mode]?.length) ?? 0"></div>
           <div class="text-[11px] text-muted mt-1">agents with spend</div>
         </div>
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">🗺 Top Opportunity Area</div>
-          <div class="text-[18px] font-bold mt-1 leading-tight text-heading truncate" x-text="(latest?.data?.opportunities?.community_heatmap?.[mode]?.[0]?.community || '—')"></div>
-          <div class="text-[11px] text-up mt-1 font-medium" x-text="(latest?.data?.opportunities?.community_heatmap?.[mode]?.[0]?.underpriced_pct || 0) + '% underpriced'"></div>
+          <div class="text-[18px] font-bold mt-1 leading-tight text-heading truncate" x-text="(latest?.data?.opportunities?.community_heatmap?.[mode]?.[0]?.community) || 'N/A'"></div>
+          <div class="text-[11px] text-up mt-1 font-medium" x-text="((latest?.data?.opportunities?.community_heatmap?.[mode]?.[0]?.underpriced_pct) ?? 0) + '% underpriced'"></div>
         </div>
       </div>
 
@@ -869,6 +870,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
+              <template x-if="!(latest?.data?.opportunities?.[mode]?.underpriced?.length)"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No underpriced listings found</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -913,6 +915,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
+              <template x-if="!(latest?.data?.opportunities?.[mode]?.overpriced?.length)"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No overpriced listings found</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -953,41 +956,13 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
+              <template x-if="!(latest?.data?.opportunities?.[mode]?.stale?.length)"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No stale listings found</td></tr></template>
             </tbody>
           </table>
         </div>
       </div>
 
       <!-- Coverage gaps -->
-      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='coverage_gaps'">
-        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Coverage gaps — where should we recruit / farm next</div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-[12px] mobile-cards">
-            <thead class="text-muted bg-gray-50">
-              <tr class="border-b border-border">
-                <th class="text-left px-5 py-2.5 font-semibold">Community</th>
-                <th class="text-left px-3 py-2.5 font-semibold">Type</th>
-                <th class="text-right px-3 py-2.5 font-semibold">Market listings</th>
-                <th class="text-right px-3 py-2.5 font-semibold">Huspy listings</th>
-                <th class="text-right px-5 py-2.5 font-semibold">Share</th>
-              </tr>
-            </thead>
-            <tbody>
-              <template x-for="g in (latest?.data?.opportunities?.coverage_gaps || [])" :key="g.community + g.purpose">
-                <tr class="border-b border-border-subtle hover:bg-gray-50 cursor-pointer" @click="selectCommunity(g.community)">
-                  <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" x-text="g.community"></td>
-                  <td class="px-3 py-2.5">
-                    <span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="g.purpose==='sale' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'" x-text="g.purpose"></span>
-                  </td>
-                  <td class="px-3 py-2.5 text-right font-semibold" x-text="fmt(g.market_listings)"></td>
-                  <td class="px-3 py-2.5 text-right" x-text="g.huspy_listings"></td>
-                  <td class="px-5 py-2.5 text-right text-muted" x-text="g.share_pct ? g.share_pct.toFixed(2) + '%' : '0%'"></td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
-      </div>
 
       <!-- Wasted spend: overpriced -->
       <div class="rounded-2xl border border-down/30 bg-down/5 overflow-hidden shadow-sm" x-show="oppTab==='wasted_overpriced'">
@@ -1414,9 +1389,10 @@ function dashboard() {
     navigate(v) { this.view = v; this.search = ''; window.scrollTo(0, 0); },
     block() { return this.latest?.data?.[this.mode] || null; },
     prevBlock() { return this.previous?.data?.[this.mode] || null; },
-    fmt(n) { return n == null ? '—' : new Intl.NumberFormat('en-US').format(n); },
+    fmt(n) { return n == null ? 'N/A' : new Intl.NumberFormat('en-US').format(n); },
     fmtAed(n) {
-      if (n == null) return '—';
+      if (n == null || n === '' || n === undefined) return 'N/A';
+      if (n === 0) return 'AED 0';
       if (n >= 1e6) return (n/1e6).toFixed(2) + 'M';
       if (n >= 1e3) return Math.round(n/1e3) + 'K';
       return this.fmt(n);
