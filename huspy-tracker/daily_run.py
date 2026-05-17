@@ -122,46 +122,83 @@ def _enrich_supabase_with_market(date_str, snapshot, market_data):
             else:
                 data['price_vs_market_pct'] = None
 
-            # Enrich sub-communities with per-bed market medians from community data
+            # Enrich sub-communities with SUB-COMMUNITY specific market data
+            by_sub_mkt = m.get('by_sub', {})       # sub|bed|type -> {count, median_price, prices}
+            by_sub_bed_mkt = m.get('by_sub_bed', {})  # sub|bed -> {count, median_price, prices}
             by_bed_mkt = m.get('by_bed', {})
             by_bed_type_mkt = m.get('by_bed_type', {})
+
             for sc_name, sc_data in data.get('sub_communities', {}).items():
                 sc_beds = sc_data.get('beds', {})
-                if not sc_beds:
-                    # No bed breakdown — use community avg as proxy
-                    sc_data['market_avg_price'] = m.get('avg_price') if mt and mt > 0 else None
-                    continue
 
-                # Compute weighted market avg from per-bed market medians
-                total_n = 0
-                weighted_sum = 0
+                # Try to find sub-community specific market data
+                # Sum up all by_sub_bed entries for this sub-community
+                sc_market_count = 0
+                sc_weighted_sum = 0
+                sc_total_n = 0
+                found_sub_data = False
+
                 for bed_key, bed_info in sc_beds.items():
                     bed_count = bed_info.get('count', 0) if isinstance(bed_info, dict) else bed_info
                     bk = 'Studio' if bed_key in ('0', 'Studio') else bed_key
-                    # Try bed+type market data first, then bed-only
                     mkt_price = None
-                    # Check all type variants for this bed
-                    for bt_k, bt_v in by_bed_type_mkt.items():
-                        if bt_k.startswith(f"{bk}|") and bt_v.get('median_price'):
-                            mkt_price = bt_v['median_price']
-                            break
+                    mkt_count = 0
+
+                    # 1. Try sub-community + bed + type (from by_sub)
+                    for sub_k, sub_v in by_sub_mkt.items():
+                        parts = sub_k.split('|')
+                        if len(parts) >= 2 and parts[1] == bk:
+                            sub_name = parts[0]
+                            # Fuzzy match sub-community name
+                            if (sub_name.lower() == sc_name.lower() or
+                                sc_name.lower() in sub_name.lower() or
+                                sub_name.lower() in sc_name.lower()):
+                                mkt_price = sub_v.get('median_price')
+                                mkt_count += sub_v.get('count', 0)
+                                found_sub_data = True
+                                break
+
+                    # 2. Try sub-community + bed (from by_sub_bed)
+                    if not mkt_price:
+                        for sub_k, sub_v in by_sub_bed_mkt.items():
+                            parts = sub_k.split('|')
+                            if len(parts) == 2 and parts[1] == bk:
+                                sub_name = parts[0]
+                                if (sub_name.lower() == sc_name.lower() or
+                                    sc_name.lower() in sub_name.lower() or
+                                    sub_name.lower() in sc_name.lower()):
+                                    mkt_price = sub_v.get('median_price')
+                                    mkt_count = sub_v.get('count', 0)
+                                    found_sub_data = True
+                                    break
+
+                    # 3. Fallback to community + bed + type
+                    if not mkt_price:
+                        for bt_k, bt_v in by_bed_type_mkt.items():
+                            if bt_k.startswith(f"{bk}|") and bt_v.get('median_price'):
+                                mkt_price = bt_v['median_price']
+                                mkt_count = bt_v.get('count', 0)
+                                break
+
+                    # 4. Fallback to community + bed
                     if not mkt_price and bk in by_bed_mkt:
                         mkt_price = by_bed_mkt[bk].get('median_price')
+                        mkt_count = by_bed_mkt[bk].get('count', 0)
+
                     if mkt_price and bed_count:
-                        weighted_sum += mkt_price * bed_count
-                        total_n += bed_count
-                        # Also set per-bed market avg
+                        sc_weighted_sum += mkt_price * bed_count
+                        sc_total_n += bed_count
+                        sc_market_count += mkt_count
                         if isinstance(bed_info, dict):
                             bed_info['market_avg_price'] = mkt_price
 
-                if total_n > 0:
-                    sc_data['market_avg_price'] = int(weighted_sum / total_n)
+                if sc_total_n > 0:
+                    sc_data['market_avg_price'] = int(sc_weighted_sum / sc_total_n)
+                    # Use sub-community specific count if found, else None (not community total)
+                    sc_data['market_count'] = sc_market_count if found_sub_data else None
                 else:
-                    sc_data['market_avg_price'] = m.get('avg_price') if mt and mt > 0 else None
-
-                # Set sub-community market count and share from community market total
-                # (exact sub-community market count isn't available)
-                sc_data['market_count'] = mt if mt and mt > 0 else None
+                    sc_data['market_avg_price'] = None
+                    sc_data['market_count'] = None
 
     requests.patch(
         f'{SUPABASE_URL}/rest/v1/market_intel_snapshots?snapshot_date=eq.{date_str}',
