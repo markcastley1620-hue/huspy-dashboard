@@ -57,6 +57,10 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
     from statistics import median as stat_median
     listings = snapshot.get("listings", [])
     mkt = market_data or {}
+    # Build set of community names to distinguish sub-community vs community benchmarks
+    all_community_names = set()
+    for purpose in ['sale', 'rent']:
+        all_community_names.update(mkt.get(purpose, {}).keys())
 
     def _fuzzy_sub_match(sub_community, by_sub_keys):
         """Find best matching sub-community key via normalization."""
@@ -231,6 +235,13 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         if med is None:
             continue
 
+        # Only include in opportunities if benchmark is sub-community level
+        # Community-level comparisons are not reliable enough for spend decisions
+        first_part = peer_level.replace(' (market)', '').split(' · ')[0]
+        is_sub_level = first_part not in all_community_names
+        if not is_sub_level:
+            continue
+
         scored = score_listing(l, med, avg, count, peer_level)
         results[l['purpose']].append(scored)
 
@@ -245,8 +256,13 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         if not community:
             continue
         med, avg, count, peer_level = get_market_benchmark(
-            community, l['purpose'], l['bedrooms'], l.get('type'))
+            community, l['purpose'], l['bedrooms'], l.get('type'), l.get('sub_community'))
         if med is None:
+            continue
+        # Same sub-community filter for promoted spend audit
+        first_part = peer_level.replace(' (market)', '').split(' · ')[0]
+        is_sub_level = first_part not in all_community_names
+        if not is_sub_level:
             continue
         scored = score_listing(l, med, avg, count, peer_level)
         promoted_results[l['purpose']].append(scored)
