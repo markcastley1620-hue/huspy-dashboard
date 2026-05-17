@@ -46,6 +46,159 @@ def get_price_band(price: int, purpose: str) -> str:
             return "15M+"
 
 
+def compute_opportunities(snapshot: dict) -> dict:
+    """Compute peer medians, deal scores, and opportunity lists per listing."""
+    from statistics import median as stat_median
+    listings = snapshot.get("listings", [])
+
+    # Build peer groups: community + purpose + bedrooms
+    peer_groups = defaultdict(list)
+    for l in listings:
+        if l.get('price_num') and l.get('community') and l.get('bedrooms') is not None:
+            key = (l['community'], l['purpose'], l['bedrooms'])
+            peer_groups[key].append(l)
+
+    # Also build sub-community peer groups for tighter comps
+    sub_peer_groups = defaultdict(list)
+    for l in listings:
+        if l.get('price_num') and l.get('sub_community') and l.get('bedrooms') is not None:
+            key = (l['sub_community'], l['community'], l['purpose'], l['bedrooms'])
+            sub_peer_groups[key].append(l)
+
+    def score_listing(l, peers, peer_level):
+        """Score 0-100 for deal quality. Higher = better candidate for spend."""
+        prices = sorted([p['price_num'] for p in peers])
+        med = stat_median(prices)
+        avg = sum(prices) / len(prices)
+        price = l['price_num']
+        gap_pct = round((price - med) / med * 100, 1) if med else 0
+        rank = sum(1 for p in prices if p < price) + 1
+        rank_pctile = round((1 - (rank - 1) / len(prices)) * 100) if len(prices) else 50
+        promoted = sum(1 for p in peers if p.get('promo'))
+
+        score = 50
+        # Price position (biggest weight)
+        if rank == 1 and len(prices) >= 3: score += 25
+        elif rank_pctile >= 80: score += 20
+        elif rank_pctile >= 60: score += 10
+        elif rank_pctile <= 30: score -= 15
+        # Gap from median
+        if gap_pct < 0: score += min(abs(gap_pct) * 0.8, 15)
+        if gap_pct > 10: score -= min(gap_pct * 0.8, 20)
+        # DOM
+        dom = l.get('dom')
+        if dom is not None:
+            if dom < 7: score += 12
+            elif dom < 21: score += 6
+            if dom > 30: score -= 10
+            if dom > 60: score -= 15
+        # Peer set quality
+        if len(prices) >= 10: score += 3
+        if len(prices) < 3: score -= 8
+        # Competition
+        if promoted == 0 and len(prices) >= 3: score += 5
+
+        score = max(0, min(100, round(score)))
+
+        # Verdict
+        verdict = 'Monitor'
+        if score >= 65: verdict = 'Signature'
+        elif score >= 50: verdict = 'Hot'
+        elif gap_pct > 10 and (dom or 0) > 14: verdict = 'Price first'
+        if dom and dom > 45 and gap_pct > 5: verdict = 'Price first'
+        if gap_pct > 20: verdict = 'Price first'
+
+        return {
+            'listing_id': l.get('listing_id'),
+            'url': l.get('url'),
+            'agent': l.get('agent') or 'Unknown',
+            'community': l.get('community'),
+            'sub_community': l.get('sub_community'),
+            'beds': l.get('bedrooms'),
+            'type': l.get('type'),
+            'price': l['price_num'],
+            'title': l.get('title', ''),
+            'peer_median': int(med),
+            'market_avg': int(avg),
+            'market_count': len(prices),
+            'peer_level': peer_level,
+            'gap_pct': gap_pct,
+            'rank': rank,
+            'dom': dom,
+            'promo': l.get('promo'),
+            'promoted_peers': promoted,
+            'score': score,
+            'action': verdict,
+        }
+
+    results = {'sale': [], 'rent': []}
+    for l in listings:
+        if not l.get('price_num') or l.get('bedrooms') is None:
+            continue
+        # Try sub-community peers first (tighter comp)
+        sub_key = (l.get('sub_community'), l.get('community'), l['purpose'], l['bedrooms'])
+        comm_key = (l.get('community'), l['purpose'], l['bedrooms'])
+        if l.get('sub_community') and sub_key in sub_peer_groups and len(sub_peer_groups[sub_key]) >= 3:
+            peers = sub_peer_groups[sub_key]
+            peer_level = f"{l['sub_community']} · {l['bedrooms'] if l['bedrooms'] else 'Studio'} BR"
+        elif comm_key in peer_groups and len(peer_groups[comm_key]) >= 2:
+            peers = peer_groups[comm_key]
+            peer_level = f"{l['community']} · {l['bedrooms'] if l['bedrooms'] else 'Studio'} BR"
+        else:
+            continue
+        scored = score_listing(l, peers, peer_level)
+        results[l['purpose']].append(scored)
+
+    # Sort and categorize
+    opps = {}
+    for purpose in ['sale', 'rent']:
+        all_scored = results[purpose]
+        underpriced = sorted([s for s in all_scored if s['gap_pct'] < -5 and s['score'] >= 50], key=lambda x: -x['score'])
+        overpriced = sorted([s for s in all_scored if s['gap_pct'] > 10], key=lambda x: x['gap_pct'], reverse=True)
+        stale = sorted([s for s in all_scored if (s['dom'] or 0) >= 30], key=lambda x: -(x['dom'] or 0))
+        opps[purpose] = {
+            'underpriced': underpriced[:50],
+            'overpriced': overpriced[:50],
+            'stale': stale[:50],
+        }
+
+    # Coverage gaps: large market communities where Huspy has low share
+    # (this will be filled after market enrichment if available)
+    coverage_gaps = []
+
+    summary = {
+        'sale': {'underpriced': len(opps['sale']['underpriced']), 'overpriced': len(opps['sale']['overpriced']), 'stale': len(opps['sale']['stale'])},
+        'rent': {'underpriced': len(opps['rent']['underpriced']), 'overpriced': len(opps['rent']['overpriced']), 'stale': len(opps['rent']['stale'])},
+        'coverage_gaps_count': 0,
+    }
+
+    return {'sale': opps['sale'], 'rent': opps['rent'], 'coverage_gaps': coverage_gaps, 'summary': summary}
+
+
+def compute_peer_medians(snapshot: dict) -> dict:
+    """Compute peer median prices per community + bed count for the snapshot."""
+    from statistics import median as stat_median
+    listings = snapshot.get("listings", [])
+    peer_groups = defaultdict(list)
+    for l in listings:
+        if l.get('price_num') and l.get('community') and l.get('bedrooms') is not None:
+            key = (l['community'], l['purpose'], l['bedrooms'])
+            peer_groups[key].append(l['price_num'])
+
+    medians = {}
+    for (comm, purpose, beds), prices in peer_groups.items():
+        if len(prices) < 2:
+            continue
+        med = int(stat_median(prices))
+        medians.setdefault(purpose, {}).setdefault(comm, {})[str(beds) if beds > 0 else 'Studio'] = {
+            'median': med,
+            'count': len(prices),
+            'min': min(prices),
+            'max': max(prices),
+        }
+    return medians
+
+
 def transform_snapshot(snapshot: dict) -> dict:
     """Transform raw snapshot into the dashboard schema."""
     listings = snapshot.get("listings", [])
@@ -182,6 +335,10 @@ def transform_snapshot(snapshot: dict) -> dict:
 
         return result
 
+    # Compute opportunities and peer medians
+    opportunities = compute_opportunities(snapshot)
+    peer_medians = compute_peer_medians(snapshot)
+
     return {
         "date": date_str,
         "sale": {
@@ -192,6 +349,8 @@ def transform_snapshot(snapshot: dict) -> dict:
             "total": len(rent_listings),
             "by_community": build_community_data(rent_listings, "rent"),
         },
+        "opportunities": opportunities,
+        "peer_medians": peer_medians,
     }
 
 
