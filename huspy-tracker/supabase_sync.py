@@ -363,6 +363,28 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
     opportunities = compute_opportunities(snapshot, market_data=market_data)
     peer_medians = compute_peer_medians(snapshot)
 
+    # Compact listing-level data for agent drill-down
+    # Format: [agent, community, sub_community, type, beds, price, dom, promo, psqft, sqft, purpose, title, url]
+    listing_rows = []
+    for l in listings:
+        if not l.get('agent'):
+            continue
+        listing_rows.append([
+            l.get('agent', ''),
+            l.get('community', ''),
+            l.get('sub_community', ''),
+            l.get('type', ''),
+            l.get('bedrooms'),
+            l.get('price_num', 0),
+            l.get('dom'),
+            l.get('promo') or '',
+            l.get('price_sqft'),
+            l.get('size_sqft'),
+            l.get('purpose', ''),
+            l.get('title', ''),
+            l.get('url', ''),
+        ])
+
     return {
         "date": date_str,
         "sale": {
@@ -375,6 +397,8 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
         },
         "opportunities": opportunities,
         "peer_medians": peer_medians,
+        "listings": listing_rows,
+        "listings_schema": ["agent","community","sub_community","type","beds","price","dom","promo","psqft","sqft","purpose","title","url"],
     }
 
 
