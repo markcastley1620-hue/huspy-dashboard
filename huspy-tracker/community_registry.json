@@ -710,278 +710,253 @@
     "verified": false
   },
   "City of Arabia": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "city-of-arabia",
+    "bayut_full_path": "dubailand/city-of-arabia",
     "parent_community": "Dubailand",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Midtown": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "midtown",
+    "bayut_full_path": "dubai-production-city-impz/midtown",
     "parent_community": "Dubai Production City (IMPZ)",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "The Villa": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "the-villa",
+    "bayut_full_path": "dubailand/the-villa",
     "parent_community": "Dubailand",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Serena": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "serena",
+    "bayut_full_path": "dubailand/serena",
     "parent_community": "Dubailand",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Al Satwa": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "al-satwa",
+    "bayut_full_path": "bur-dubai/al-satwa",
     "parent_community": "Bur Dubai",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Dubai Land Residence Complex (DLRC)": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "dubai-land-residence-complex-dlrc",
+    "bayut_full_path": "dubailand/dubai-land-residence-complex-dlrc",
     "parent_community": "Dubailand",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Park Heights": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "park-heights",
+    "bayut_full_path": "dubai-hills-estate/park-heights",
     "parent_community": "Dubai Hills Estate",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Meydan Avenue": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "meydan-avenue",
+    "bayut_full_path": "meydan-city/meydan-avenue",
     "parent_community": "Meydan",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Wasl Gate": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "wasl-gate",
+    "bayut_full_path": "al-wasl/wasl-gate",
     "parent_community": "Al Wasl",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Al Barsha": {
-    "bayut_slug": null,
+    "bayut_slug": "al-barsha",
     "bayut_full_path": null,
     "parent_community": null,
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Uptown Motor City": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "uptown-motor-city",
+    "bayut_full_path": "motor-city/uptown-motor-city",
     "parent_community": "Motor City",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Meydan One": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "meydan-one",
+    "bayut_full_path": "meydan-city/meydan-one",
     "parent_community": "Meydan",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Emaar Beachfront": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "emaar-beachfront",
+    "bayut_full_path": "dubai-marina/emaar-beachfront",
     "parent_community": "Dubai Marina",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "District One": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "district-one",
+    "bayut_full_path": "mohammed-bin-rashid-city/district-one",
     "parent_community": "Mohammed Bin Rashid City (MBR City)",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "District 7": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "district-7",
+    "bayut_full_path": "jumeirah-village-circle-jvc/district-7",
     "parent_community": "Jumeirah Village Circle (JVC)",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Residential District": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "residential-district",
+    "bayut_full_path": "dubai-south/residential-district",
     "parent_community": "Dubai South",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "JVT District 2": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "jvt-district-2",
+    "bayut_full_path": "jumeirah-village-triangle-jvt/jvt-district-2",
     "parent_community": "Jumeirah Village Triangle (JVT)",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "District 11": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "district-11",
+    "bayut_full_path": "mohammed-bin-rashid-city/district-11",
     "parent_community": "Mohammed Bin Rashid City (MBR City)",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Falcon City of Wonders": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "falcon-city-of-wonders",
+    "bayut_full_path": "dubailand/falcon-city-of-wonders",
     "parent_community": "Dubailand",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Emaar South": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "emaar-south",
+    "bayut_full_path": "dubai-south/emaar-south",
     "parent_community": "Dubai South",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Meydan Horizon": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "meydan-horizon",
+    "bayut_full_path": "meydan-city/meydan-horizon",
     "parent_community": "Meydan",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Al Kifaf": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "al-kifaf",
+    "bayut_full_path": "bur-dubai/al-kifaf",
     "parent_community": "Bur Dubai",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Haven by Aldar": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "haven-by-aldar",
+    "bayut_full_path": "dubailand/haven-by-aldar",
     "parent_community": "Dubailand",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Barsha Heights (Tecom)": {
-    "bayut_slug": null,
-    "bayut_full_path": null,
+    "bayut_slug": "barsha-heights-tecom",
+    "bayut_full_path": "al-barsha/barsha-heights-tecom",
     "parent_community": "Al Barsha",
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   },
   "Dubai Industrial City": {
-    "bayut_slug": null,
+    "bayut_slug": "dubai-industrial-city",
     "bayut_full_path": null,
     "parent_community": null,
     "has_apartments": null,
     "has_townhouses": null,
     "has_villas": null,
     "last_scraped": null,
-    "verified": false,
-    "needs_slug": true
+    "verified": true
   }
 }
