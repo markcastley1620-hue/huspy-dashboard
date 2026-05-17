@@ -798,10 +798,29 @@
         </div>
       </div>
 
+      <!-- Second row: insights -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3" x-show="latest?.data?.opportunities">
+        <div class="rounded-2xl border border-accent/30 bg-accent/5 p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-accent font-semibold">🚨 Fresh Deals</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-accent" x-text="latest?.data?.opportunities?.new_underpriced?.[mode]?.length || 0"></div>
+          <div class="text-[11px] text-accent/70 mt-1">&lt;7 days + below market</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">🎯 Agent Efficiency</div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-heading" x-text="latest?.data?.opportunities?.agent_efficiency?.[mode]?.length || 0"></div>
+          <div class="text-[11px] text-muted mt-1">agents with spend</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">🗺 Top Opportunity Area</div>
+          <div class="text-[18px] font-bold mt-1 leading-tight text-heading truncate" x-text="(latest?.data?.opportunities?.community_heatmap?.[mode]?.[0]?.community || '—')"></div>
+          <div class="text-[11px] text-up mt-1 font-medium" x-text="(latest?.data?.opportunities?.community_heatmap?.[mode]?.[0]?.underpriced_pct || 0) + '% underpriced'"></div>
+        </div>
+      </div>
+
       <!-- Tabs -->
       <div class="flex overflow-x-auto scrollbar-hide rounded-lg border border-border p-0.5 bg-gray-50 w-fit max-w-full gap-0.5">
-        <template x-for="t in ['underpriced','overpriced','stale','wasted_overpriced','wasted_stale','spend_working']" :key="t">
-          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','overpriced':'Overpriced','stale':'Stale','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working'})[t]"></button>
+        <template x-for="t in ['underpriced','new_underpriced','overpriced','stale','wasted_overpriced','wasted_stale','spend_working','agent_efficiency','community_heatmap']" :key="t">
+          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','new_underpriced':'🚨 Fresh Deals','overpriced':'Overpriced','stale':'Stale','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working','agent_efficiency':'🎯 Agent Efficiency','community_heatmap':'🗺 Opportunity Map'})[t]"></button>
         </template>
       </div>
 
@@ -1076,6 +1095,118 @@
                 </tr>
               </template>
               <template x-if="!(latest?.data?.opportunities?.[mode]?.spend_working?.length)"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">No promoted listings with market data</td></tr></template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Fresh Deals: new underpriced listings (<=7 days, below market) -->
+      <div class="rounded-2xl border border-accent/30 bg-accent/5 overflow-hidden shadow-sm" x-show="oppTab==='new_underpriced'">
+        <div class="px-5 py-3 border-b border-accent/20 text-[11px] font-semibold uppercase tracking-wider text-accent">🚨 Fresh deals — listed in last 7 days, priced below market. Act fast.</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-accent/5">
+              <tr class="border-b border-accent/10">
+                <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Location</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Beds</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Price</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Market med</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Below mkt</th>
+                <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Recommend</th>
+                <th class="text-right px-5 py-2.5 font-semibold">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="(o, idx) in (latest?.data?.opportunities?.new_underpriced?.[mode] || [])" :key="'nu'+idx">
+                <tr class="border-b border-accent/10 hover:bg-accent/5">
+                  <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
+                  <td class="px-3 py-2.5"><div class="text-heading" x-text="o.sub_community || o.community"></div><div class="text-[10px] text-muted" x-text="o.type + ' · ' + o.community"></div></td>
+                  <td class="px-3 py-2.5 text-right" x-text="o.beds === 0 ? 'Studio' : o.beds + ' BR'"></td>
+                  <td class="px-3 py-2.5 text-right font-semibold" x-text="fmtAed(o.price)"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(o.market_median || o.market_avg)"></td>
+                  <td class="px-3 py-2.5 text-right text-up font-semibold" x-text="o.gap_pct + '%'"></td>
+                  <td class="px-3 py-2.5 text-right"><span class="inline-flex rounded-md bg-accent/10 text-accent px-2 py-0.5 text-[10px] font-semibold" x-text="o.dom + 'd'"></span></td>
+                  <td class="px-3 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.action?.includes('Signature') ? 'bg-purple-100 text-purple-700' : o.action?.includes('Hot') ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-600'" x-text="o.action"></span></td>
+                  <td class="px-5 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
+                </tr>
+              </template>
+              <template x-if="!(latest?.data?.opportunities?.new_underpriced?.[mode]?.length)"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">No fresh underpriced listings in the last 7 days</td></tr></template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Agent Spend Efficiency -->
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='agent_efficiency'">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">🎯 Agent spend efficiency — who’s deploying budget well?</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-gray-50">
+              <tr class="border-b border-border">
+                <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Total spend</th>
+                <th class="text-right px-3 py-2.5 font-semibold">✓ Working</th>
+                <th class="text-right px-3 py-2.5 font-semibold">⚠ Overpriced</th>
+                <th class="text-right px-3 py-2.5 font-semibold">⚠ Stale</th>
+                <th class="text-right px-5 py-2.5 font-semibold">Efficiency</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="(a, idx) in (latest?.data?.opportunities?.agent_efficiency?.[mode] || [])" :key="'ae'+idx">
+                <tr class="border-b border-border-subtle hover:bg-gray-50">
+                  <td class="px-5 py-2.5 font-medium cursor-pointer hover:text-accent" @click="selectAgent(a.agent)" x-text="a.agent"></td>
+                  <td class="px-3 py-2.5 text-right font-semibold" x-text="a.total_spend"></td>
+                  <td class="px-3 py-2.5 text-right text-up font-semibold" x-text="a.working"></td>
+                  <td class="px-3 py-2.5 text-right" :class="a.wasted_price > 0 ? 'text-down font-semibold' : 'text-muted'" x-text="a.wasted_price"></td>
+                  <td class="px-3 py-2.5 text-right" :class="a.wasted_stale > 0 ? 'text-amber-500 font-semibold' : 'text-muted'" x-text="a.wasted_stale"></td>
+                  <td class="px-5 py-2.5 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <div class="w-16 h-2 rounded-full bg-gray-100 overflow-hidden"><div class="h-full rounded-full bar-anim" :class="a.efficiency_pct >= 80 ? 'bg-up' : a.efficiency_pct >= 50 ? 'bg-amber-400' : 'bg-down'" :style="'width:' + a.efficiency_pct + '%'"></div></div>
+                      <span class="font-semibold w-10 text-right" :class="a.efficiency_pct >= 80 ? 'text-up' : a.efficiency_pct >= 50 ? 'text-amber-500' : 'text-down'" x-text="a.efficiency_pct + '%'"></span>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+              <template x-if="!(latest?.data?.opportunities?.agent_efficiency?.[mode]?.length)"><tr><td colspan="6" class="px-5 py-8 text-center text-muted">No agents with promoted listings</td></tr></template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Community Opportunity Heatmap -->
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='community_heatmap'">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">🗺 Community opportunity map — where spend has most ROI</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-gray-50">
+              <tr class="border-b border-border">
+                <th class="text-left px-5 py-2.5 font-semibold">Community</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Listings</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Underpriced</th>
+                <th class="text-right px-3 py-2.5 font-semibold">% Under</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Overpriced</th>
+                <th class="text-right px-5 py-2.5 font-semibold">Avg gap</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="(h, idx) in (latest?.data?.opportunities?.community_heatmap?.[mode] || [])" :key="'ch'+idx">
+                <tr class="border-b border-border-subtle hover:bg-gray-50 cursor-pointer" @click="selectCommunity(h.community)">
+                  <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" x-text="h.community"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" x-text="h.total"></td>
+                  <td class="px-3 py-2.5 text-right text-up font-semibold" x-text="h.underpriced"></td>
+                  <td class="px-3 py-2.5 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <div class="w-12 h-2 rounded-full bg-gray-100 overflow-hidden"><div class="h-full rounded-full bg-up bar-anim" :style="'width:' + h.underpriced_pct + '%'"></div></div>
+                      <span class="font-semibold text-up w-8 text-right" x-text="h.underpriced_pct + '%'"></span>
+                    </div>
+                  </td>
+                  <td class="px-3 py-2.5 text-right" :class="h.overpriced > 0 ? 'text-down font-semibold' : 'text-muted'" x-text="h.overpriced"></td>
+                  <td class="px-5 py-2.5 text-right font-medium" :class="h.avg_gap_pct < 0 ? 'text-up' : 'text-down'" x-text="(h.avg_gap_pct > 0 ? '+' : '') + h.avg_gap_pct + '%'"></td>
+                </tr>
+              </template>
+              <template x-if="!(latest?.data?.opportunities?.community_heatmap?.[mode]?.length)"><tr><td colspan="6" class="px-5 py-8 text-center text-muted">No community data</td></tr></template>
             </tbody>
           </table>
         </div>
