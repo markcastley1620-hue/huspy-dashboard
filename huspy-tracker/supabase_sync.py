@@ -121,10 +121,10 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
 
         score = max(0, min(100, round(score)))
 
-        # Verdict
+        # Verdict — clear spend recommendations (no ambiguity with existing status)
         verdict = 'Monitor'
-        if gap_pct < -10 and score >= 60: verdict = 'Signature'
-        elif gap_pct < -5 and score >= 50: verdict = 'Hot'
+        if gap_pct < -10 and score >= 60: verdict = 'Add Signature'
+        elif gap_pct < -5 and score >= 50: verdict = 'Add Hot'
         elif gap_pct > 15: verdict = 'Overpriced'
         elif gap_pct > 5 and (dom or 0) > 21: verdict = 'Price review'
         if dom and dom > 45 and gap_pct > 5: verdict = 'Price review'
