@@ -58,8 +58,8 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
     listings = snapshot.get("listings", [])
     mkt = market_data or {}
 
-    def get_market_benchmark(community, purpose, beds, ptype):
-        """Get market median/avg for a listing from market scraper data."""
+    def get_market_benchmark(community, purpose, beds, ptype, sub_community=None):
+        """Get market median/avg. Priority: sub-comm+type+bed > sub-comm+bed > comm+type+bed > comm+bed."""
         comm_data = mkt.get(purpose, {}).get(community, {})
         if not comm_data:
             return None, None, None, None
@@ -67,22 +67,31 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         bed_key = str(beds) if beds > 0 else 'Studio'
         bt_key = f"{bed_key}|{ptype}" if ptype else None
 
-        # Try bed+type first (tightest comp, most reliable)
+        # 1. Sub-community + type + bed (tightest)
+        if sub_community and ptype:
+            sub_key = f"{sub_community}|{bed_key}|{ptype}"
+            sub_data = comm_data.get('by_sub', {}).get(sub_key, {})
+            if sub_data.get('count', 0) >= 2:
+                return sub_data['median_price'], sub_data['median_price'], sub_data['count'], f"{sub_community} · {ptype} · {bed_key} BR (market)"
+
+        # 2. Sub-community + bed
+        if sub_community:
+            sub_bed_key = f"{sub_community}|{bed_key}"
+            sub_bed_data = comm_data.get('by_sub_bed', {}).get(sub_bed_key, {})
+            if sub_bed_data.get('count', 0) >= 2:
+                return sub_bed_data['median_price'], sub_bed_data['median_price'], sub_bed_data['count'], f"{sub_community} · {bed_key} BR (market)"
+
+        # 3. Community + type + bed
         if bt_key and bt_key in comm_data.get('by_bed_type', {}):
             bt = comm_data['by_bed_type'][bt_key]
             if bt.get('count', 0) >= 2:
                 return bt.get('median_price'), bt.get('avg_price'), bt.get('count', 0), f"{community} · {ptype} · {bed_key} BR (market)"
 
-        # Try bed only — but only if the listing has no type, or the bed group
-        # isn't dominated by a different property type
+        # 4. Community + bed (only if type mix is safe)
         if bed_key in comm_data.get('by_bed', {}):
             bd = comm_data['by_bed'][bed_key]
             if bd.get('count', 0) >= 3:
-                # Check if there's a type-specific group that covers most of the bed group
-                # If so, using the untyped group would be misleading for our listing's type
                 if ptype:
-                    # If a bed+type entry exists for a DIFFERENT type with most of the count,
-                    # the bed-only median is biased toward that other type — skip
                     other_typed_counts = sum(
                         v.get('count', 0)
                         for k, v in comm_data.get('by_bed_type', {}).items()
@@ -166,7 +175,7 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
             continue
 
         med, avg, count, peer_level = get_market_benchmark(
-            community, l['purpose'], l['bedrooms'], l.get('type'))
+            community, l['purpose'], l['bedrooms'], l.get('type'), l.get('sub_community'))
 
         if med is None:
             continue
@@ -506,11 +515,19 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
         if not comm_data:
             return None, None
 
-        # Try bed+type prices first (tightest comp)
-        bt = comm_data.get('by_bed_type', {}).get(bt_key, {})
-        market_prices = bt.get('prices', [])
+        sub_comm = l.get('sub_community')
 
-        # Fallback to bed-only prices
+        # Priority: sub-comm+type+bed > sub-comm+bed > comm+type+bed > comm+bed
+        market_prices = []
+        if sub_comm and ptype:
+            sub_key = f"{sub_comm}|{bed_key}|{ptype}"
+            market_prices = comm_data.get('by_sub', {}).get(sub_key, {}).get('prices', [])
+        if not market_prices and sub_comm:
+            sub_bed_key = f"{sub_comm}|{bed_key}"
+            market_prices = comm_data.get('by_sub_bed', {}).get(sub_bed_key, {}).get('prices', [])
+        if not market_prices:
+            bt = comm_data.get('by_bed_type', {}).get(bt_key, {})
+            market_prices = bt.get('prices', [])
         if not market_prices:
             bd = comm_data.get('by_bed', {}).get(bed_key, {})
             market_prices = bd.get('prices', [])

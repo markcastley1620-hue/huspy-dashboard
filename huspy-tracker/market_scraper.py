@@ -146,6 +146,8 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
     all_prices = []
     all_by_bed = {}
     all_by_bed_type = {}
+    all_by_sub = {}       # sub_community|bed|type -> [prices]
+    all_by_sub_bed = {}   # sub_community|bed -> [prices]
     total_market = 0
 
     for page in range(1, pages + 1):
@@ -201,11 +203,26 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
                 type_el = card.find(attrs={"aria-label": "Type"})
                 ptype = type_el.get_text(strip=True) if type_el else None
 
+                # Extract sub-community from location
+                loc_el = card.find(attrs={"aria-label": "Location"})
+                loc_text = loc_el.get_text(strip=True) if loc_el else ""
+                loc_parts = [p.strip() for p in loc_text.split(",") if p.strip()]
+                sub_comm = None
+                if len(loc_parts) >= 3:
+                    sub_comm = loc_parts[0]  # First part is usually tower/sub-community
+                elif len(loc_parts) == 2:
+                    sub_comm = loc_parts[0]
+
                 if beds is not None:
                     bed_key = str(beds) if beds > 0 else "Studio"
                     all_by_bed.setdefault(bed_key, []).append(price_val)
                     if ptype:
                         all_by_bed_type.setdefault(f"{bed_key}|{ptype}", []).append(price_val)
+                    # Sub-community level grouping
+                    if sub_comm and ptype:
+                        all_by_sub.setdefault(f"{sub_comm}|{bed_key}|{ptype}", []).append(price_val)
+                    if sub_comm:
+                        all_by_sub_bed.setdefault(f"{sub_comm}|{bed_key}", []).append(price_val)
 
         except Exception as e:
             print(f"    Error scraping {community} {purpose} p{page}: {e}")
@@ -236,6 +253,22 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
             "prices": sorted(prices),
         }
 
+    # Per sub-community+bed+type
+    by_sub = {}
+    for key, prices in all_by_sub.items():
+        by_sub[key] = {
+            "count": len(prices),
+            "median_price": int(stat_median(prices)),
+            "prices": sorted(prices),
+        }
+    by_sub_bed = {}
+    for key, prices in all_by_sub_bed.items():
+        by_sub_bed[key] = {
+            "count": len(prices),
+            "median_price": int(stat_median(prices)),
+            "prices": sorted(prices),
+        }
+
     return {
         "community": community,
         "purpose": "sale" if "sale" in purpose else "rent",
@@ -247,6 +280,8 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
         "max_price": max(all_prices) if all_prices else 0,
         "by_bed": by_bed,
         "by_bed_type": by_bed_type,
+        "by_sub": by_sub,
+        "by_sub_bed": by_sub_bed,
     }
 
 
