@@ -371,27 +371,61 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
     }
 
 
-def compute_peer_medians(snapshot: dict) -> dict:
-    """Compute peer median prices per community + bed count for the snapshot."""
+def compute_peer_medians(snapshot: dict, market_data: dict = None) -> dict:
+    """Compute market median prices per community + bed + type.
+    Uses actual market data when available, falls back to Huspy peer medians."""
     from statistics import median as stat_median
+    mkt = market_data or {}
     listings = snapshot.get("listings", [])
-    peer_groups = defaultdict(list)
+
+    # Build Huspy peer groups as fallback
+    huspy_groups = defaultdict(list)
     for l in listings:
         if l.get('price_num') and l.get('community') and l.get('bedrooms') is not None:
             key = (l['community'], l['purpose'], l['bedrooms'])
-            peer_groups[key].append(l['price_num'])
+            huspy_groups[key].append(l['price_num'])
 
     medians = {}
-    for (comm, purpose, beds), prices in peer_groups.items():
-        if len(prices) < 2:
-            continue
-        med = int(stat_median(prices))
-        medians.setdefault(purpose, {}).setdefault(comm, {})[str(beds) if beds > 0 else 'Studio'] = {
-            'median': med,
-            'count': len(prices),
-            'min': min(prices),
-            'max': max(prices),
-        }
+    for (comm, purpose, beds), huspy_prices in huspy_groups.items():
+        bed_key = str(beds) if beds > 0 else 'Studio'
+        comm_mkt = mkt.get(purpose, {}).get(comm, {})
+
+        # Try market bed+type medians, then bed-only, then Huspy fallback
+        best_median = None
+        best_count = 0
+        best_source = 'huspy'
+
+        # Market bed-level data
+        mkt_bed = comm_mkt.get('by_bed', {}).get(bed_key, {})
+        if mkt_bed.get('count', 0) >= 2:
+            best_median = mkt_bed['median_price']
+            best_count = mkt_bed['count']
+            best_source = 'market'
+
+        # Huspy fallback
+        if best_median is None and len(huspy_prices) >= 2:
+            best_median = int(stat_median(huspy_prices))
+            best_count = len(huspy_prices)
+            best_source = 'huspy'
+
+        if best_median is not None:
+            medians.setdefault(purpose, {}).setdefault(comm, {})[bed_key] = {
+                'median': best_median,
+                'count': best_count,
+                'source': best_source,
+            }
+
+            # Also add sub-community medians from market data
+            for sk, sv in comm_mkt.get('by_sub_bed', {}).items():
+                parts = sk.split('|')
+                if len(parts) == 2 and parts[1] == bed_key and sv.get('count', 0) >= 2:
+                    sub_name = parts[0]
+                    medians[purpose][comm].setdefault('_subs', {}).setdefault(sub_name, {})[bed_key] = {
+                        'median': sv['median_price'],
+                        'count': sv['count'],
+                        'source': 'market',
+                    }
+
     return medians
 
 
@@ -533,7 +567,7 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
 
     # Compute opportunities (market-based) and Huspy peer medians
     opportunities = compute_opportunities(snapshot, market_data=market_data)
-    peer_medians = compute_peer_medians(snapshot)
+    peer_medians = compute_peer_medians(snapshot, market_data=market_data)
 
     # Compute price rank against MARKET prices (not Huspy-only)
     # Uses individual prices from market scraper sample
