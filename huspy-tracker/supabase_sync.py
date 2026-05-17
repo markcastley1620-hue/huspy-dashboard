@@ -51,19 +51,25 @@ def compute_opportunities(snapshot: dict) -> dict:
     from statistics import median as stat_median
     listings = snapshot.get("listings", [])
 
-    # Build peer groups: community + purpose + bedrooms
-    peer_groups = defaultdict(list)
+    # Build peer groups: community + purpose + bedrooms + type
+    # Primary: community + type (e.g. Arabian Ranches · Townhouse · 3BR)
+    # Fallback: community only (e.g. Arabian Ranches · 3BR) — mixes types
+    peer_groups_typed = defaultdict(list)   # (community, purpose, beds, type)
+    peer_groups_untyped = defaultdict(list) # (community, purpose, beds)
     for l in listings:
         if l.get('price_num') and l.get('community') and l.get('bedrooms') is not None:
-            key = (l['community'], l['purpose'], l['bedrooms'])
-            peer_groups[key].append(l)
+            peer_groups_untyped[(l['community'], l['purpose'], l['bedrooms'])].append(l)
+            if l.get('type'):
+                peer_groups_typed[(l['community'], l['purpose'], l['bedrooms'], l['type'])].append(l)
 
-    # Also build sub-community peer groups for tighter comps
-    sub_peer_groups = defaultdict(list)
+    # Sub-community peer groups (typed + untyped)
+    sub_peer_typed = defaultdict(list)
+    sub_peer_untyped = defaultdict(list)
     for l in listings:
         if l.get('price_num') and l.get('sub_community') and l.get('bedrooms') is not None:
-            key = (l['sub_community'], l['community'], l['purpose'], l['bedrooms'])
-            sub_peer_groups[key].append(l)
+            sub_peer_untyped[(l['sub_community'], l['community'], l['purpose'], l['bedrooms'])].append(l)
+            if l.get('type'):
+                sub_peer_typed[(l['sub_community'], l['community'], l['purpose'], l['bedrooms'], l['type'])].append(l)
 
     def score_listing(l, peers, peer_level):
         """Score 0-100 for deal quality. Higher = better candidate for spend."""
@@ -135,18 +141,43 @@ def compute_opportunities(snapshot: dict) -> dict:
     for l in listings:
         if not l.get('price_num') or l.get('bedrooms') is None:
             continue
-        # Try sub-community peers first (tighter comp)
-        sub_key = (l.get('sub_community'), l.get('community'), l['purpose'], l['bedrooms'])
-        comm_key = (l.get('community'), l['purpose'], l['bedrooms'])
-        if l.get('sub_community') and sub_key in sub_peer_groups and len(sub_peer_groups[sub_key]) >= 3:
-            peers = sub_peer_groups[sub_key]
-            peer_level = f"{l['sub_community']} · {l['bedrooms'] if l['bedrooms'] else 'Studio'} BR"
-        elif comm_key in peer_groups and len(peer_groups[comm_key]) >= 2:
-            peers = peer_groups[comm_key]
-            peer_level = f"{l['community']} · {l['bedrooms'] if l['bedrooms'] else 'Studio'} BR"
+        beds_label = f"{l['bedrooms']} BR" if l['bedrooms'] else 'Studio'
+        ptype = l.get('type') or ''
+
+        # Peer selection priority (most specific → least specific):
+        # 1. Sub-community + type (e.g. Al Reem · Townhouse · 3BR)
+        # 2. Community + type (e.g. Arabian Ranches · Townhouse · 3BR)
+        # 3. Sub-community untyped (e.g. Al Reem · 3BR)
+        # 4. Community untyped (e.g. Arabian Ranches · 3BR)
+        peers = None
+        peer_level = ''
+        sub_typed_key = (l.get('sub_community'), l.get('community'), l['purpose'], l['bedrooms'], ptype)
+        comm_typed_key = (l.get('community'), l['purpose'], l['bedrooms'], ptype)
+        sub_untyped_key = (l.get('sub_community'), l.get('community'), l['purpose'], l['bedrooms'])
+        comm_untyped_key = (l.get('community'), l['purpose'], l['bedrooms'])
+
+        if l.get('sub_community') and ptype and sub_typed_key in sub_peer_typed and len(sub_peer_typed[sub_typed_key]) >= 3:
+            peers = sub_peer_typed[sub_typed_key]
+            peer_level = f"{l['sub_community']} · {ptype} · {beds_label}"
+        elif ptype and comm_typed_key in peer_groups_typed and len(peer_groups_typed[comm_typed_key]) >= 3:
+            peers = peer_groups_typed[comm_typed_key]
+            peer_level = f"{l['community']} · {ptype} · {beds_label}"
+        elif l.get('sub_community') and sub_untyped_key in sub_peer_untyped and len(sub_peer_untyped[sub_untyped_key]) >= 3:
+            peers = sub_peer_untyped[sub_untyped_key]
+            peer_level = f"{l['sub_community']} · {beds_label}"
+        elif comm_untyped_key in peer_groups_untyped and len(peer_groups_untyped[comm_untyped_key]) >= 3:
+            peers = peer_groups_untyped[comm_untyped_key]
+            peer_level = f"{l['community']} · {beds_label}"
         else:
             continue
+        # Flag if peer group mixes property types (less reliable comparison)
+        peer_types = set(p.get('type') for p in peers if p.get('type'))
+        mixed_types = len(peer_types) > 1
+        # Skip if mixed types and very small peer set — comparison is unreliable
+        if mixed_types and len(peers) < 5:
+            continue
         scored = score_listing(l, peers, peer_level)
+        scored['mixed_types'] = mixed_types
         results[l['purpose']].append(scored)
 
     # Sort and categorize
@@ -157,9 +188,9 @@ def compute_opportunities(snapshot: dict) -> dict:
         overpriced = sorted([s for s in all_scored if s['gap_pct'] > 10], key=lambda x: x['gap_pct'], reverse=True)
         stale = sorted([s for s in all_scored if (s['dom'] or 0) >= 30], key=lambda x: -(x['dom'] or 0))
         opps[purpose] = {
-            'underpriced': underpriced[:50],
-            'overpriced': overpriced[:50],
-            'stale': stale[:50],
+            'underpriced': underpriced,
+            'overpriced': overpriced,
+            'stale': stale,
         }
 
     # Coverage gaps: large market communities where Huspy has low share
