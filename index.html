@@ -820,8 +820,8 @@
 
       <!-- Tabs -->
       <div class="flex overflow-x-auto scrollbar-hide rounded-lg border border-border p-0.5 bg-gray-50 w-fit max-w-full gap-0.5">
-        <template x-for="t in ['underpriced','new_underpriced','overpriced','stale','wasted_overpriced','wasted_stale','spend_working','agent_efficiency','community_heatmap']" :key="t">
-          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','new_underpriced':'🚨 Fresh Deals','overpriced':'Overpriced','stale':'Stale','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working','agent_efficiency':'🎯 Agent Efficiency','community_heatmap':'🗺 Opportunity Map'})[t]"></button>
+        <template x-for="t in ['underpriced','new_underpriced','overpriced','stale','sole_listings','wasted_overpriced','wasted_stale','spend_working','agent_efficiency','community_heatmap']" :key="t">
+          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','new_underpriced':'🚨 Fresh Deals','overpriced':'Overpriced','stale':'Stale','sole_listings':'🏆 1/1 No Competition','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working','agent_efficiency':'🎯 Agent Efficiency','community_heatmap':'🗺 Opportunity Map'})[t]"></button>
         </template>
       </div>
 
@@ -963,6 +963,40 @@
       </div>
 
       <!-- Coverage gaps -->
+
+      <!-- Sole listings: 1/1 no competition -->
+      <div class="rounded-2xl border border-accent/30 bg-white overflow-hidden shadow-sm" x-show="oppTab==='sole_listings'">
+        <div class="px-5 py-3 border-b border-accent/20 text-[11px] font-semibold uppercase tracking-wider text-accent">🏆 Only Huspy listing in sub-community · type · bed — no competition on Bayut</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-gray-50">
+              <tr class="border-b border-border">
+                <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Location</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Beds</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Price</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Position</th>
+                <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
+                <th class="text-right px-5 py-2.5 font-semibold">Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="(o, idx) in (latest?.data?.opportunities?.sole_listings?.[mode] || [])" :key="'sl'+idx">
+                <tr class="border-b border-border-subtle hover:bg-gray-50">
+                  <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
+                  <td class="px-3 py-2.5"><div class="text-heading" x-text="o.sub_community"></div><div class="text-[10px] text-muted" x-text="o.type + ' · ' + o.community"></div></td>
+                  <td class="px-3 py-2.5 text-right" x-text="o.beds === 0 ? 'Studio' : o.beds + ' BR'"></td>
+                  <td class="px-3 py-2.5 text-right font-semibold" x-text="fmtAed(o.price)"></td>
+                  <td class="px-3 py-2.5"><span class="inline-flex rounded-md bg-accent/10 text-accent px-2 py-0.5 text-[10px] font-semibold">1/1 — sole listing</span></td>
+                  <td class="px-3 py-2.5 text-right" :class="(o.dom||0) > 30 ? 'text-down font-semibold' : ''" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                </tr>
+              </template>
+              <template x-if="!(latest?.data?.opportunities?.sole_listings?.[mode]?.length)"><tr><td colspan="7" class="px-5 py-8 text-center text-muted">All listings have market comparables</td></tr></template>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <!-- Wasted spend: overpriced -->
       <div class="rounded-2xl border border-down/30 bg-down/5 overflow-hidden shadow-sm" x-show="oppTab==='wasted_overpriced'">
