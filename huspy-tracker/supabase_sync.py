@@ -226,6 +226,71 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
             'spend_working': spend_working,
         }
 
+    # === FEATURE 1: Agent spend efficiency ===
+    agent_efficiency = {}
+    for purpose in ['sale', 'rent']:
+        promo_by_agent = defaultdict(lambda: {'working': 0, 'wasted_price': 0, 'wasted_stale': 0, 'total': 0})
+        for s in promoted_results[purpose]:
+            agent = s.get('agent', 'Unknown')
+            promo_by_agent[agent]['total'] += 1
+            if s['gap_pct'] > 5:
+                promo_by_agent[agent]['wasted_price'] += 1
+            elif (s['dom'] or 0) >= 30:
+                promo_by_agent[agent]['wasted_stale'] += 1
+            else:
+                promo_by_agent[agent]['working'] += 1
+        agent_eff_list = []
+        for agent, counts in promo_by_agent.items():
+            eff_pct = round(counts['working'] / counts['total'] * 100) if counts['total'] else 0
+            agent_eff_list.append({
+                'agent': agent,
+                'total_spend': counts['total'],
+                'working': counts['working'],
+                'wasted_price': counts['wasted_price'],
+                'wasted_stale': counts['wasted_stale'],
+                'efficiency_pct': eff_pct,
+            })
+        agent_efficiency[purpose] = sorted(agent_eff_list, key=lambda x: -x['total_spend'])
+
+    # === FEATURE 2: New listing alerts (underpriced new listings) ===
+    # Flag listings with low DOM that are priced below market — time-sensitive
+    new_and_underpriced = {}
+    for purpose in ['sale', 'rent']:
+        fresh = []
+        for s in results[purpose]:
+            dom = s.get('dom')
+            if dom is not None and dom <= 7 and s['gap_pct'] < -5:
+                fresh.append(s)
+        new_and_underpriced[purpose] = sorted(fresh, key=lambda x: x['gap_pct'])
+
+    # === FEATURE 3: Community opportunity heatmap ===
+    # % of listings underpriced per community — where spend has most ROI
+    comm_heatmap = {}
+    for purpose in ['sale', 'rent']:
+        comm_counts = defaultdict(lambda: {'total': 0, 'underpriced': 0, 'overpriced': 0, 'avg_gap': []})
+        for s in results[purpose]:
+            comm = s.get('community', 'Unknown')
+            comm_counts[comm]['total'] += 1
+            comm_counts[comm]['avg_gap'].append(s['gap_pct'])
+            if s['gap_pct'] < -5:
+                comm_counts[comm]['underpriced'] += 1
+            elif s['gap_pct'] > 10:
+                comm_counts[comm]['overpriced'] += 1
+        heatmap_list = []
+        for comm, c in comm_counts.items():
+            if c['total'] < 3:
+                continue
+            avg_gap = round(sum(c['avg_gap']) / len(c['avg_gap']), 1) if c['avg_gap'] else 0
+            heatmap_list.append({
+                'community': comm,
+                'total': c['total'],
+                'underpriced': c['underpriced'],
+                'overpriced': c['overpriced'],
+                'underpriced_pct': round(c['underpriced'] / c['total'] * 100),
+                'avg_gap_pct': avg_gap,
+            })
+        comm_heatmap[purpose] = sorted(heatmap_list, key=lambda x: -x['underpriced_pct'])
+
     # Coverage gaps
     coverage_gaps = []
 
@@ -249,7 +314,13 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         'coverage_gaps_count': 0,
     }
 
-    return {'sale': opps['sale'], 'rent': opps['rent'], 'coverage_gaps': coverage_gaps, 'summary': summary}
+    return {
+        'sale': opps['sale'], 'rent': opps['rent'],
+        'coverage_gaps': coverage_gaps, 'summary': summary,
+        'agent_efficiency': agent_efficiency,
+        'new_underpriced': new_and_underpriced,
+        'community_heatmap': comm_heatmap,
+    }
 
 
 def compute_peer_medians(snapshot: dict) -> dict:
