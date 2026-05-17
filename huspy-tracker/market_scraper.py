@@ -357,6 +357,14 @@ SHORT_SLUGS = {
     "DAMAC Hills 2 (Akoya by DAMAC)": "damac-hills-2",
 }
 
+
+# Full URL paths for communities that are nested under parent areas on Bayut
+# Format: community_name -> "parent_slug/community_slug"
+FULL_PATH_SLUGS = {}
+for _sub, _parent in SUB_TO_PARENT.items():
+    if _sub in COMMUNITY_SLUGS and _parent in COMMUNITY_SLUGS:
+        FULL_PATH_SLUGS[_sub] = f"{COMMUNITY_SLUGS[_parent]}/{COMMUNITY_SLUGS[_sub]}"
+
 def _slugify(name):
     """Convert a sub-community name to a Bayut URL slug."""
     import re
@@ -452,7 +460,7 @@ def scrape_important_subs(snapshot, community_slugs, market_data, concurrency=10
 
     tasks = []
     for (comm, sub, purpose), count in important:
-        comm_slug = community_slugs.get(comm)
+        comm_slug = FULL_PATH_SLUGS.get(comm) or community_slugs.get(comm)
         if not comm_slug:
             continue
         sub_slug = _slugify(sub)
