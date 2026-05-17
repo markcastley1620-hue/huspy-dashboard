@@ -154,6 +154,9 @@ def parse_listing_card(card) -> dict | None:
     elif "Hot" in card_text:
         promo = "Hot"
 
+    # TruBroker verification (agent badge, not spend)
+    trubroker = "TruBroker" in card_text
+
     # Price per sqft
     psqft = None
     if price_num and size and size > 0:
@@ -181,7 +184,8 @@ def parse_listing_card(card) -> dict | None:
         "listed_date": listed_date,
         "dom": dom,
         "promo": promo,
-        "verified": bool(card.find(attrs={"aria-label": "TruBroker"})),
+        "verified": bool(card.find(attrs={"aria-label": "TruBroker"})) or trubroker,
+        "trubroker": trubroker,
         "off_plan": "Off-Plan" in card_text,
     }
 
