@@ -293,6 +293,7 @@ def scrape_market_data(communities: dict = None, concurrency: int = 5) -> dict:
     print(f"⬡ Market Scraper — {len(communities)} communities × 2 purposes")
     start = time.time()
 
+    pages_per = 4  # 4 pages = ~96 sample listings per community for better sub-community coverage
     tasks = []
     for comm, slug in communities.items():
         tasks.append((comm, slug, "for-sale"))
@@ -303,7 +304,7 @@ def scrape_market_data(communities: dict = None, concurrency: int = 5) -> dict:
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
         futures = {}
         for comm, slug, purpose in tasks:
-            f = executor.submit(scrape_community_market, comm, slug, purpose, pages=2)
+            f = executor.submit(scrape_community_market, comm, slug, purpose, pages=pages_per)
             futures[f] = (comm, purpose)
 
         completed = 0
@@ -318,7 +319,7 @@ def scrape_market_data(communities: dict = None, concurrency: int = 5) -> dict:
                 print(f"  Progress: {completed}/{len(tasks)}")
 
     elapsed = time.time() - start
-    credits = len(tasks) * 2 * 75  # 2 pages per task
+    credits = len(tasks) * pages_per * 75
 
     results["meta"] = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
