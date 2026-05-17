@@ -235,11 +235,25 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         if med is None:
             continue
 
-        # Only include in opportunities if benchmark is sub-community level
+        # Require sub-community level OR community+type+bed when sub-community page
+        # doesn't have this property type (Bayut doesn't always list townhouses/villas on sub-comm pages)
         first_part = peer_level.replace(' (market)', '').split(' · ')[0]
         is_sub_level = first_part not in all_community_names
         if not is_sub_level:
-            continue
+            # Allow community+type+bed fallback ONLY if we have sub-comm data for OTHER types
+            # in this sub-community (meaning the sub-comm page exists but doesn't list this type)
+            sub = l.get('sub_community')
+            if sub:
+                cd = mkt.get(l['purpose'], {}).get(community, {})
+                has_any_sub_data = any(
+                    sub.lower() in k.split('|')[0].lower() or k.split('|')[0].lower() in sub.lower()
+                    for k in cd.get('by_sub', {}).keys()
+                )
+                if not has_any_sub_data:
+                    continue  # No sub-comm data at all — skip entirely
+                # Sub-comm exists but not for this type — community+type is acceptable
+            else:
+                continue
 
         scored = score_listing(l, med, avg, count, peer_level)
         results[l['purpose']].append(scored)
@@ -300,7 +314,17 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         first_part = peer_level.replace(' (market)', '').split(' · ')[0]
         is_sub_level = first_part not in all_community_names
         if not is_sub_level:
-            continue
+            sub = l.get('sub_community')
+            if sub:
+                cd = mkt.get(l['purpose'], {}).get(community, {})
+                has_any_sub_data = any(
+                    sub.lower() in k.split('|')[0].lower() or k.split('|')[0].lower() in sub.lower()
+                    for k in cd.get('by_sub', {}).keys()
+                )
+                if not has_any_sub_data:
+                    continue
+            else:
+                continue
         scored = score_listing(l, med, avg, count, peer_level)
         promoted_results[l['purpose']].append(scored)
 
