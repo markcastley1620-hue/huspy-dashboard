@@ -236,7 +236,6 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
             continue
 
         # Only include in opportunities if benchmark is sub-community level
-        # Community-level comparisons are not reliable enough for spend decisions
         first_part = peer_level.replace(' (market)', '').split(' · ')[0]
         is_sub_level = first_part not in all_community_names
         if not is_sub_level:
@@ -244,6 +243,44 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
 
         scored = score_listing(l, med, avg, count, peer_level)
         results[l['purpose']].append(scored)
+
+    # Collect listings with no sub-community market data (only Huspy listing in that sub+type+bed)
+    sole_listings = {'sale': [], 'rent': []}
+    for l in listings:
+        if not l.get('price_num') or l.get('bedrooms') is None or not l.get('agent') or not l.get('community'):
+            continue
+        if l.get('promo'):
+            continue
+        sub = l.get('sub_community')
+        if not sub:
+            continue
+        community = l['community']
+        beds = l['bedrooms']
+        ptype = l.get('type', '')
+        bed_key = str(beds) if beds > 0 else 'Studio'
+        cd = mkt.get(l['purpose'], {}).get(community, {})
+        # Check if sub-community data exists for this bed+type
+        found = False
+        for k in cd.get('by_sub', {}).keys():
+            k_parts = k.split('|')
+            k_sub = k_parts[0].lower()
+            if (sub.lower() in k_sub or k_sub in sub.lower()) and len(k_parts) >= 2 and k_parts[1] == bed_key:
+                found = True
+                break
+        if not found:
+            sole_listings[l['purpose']].append({
+                'listing_id': l.get('listing_id'),
+                'url': l.get('url'),
+                'agent': l.get('agent'),
+                'community': community,
+                'sub_community': sub,
+                'beds': beds,
+                'type': ptype,
+                'price': l['price_num'],
+                'title': l.get('title', ''),
+                'dom': l.get('dom'),
+                'peer_level': f"{sub} · {ptype} · {bed_key} BR (sole listing)",
+            })
 
     # Score promoted listings separately (these were excluded from main results)
     promoted_results = {'sale': [], 'rent': []}
@@ -388,10 +425,13 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
             'spend_working': len(opps['rent']['spend_working']),
         },
         'coverage_gaps_count': 0,
+        'sole_listings_sale': len(sole_listings.get('sale', [])),
+        'sole_listings_rent': len(sole_listings.get('rent', [])),
     }
 
     return {
         'sale': opps['sale'], 'rent': opps['rent'],
+        'sole_listings': sole_listings,
         'coverage_gaps': coverage_gaps, 'summary': summary,
         'agent_efficiency': agent_efficiency,
         'new_underpriced': new_and_underpriced,
