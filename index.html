@@ -1386,7 +1386,7 @@ function dashboard() {
     },
 
     setMode(m) { this.mode = m; localStorage.setItem('huspy-mode', m); },
-    navigate(v) { this.view = v; this.search = ''; window.scrollTo(0, 0); },
+    navigate(v) { this.view = v; this.search = ''; this.agentDrillComm = null; if (!['community-detail','agent-detail','agent-community'].includes(v)) { this.selectedCommunity = null; this.selectedAgent = null; this.selectedBed = null; } window.scrollTo(0, 0); },
     block() { return this.latest?.data?.[this.mode] || null; },
     prevBlock() { return this.previous?.data?.[this.mode] || null; },
     fmt(n) { return n == null ? 'N/A' : new Intl.NumberFormat('en-US').format(n); },
@@ -1537,8 +1537,8 @@ function dashboard() {
       const max = Math.max(h, m, 1);
       return which === 'huspy' ? (h / max * 100) : (m / max * 100);
     },
-    selectCommunity(name) { this.selectedCommunity = name; this.selectedBed = null; this.view = 'community-detail'; window.scrollTo(0, 0); },
-    selectAgent(name) { this.selectedAgent = name; this.view = 'agent-detail'; window.scrollTo(0, 0); },
+    selectCommunity(name) { this.selectedCommunity = name; this.selectedBed = null; this.agentDrillComm = null; this.view = 'community-detail'; window.scrollTo(0, 0); },
+    selectAgent(name) { this.selectedAgent = name; this.agentDrillComm = null; this.selectedCommunity = null; this.view = 'agent-detail'; window.scrollTo(0, 0); },
     toggleBedFilter(bed) { this.selectedBed = this.selectedBed === bed ? null : bed; },
 
     // Parse compact listing array into object
