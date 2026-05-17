@@ -174,6 +174,23 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         scored = score_listing(l, med, avg, count, peer_level)
         results[l['purpose']].append(scored)
 
+    # Score promoted listings separately (these were excluded from main results)
+    promoted_results = {'sale': [], 'rent': []}
+    for l in listings:
+        if not l.get('price_num') or l.get('bedrooms') is None:
+            continue
+        if not l.get('agent') or not l.get('promo'):
+            continue
+        community = l.get('community')
+        if not community:
+            continue
+        med, avg, count, peer_level = get_market_benchmark(
+            community, l['purpose'], l['bedrooms'], l.get('type'))
+        if med is None:
+            continue
+        scored = score_listing(l, med, avg, count, peer_level)
+        promoted_results[l['purpose']].append(scored)
+
     # Sort and categorize
     opps = {}
     for purpose in ['sale', 'rent']:
@@ -181,18 +198,54 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         underpriced = sorted([s for s in all_scored if s['gap_pct'] < -5 and s['score'] >= 45], key=lambda x: -x['score'])
         overpriced = sorted([s for s in all_scored if s['gap_pct'] > 10], key=lambda x: x['gap_pct'], reverse=True)
         stale = sorted([s for s in all_scored if (s['dom'] or 0) >= 30], key=lambda x: -(x['dom'] or 0))
+
+        # Spend alerts: promoted listings with problems
+        promo_scored = promoted_results[purpose]
+        # Wasted spend: has Signature/Hot but overpriced vs market
+        wasted_overpriced = sorted(
+            [s for s in promo_scored if s['gap_pct'] > 5],
+            key=lambda x: x['gap_pct'], reverse=True
+        )
+        # Wasted spend: has Signature/Hot but stale (30+ DOM)
+        wasted_stale = sorted(
+            [s for s in promo_scored if (s['dom'] or 0) >= 30],
+            key=lambda x: -(x['dom'] or 0)
+        )
+        # Well-placed spend: promoted and competitively priced
+        spend_working = sorted(
+            [s for s in promo_scored if s['gap_pct'] <= 5 and (s['dom'] or 0) < 30],
+            key=lambda x: x['gap_pct']
+        )
+
         opps[purpose] = {
             'underpriced': underpriced,
             'overpriced': overpriced,
             'stale': stale,
+            'wasted_overpriced': wasted_overpriced,
+            'wasted_stale': wasted_stale,
+            'spend_working': spend_working,
         }
 
     # Coverage gaps
     coverage_gaps = []
 
     summary = {
-        'sale': {'underpriced': len(opps['sale']['underpriced']), 'overpriced': len(opps['sale']['overpriced']), 'stale': len(opps['sale']['stale'])},
-        'rent': {'underpriced': len(opps['rent']['underpriced']), 'overpriced': len(opps['rent']['overpriced']), 'stale': len(opps['rent']['stale'])},
+        'sale': {
+            'underpriced': len(opps['sale']['underpriced']),
+            'overpriced': len(opps['sale']['overpriced']),
+            'stale': len(opps['sale']['stale']),
+            'wasted_overpriced': len(opps['sale']['wasted_overpriced']),
+            'wasted_stale': len(opps['sale']['wasted_stale']),
+            'spend_working': len(opps['sale']['spend_working']),
+        },
+        'rent': {
+            'underpriced': len(opps['rent']['underpriced']),
+            'overpriced': len(opps['rent']['overpriced']),
+            'stale': len(opps['rent']['stale']),
+            'wasted_overpriced': len(opps['rent']['wasted_overpriced']),
+            'wasted_stale': len(opps['rent']['wasted_stale']),
+            'spend_working': len(opps['rent']['spend_working']),
+        },
         'coverage_gaps_count': 0,
     }
 
