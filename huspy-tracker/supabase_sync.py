@@ -58,6 +58,27 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
     listings = snapshot.get("listings", [])
     mkt = market_data or {}
 
+    def _fuzzy_sub_match(sub_community, by_sub_keys):
+        """Find best matching sub-community key via normalization."""
+        if not sub_community:
+            return None
+        sc = sub_community.lower().strip()
+        for key in by_sub_keys:
+            k_sub = key.split('|')[0].lower().strip()
+            # Exact match
+            if sc == k_sub:
+                return key
+            # One contains the other (e.g. 'Bay Central' matches 'Bay Central (Central Tower)')
+            if sc in k_sub or k_sub in sc:
+                return key
+            # Strip trailing numbers/tower designations (e.g. 'Al Majara' matches 'Al Majara 1')
+            import re
+            sc_base = re.sub(r'\s*(tower\s*)?\d+$', '', sc).strip()
+            k_base = re.sub(r'\s*(tower\s*)?\d+$', '', k_sub).strip()
+            if sc_base and k_base and (sc_base == k_base or sc_base in k_base or k_base in sc_base):
+                return key
+        return None
+
     def get_market_benchmark(community, purpose, beds, ptype, sub_community=None):
         """Get market median/avg. Priority: sub-comm+type+bed > sub-comm+bed > comm+type+bed > comm+bed."""
         comm_data = mkt.get(purpose, {}).get(community, {})
@@ -70,15 +91,33 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         # 1. Sub-community + type + bed (tightest)
         if sub_community and ptype:
             sub_key = f"{sub_community}|{bed_key}|{ptype}"
-            sub_data = comm_data.get('by_sub', {}).get(sub_key, {})
-            if sub_data.get('count', 0) >= 2:
+            sub_data = comm_data.get('by_sub', {}).get(sub_key)
+            # Try fuzzy match if exact miss
+            if not sub_data:
+                target = f"|{bed_key}|{ptype}"
+                candidates = [k for k in comm_data.get('by_sub', {}).keys() if k.endswith(target)]
+                matched_key = _fuzzy_sub_match(sub_community, candidates)
+                if matched_key:
+                    sub_data = comm_data['by_sub'][matched_key]
+                    sub_community_matched = matched_key.split('|')[0]
+                else:
+                    sub_community_matched = sub_community
+            else:
+                sub_community_matched = sub_community
+            if sub_data and sub_data.get('count', 0) >= 2:
                 return sub_data['median_price'], sub_data['median_price'], sub_data['count'], f"{sub_community} · {ptype} · {bed_key} BR (market)"
 
         # 2. Sub-community + bed
         if sub_community:
             sub_bed_key = f"{sub_community}|{bed_key}"
-            sub_bed_data = comm_data.get('by_sub_bed', {}).get(sub_bed_key, {})
-            if sub_bed_data.get('count', 0) >= 2:
+            sub_bed_data = comm_data.get('by_sub_bed', {}).get(sub_bed_key)
+            if not sub_bed_data:
+                target = f"|{bed_key}"
+                candidates = [k for k in comm_data.get('by_sub_bed', {}).keys() if k.endswith(target)]
+                matched_key = _fuzzy_sub_match(sub_community, candidates)
+                if matched_key:
+                    sub_bed_data = comm_data['by_sub_bed'][matched_key]
+            if sub_bed_data and sub_bed_data.get('count', 0) >= 2:
                 return sub_bed_data['median_price'], sub_bed_data['median_price'], sub_bed_data['count'], f"{sub_community} · {bed_key} BR (market)"
 
         # 3. Community + type + bed
