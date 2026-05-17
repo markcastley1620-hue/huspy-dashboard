@@ -107,8 +107,8 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
             if sub_data and sub_data.get('count', 0) >= 2:
                 return sub_data['median_price'], sub_data['median_price'], sub_data['count'], f"{sub_community} · {ptype} · {bed_key} BR (market)"
 
-        # 2. Sub-community + bed
-        if sub_community:
+        # 2. Sub-community + bed (ONLY if no type info — skip if type exists to avoid mixing types)
+        if sub_community and not ptype:
             sub_bed_key = f"{sub_community}|{bed_key}"
             sub_bed_data = comm_data.get('by_sub_bed', {}).get(sub_bed_key)
             if not sub_bed_data:
@@ -595,7 +595,7 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
         if sub_comm and ptype:
             sub_key = f"{sub_comm}|{bed_key}|{ptype}"
             market_prices = comm_data.get('by_sub', {}).get(sub_key, {}).get('prices', [])
-        if not market_prices and sub_comm:
+        if not market_prices and sub_comm and not ptype:
             sub_bed_key = f"{sub_comm}|{bed_key}"
             market_prices = comm_data.get('by_sub_bed', {}).get(sub_bed_key, {}).get('prices', [])
         if not market_prices:
