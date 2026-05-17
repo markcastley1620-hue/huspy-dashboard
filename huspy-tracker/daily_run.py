@@ -12,6 +12,8 @@ from scraper import scrape_all_listings, save_snapshot
 from market_scraper import scrape_market_data, save_market_data, scrape_important_subs, COMMUNITY_SLUGS
 from supabase_sync import transform_snapshot, upsert_to_supabase
 from report import generate_report
+from validator import validate_snapshot, print_report
+from scrape_runs import start_run, complete_run
 
 
 def _fill_missing_agents(result):
@@ -211,10 +213,24 @@ def run():
     print("⬡ NEXUS — Daily Huspy Run")
     print()
 
+    run_record = start_run("daily_full", "Automated daily run")
+    run_id = run_record["run_id"]
+    print(f"  Run ID: {run_id}")
+
     # 1. Scrape listings
-    result = scrape_all_listings(concurrency=10)
+    result = scrape_all_listings(concurrency=3)
     path = save_snapshot(result)
     print(f"  Saved: {path}")
+    print()
+
+    # 1a. Validate snapshot
+    print("Validating...")
+    registry = set(COMMUNITY_SLUGS.keys())
+    audit = validate_snapshot(result["listings"], community_registry=registry)
+    print_report(audit)
+    result["listings"] = audit["accepted_records"]  # Only use validated records
+    result["total_scraped"] = len(audit["accepted_records"])
+    save_snapshot(result)
     print()
 
     # 1b. Fill missing agents from detail pages
@@ -245,10 +261,17 @@ def run():
     print(f"  {'✓' if success else '✗'} Supabase sync")
     print()
 
-    # 3. Generate report
+    # 4. Generate report
     print("Generating report...")
     report = generate_report(date_str)
     print()
+
+    complete_run(run_id, status="success",
+        records_scraped=audit["total"],
+        records_accepted=audit["accepted"],
+        records_rejected=audit["rejected"],
+    )
+    print(f"  Run {run_id} complete: {audit['accepted']} accepted, {audit['rejected']} rejected")
 
     return report
 
