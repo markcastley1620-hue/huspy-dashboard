@@ -97,6 +97,47 @@ def _enrich_supabase_with_market(date_str, snapshot, market_data):
             else:
                 data['price_vs_market_pct'] = None
 
+            # Enrich sub-communities with per-bed market medians from community data
+            by_bed_mkt = m.get('by_bed', {})
+            by_bed_type_mkt = m.get('by_bed_type', {})
+            for sc_name, sc_data in data.get('sub_communities', {}).items():
+                sc_beds = sc_data.get('beds', {})
+                if not sc_beds:
+                    # No bed breakdown — use community avg as proxy
+                    sc_data['market_avg_price'] = m.get('avg_price') if mt and mt > 0 else None
+                    continue
+
+                # Compute weighted market avg from per-bed market medians
+                total_n = 0
+                weighted_sum = 0
+                for bed_key, bed_info in sc_beds.items():
+                    bed_count = bed_info.get('count', 0) if isinstance(bed_info, dict) else bed_info
+                    bk = 'Studio' if bed_key in ('0', 'Studio') else bed_key
+                    # Try bed+type market data first, then bed-only
+                    mkt_price = None
+                    # Check all type variants for this bed
+                    for bt_k, bt_v in by_bed_type_mkt.items():
+                        if bt_k.startswith(f"{bk}|") and bt_v.get('median_price'):
+                            mkt_price = bt_v['median_price']
+                            break
+                    if not mkt_price and bk in by_bed_mkt:
+                        mkt_price = by_bed_mkt[bk].get('median_price')
+                    if mkt_price and bed_count:
+                        weighted_sum += mkt_price * bed_count
+                        total_n += bed_count
+                        # Also set per-bed market avg
+                        if isinstance(bed_info, dict):
+                            bed_info['market_avg_price'] = mkt_price
+
+                if total_n > 0:
+                    sc_data['market_avg_price'] = int(weighted_sum / total_n)
+                else:
+                    sc_data['market_avg_price'] = m.get('avg_price') if mt and mt > 0 else None
+
+                # Set sub-community market count and share from community market total
+                # (exact sub-community market count isn't available)
+                sc_data['market_count'] = mt if mt and mt > 0 else None
+
     requests.patch(
         f'{SUPABASE_URL}/rest/v1/market_intel_snapshots?snapshot_date=eq.{date_str}',
         headers=headers, json={'data': existing}, timeout=15,
