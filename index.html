@@ -824,8 +824,8 @@
                   <td class="px-3 py-2.5 text-right" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
                   <td class="px-3 py-2.5">
                     <span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold"
-                          :class="o.action==='Signature' ? 'bg-purple-100 text-purple-700 border border-purple-200' : o.action==='Hot' ? 'bg-orange-100 text-orange-700 border border-orange-200' : 'bg-gray-100 text-gray-600'"
-                          x-text="o.action === 'Signature' ? '→ Signature' : o.action === 'Hot' ? '→ Hot' : o.action"></span>
+                          :class="o.action?.includes('Signature') ? 'bg-purple-100 text-purple-700 border border-purple-200' : o.action?.includes('Hot') ? 'bg-orange-100 text-orange-700 border border-orange-200' : 'bg-gray-100 text-gray-600'"
+                          x-text="o.action"></span>
                   </td>
                   <td class="px-5 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
                 </tr>
