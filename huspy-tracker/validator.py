@@ -45,12 +45,15 @@ ALLOWED_FREQUENCIES = {"yearly", "monthly", "weekly", "daily", None}
 
 
 def r01_bedrooms_required(record: dict) -> ValidationResult:
-    """R01: bedrooms must not be NULL"""
+    """R01: bedrooms must not be NULL for residential properties. Offices/Shops/Commercial exempt."""
     v = record.get("bedrooms")
+    exempt_types = {"Office", "Shop", "Commercial Floor", "Residential Floor", "Residential Plot"}
+    if record.get("type") in exempt_types:
+        return ValidationResult(passed=True, rule_id="R01", rule_name="bedrooms_required")
     return ValidationResult(
         passed=v is not None,
         rule_id="R01", rule_name="bedrooms_required",
-        reason="" if v is not None else "bedrooms is NULL",
+        reason="" if v is not None else f"bedrooms is NULL for {record.get('type')}",
         record_id=record.get("listing_id", ""),
         field="bedrooms", value=v,
     )
