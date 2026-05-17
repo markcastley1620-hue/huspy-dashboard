@@ -74,4 +74,3 @@ def print_runs(limit: int = 10):
     print("-" * 100)
     for r in reversed(runs):
         print(f"{r['run_id']:<10} {r['run_type']:<25} {r['status']:<10} {r.get('records_accepted', ''):>10} {r.get('records_rejected', ''):>10} {r.get('credits_used', ''):>10} {r['started_at'][:19]}")
-"""
