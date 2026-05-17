@@ -980,7 +980,7 @@
           </thead>
           <tbody>
             <template x-for="c in agentDetailComms()" :key="c.name">
-              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50 cursor-pointer" @click="selectCommunity(c.name)">
+              <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50 cursor-pointer" @click="agentDrillComm = c.name; view = 'agent-community'; window.scrollTo(0,0)">
                 <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" x-text="c.name"></td>
                 <td class="px-3 py-2.5">
                   <div class="flex gap-1 flex-wrap">
@@ -996,6 +996,87 @@
             </template>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- ==================== AGENT COMMUNITY DRILL-DOWN ==================== -->
+    <div x-show="!loading && view==='agent-community'" x-cloak class="space-y-6 fade-in">
+      <div>
+        <button @click="view = 'agent-detail'; agentDrillComm = null; window.scrollTo(0,0)" class="text-[12px] text-accent hover:text-accent-dim font-medium transition-colors">← <span x-text="selectedAgent"></span></button>
+        <h1 class="text-[22px] font-bold tracking-tight text-heading mt-2">
+          <span x-text="selectedAgent"></span>
+          <span class="text-muted font-normal"> · </span>
+          <span x-text="agentDrillComm"></span>
+        </h1>
+        <p class="text-[12px] text-muted mt-1" x-text="agentDrillListings().length + ' listings  ·  ' + mode + '  ·  ' + (latest?.snapshot_date || '')"></p>
+      </div>
+
+      <!-- KPI cards -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <template x-for="s in agentDrillStats()" :key="s.label">
+          <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+            <div class="text-[10px] uppercase tracking-widest text-muted font-semibold" x-text="s.label"></div>
+            <div class="text-[22px] font-bold mt-1.5 leading-none" :class="s.color || 'text-heading'" x-text="s.value"></div>
+            <div x-show="s.sub" class="text-[11px] text-muted mt-1" x-text="s.sub"></div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Listings table -->
+      <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Individual listings</div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px]">
+            <thead class="text-muted bg-gray-50">
+              <tr class="border-b border-border">
+                <th class="text-left px-5 py-2.5 font-semibold">Sub-community</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Type</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Beds</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Size</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Price</th>
+                <th class="text-right px-3 py-2.5 font-semibold">AED/sqft</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Market med</th>
+                <th class="text-right px-3 py-2.5 font-semibold">vs Market</th>
+                <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
+                <th class="text-left px-3 py-2.5 font-semibold">Spend</th>
+                <th class="text-left px-5 py-2.5 font-semibold">Title</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="l in agentDrillListings()" :key="l.url">
+                <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
+                  <td class="px-5 py-2.5 font-medium" x-text="l.sub_community || '—'"></td>
+                  <td class="px-3 py-2.5">
+                    <span class="inline-flex rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-600 font-medium" x-text="l.type || '—'"></span>
+                  </td>
+                  <td class="px-3 py-2.5 text-right" x-text="l.beds === 0 ? 'Studio' : l.beds != null ? l.beds + ' BR' : '—'"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" x-text="l.sqft ? fmt(l.sqft) + ' sqft' : '—'"></td>
+                  <td class="px-3 py-2.5 text-right font-semibold text-heading" x-text="fmtAed(l.price)"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" x-text="l.psqft ? fmt(l.psqft) : '—'"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(l.market_median)"></td>
+                  <td class="px-3 py-2.5 text-right">
+                    <span x-show="l.vs_market != null && l.vs_market < 0" class="text-up font-semibold" x-text="l.vs_market.toFixed(1) + '%'"></span>
+                    <span x-show="l.vs_market != null && l.vs_market > 0" class="text-down font-semibold" x-text="'+' + l.vs_market.toFixed(1) + '%'"></span>
+                    <span x-show="l.vs_market != null && l.vs_market === 0" class="text-muted">0%</span>
+                    <span x-show="l.vs_market == null" class="text-muted-2">—</span>
+                  </td>
+                  <td class="px-3 py-2.5 text-right" :class="(l.dom||0) > 30 ? 'text-down font-semibold' : (l.dom||0) > 14 ? 'text-amber-500 font-medium' : ''" x-text="l.dom != null ? l.dom + 'd' : '—'"></td>
+                  <td class="px-3 py-2.5">
+                    <span x-show="l.promo === 'Signature'" class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold bg-purple-50 text-purple-600">Signature</span>
+                    <span x-show="l.promo === 'Hot'" class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold bg-orange-50 text-orange-600">Hot</span>
+                    <span x-show="!l.promo" class="text-muted-2 text-[10px]">None</span>
+                  </td>
+                  <td class="px-5 py-2.5 text-muted text-[11px] truncate max-w-[200px]">
+                    <a :href="l.url ? 'https://www.bayut.com' + l.url : '#'" target="_blank" class="hover:text-accent hover:underline" x-text="l.title || '—'"></a>
+                  </td>
+                </tr>
+              </template>
+              <template x-if="agentDrillListings().length === 0">
+                <tr><td colspan="11" class="px-5 py-8 text-center text-muted">No listings found</td></tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -1015,6 +1096,7 @@ function dashboard() {
     allSnapshots: [],
     selectedCommunity: null,
     selectedAgent: null,
+    agentDrillComm: null,
     selectedBed: null,
     oppTab: 'underpriced',
     agentSearch: '',
@@ -1199,6 +1281,60 @@ function dashboard() {
     selectCommunity(name) { this.selectedCommunity = name; this.selectedBed = null; this.view = 'community-detail'; window.scrollTo(0, 0); },
     selectAgent(name) { this.selectedAgent = name; this.view = 'agent-detail'; window.scrollTo(0, 0); },
     toggleBedFilter(bed) { this.selectedBed = this.selectedBed === bed ? null : bed; },
+
+    // Parse compact listing array into object
+    _parseListing(row) {
+      const s = this.latest?.data?.listings_schema || ['agent','community','sub_community','type','beds','price','dom','promo','psqft','sqft','purpose','title','url'];
+      const o = {};
+      for (let i = 0; i < s.length; i++) o[s[i]] = row[i];
+      return o;
+    },
+    // Get all raw listings for current mode
+    _allListings() {
+      const rows = this.latest?.data?.listings || [];
+      return rows.map(r => this._parseListing(r)).filter(l => l.purpose === this.mode);
+    },
+    // Get market median for a listing from peer_medians or market data
+    _getMarketMedian(l) {
+      const meds = this.latest?.data?.peer_medians?.[this.mode] || {};
+      const comm = l.community;
+      const bed = l.beds != null ? (l.beds > 0 ? String(l.beds) : 'Studio') : null;
+      if (!comm || bed == null) return null;
+      // Try community peer median (from Huspy data)
+      const commMeds = meds[comm] || {};
+      if (commMeds[bed]?.median) return commMeds[bed].median;
+      return null;
+    },
+
+    agentDrillListings() {
+      if (!this.selectedAgent || !this.agentDrillComm) return [];
+      return this._allListings()
+        .filter(l => l.agent === this.selectedAgent && l.community === this.agentDrillComm)
+        .map(l => {
+          const mktMed = this._getMarketMedian(l);
+          const vsMkt = (mktMed && l.price) ? Math.round((l.price - mktMed) / mktMed * 1000) / 10 : null;
+          return { ...l, market_median: mktMed, vs_market: vsMkt };
+        })
+        .sort((a, b) => (b.price || 0) - (a.price || 0));
+    },
+    agentDrillStats() {
+      const listings = this.agentDrillListings();
+      if (!listings.length) return [];
+      const prices = listings.filter(l => l.price).map(l => l.price);
+      const avg = prices.length ? Math.round(prices.reduce((s, p) => s + p, 0) / prices.length) : null;
+      const promoted = listings.filter(l => l.promo).length;
+      const withDom = listings.filter(l => l.dom != null);
+      const avgDom = withDom.length ? Math.round(withDom.reduce((s, l) => s + l.dom, 0) / withDom.length) : null;
+      const belowMarket = listings.filter(l => l.vs_market != null && l.vs_market < -5).length;
+      const aboveMarket = listings.filter(l => l.vs_market != null && l.vs_market > 10).length;
+      return [
+        { label: 'Listings', value: listings.length },
+        { label: 'Avg price', value: this.fmtAed(avg) },
+        { label: 'With spend', value: promoted, sub: promoted ? listings.filter(l => l.promo).map(l => l.promo).join(', ') : 'None', color: promoted ? 'text-accent' : 'text-muted' },
+        { label: 'Avg DOM', value: avgDom != null ? avgDom + 'd' : '—', color: avgDom > 30 ? 'text-down' : avgDom > 14 ? 'text-amber-500' : 'text-heading' },
+        { label: 'Pricing', value: belowMarket + ' under / ' + aboveMarket + ' over', sub: 'vs market median' },
+      ];
+    },
 
     agentDetailStats() {
       const b = this.block(); if (!b) return [];
