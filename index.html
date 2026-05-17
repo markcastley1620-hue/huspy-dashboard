@@ -280,7 +280,7 @@
           <div class="flex items-center justify-between mb-4">
             <div class="text-[11px] font-semibold text-muted uppercase tracking-wider">Bedrooms</div>
             <div class="flex items-center gap-3">
-              <span class="text-[10px] text-muted">Huspy avg · <span class="text-muted-2">Peer med</span> · <span class="text-muted-2">Market avg</span></span>
+              <span class="text-[10px] text-muted">Huspy avg · <span class="text-muted-2">Market med</span> · <span class="text-muted-2">Market avg</span></span>
               <button x-show="selectedBed != null" @click="selectedBed = null" class="text-[10px] text-accent font-medium hover:underline">Clear filter</button>
             </div>
           </div>
@@ -563,7 +563,7 @@
               <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('count')">Listings <span x-show="agentSortCol==='count'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
               <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('communities')">Communities <span x-show="agentSortCol==='communities'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
               <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('avg_price')">Avg price <span x-show="agentSortCol==='avg_price'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
-              <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('price_position')">vs Peer med <span x-show="agentSortCol==='price_position'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
+              <th class="text-right px-3 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('price_position')">vs Market <span x-show="agentSortCol==='price_position'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
               <th class="text-right px-5 py-3 font-semibold cursor-pointer hover:text-heading" @click="toggleAgentSort('share')">Share <span x-show="agentSortCol==='share'" x-text="agentSortDir==='asc' ? '↑' : '↓'" class="text-accent"></span></th>
             </tr>
           </thead>
@@ -575,7 +575,7 @@
                 <td class="px-3 py-3 text-right font-semibold" data-label="Listings" x-text="a.count"></td>
                 <td class="px-3 py-3 text-right text-muted" data-label="Communities" x-text="a.communities"></td>
                 <td class="px-3 py-3 text-right text-heading" data-label="Avg price" x-text="fmtAed(a.avg_price)"></td>
-                <td class="px-3 py-3 text-right" data-label="vs Peer med">
+                <td class="px-3 py-3 text-right" data-label="vs Market">
                   <span x-show="a.price_position != null && a.price_position < 0" class="text-up font-semibold" x-text="a.price_position.toFixed(1) + '%'"></span>
                   <span x-show="a.price_position != null && a.price_position > 0" class="text-down font-semibold" x-text="'+' + a.price_position.toFixed(1) + '%'"></span>
                   <span x-show="a.price_position != null && a.price_position === 0" class="text-muted">0%</span>
@@ -669,7 +669,7 @@
               <div class="h-px bg-border my-4"></div>
               <div class="space-y-3 text-[12px]">
                 <div class="flex justify-between">
-                  <span class="text-muted">Peer median</span>
+                  <span class="text-muted">Market median</span>
                   <span class="font-semibold" x-text="'AED ' + fmt(advisorResult.market.peer_median)"></span>
                 </div>
                 <div class="flex justify-between">
@@ -686,7 +686,7 @@
                 </div>
                 <div class="h-px bg-border"></div>
                 <div class="flex justify-between items-center">
-                  <span class="text-muted">vs Peer median</span>
+                  <span class="text-muted">vs Marketian</span>
                   <span class="font-bold text-[15px]" :class="advisorResult.gap_pct < 0 ? 'text-up' : advisorResult.gap_pct > 5 ? 'text-down' : 'text-amber-500'" x-text="(advisorResult.gap_pct > 0 ? '+' : '') + advisorResult.gap_pct + '%'"></span>
                 </div>
               </div>
@@ -1569,14 +1569,27 @@ function dashboard() {
       const rows = this.latest?.data?.listings || [];
       return rows.map(r => this._parseListing(r)).filter(l => l.purpose === this.mode);
     },
-    // Get market median for a listing from peer_medians or market data
+    // Get market median for a listing — prefers sub-community level
     _getMarketMedian(l) {
       const meds = this.latest?.data?.peer_medians?.[this.mode] || {};
       const comm = l.community;
       const bed = l.beds != null ? (l.beds > 0 ? String(l.beds) : 'Studio') : null;
       if (!comm || bed == null) return null;
-      // Try community peer median (from Huspy data)
       const commMeds = meds[comm] || {};
+      // Try sub-community market median first
+      if (l.sub_community && commMeds._subs?.[l.sub_community]?.[bed]?.median) {
+        return commMeds._subs[l.sub_community][bed].median;
+      }
+      // Fuzzy sub-community match
+      if (l.sub_community && commMeds._subs) {
+        const sc = l.sub_community.toLowerCase();
+        for (const [k, v] of Object.entries(commMeds._subs)) {
+          if (v[bed]?.median && (k.toLowerCase().includes(sc) || sc.includes(k.toLowerCase()))) {
+            return v[bed].median;
+          }
+        }
+      }
+      // Fall back to community level
       if (commMeds[bed]?.median) return commMeds[bed].median;
       return null;
     },
