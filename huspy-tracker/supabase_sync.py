@@ -60,24 +60,36 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
 
     def _fuzzy_sub_match(sub_community, by_sub_keys):
         """Find best matching sub-community key via normalization."""
+        import re as _re
         if not sub_community:
             return None
         sc = sub_community.lower().strip()
+        # Strip common suffixes for base matching
+        sc_base = _re.sub(r'\s*(tower\s*)?[\divx]+[a-z]?$', '', sc).strip()
+        sc_base = _re.sub(r'\s*\([^)]*\)$', '', sc_base).strip()
+        
+        best_match = None
+        best_score = 0
         for key in by_sub_keys:
             k_sub = key.split('|')[0].lower().strip()
-            # Exact match
+            k_base = _re.sub(r'\s*(tower\s*)?[\divx]+[a-z]?$', '', k_sub).strip()
+            k_base = _re.sub(r'\s*\([^)]*\)$', '', k_base).strip()
+            
+            # Exact match = best
             if sc == k_sub:
                 return key
-            # One contains the other (e.g. 'Bay Central' matches 'Bay Central (Central Tower)')
-            if sc in k_sub or k_sub in sc:
-                return key
-            # Strip trailing numbers/tower designations (e.g. 'Al Majara' matches 'Al Majara 1')
-            import re
-            sc_base = re.sub(r'\s*(tower\s*)?\d+$', '', sc).strip()
-            k_base = re.sub(r'\s*(tower\s*)?\d+$', '', k_sub).strip()
-            if sc_base and k_base and (sc_base == k_base or sc_base in k_base or k_base in sc_base):
-                return key
-        return None
+            # Base name match (e.g. 'Marina Wharf' matches 'Marina Wharf I')
+            score = 0
+            if sc_base == k_base:
+                score = 3
+            elif sc_base and k_base and (sc_base in k_base or k_base in sc_base):
+                score = 2
+            elif sc in k_sub or k_sub in sc:
+                score = 1
+            if score > best_score:
+                best_score = score
+                best_match = key
+        return best_match if best_score > 0 else None
 
     def get_market_benchmark(community, purpose, beds, ptype, sub_community=None):
         """Get market median/avg. Priority: sub-comm+type+bed > sub-comm+bed > comm+type+bed > comm+bed."""
@@ -104,7 +116,7 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
                     sub_community_matched = sub_community
             else:
                 sub_community_matched = sub_community
-            if sub_data and sub_data.get('count', 0) >= 2:
+            if sub_data and sub_data.get('count', 0) >= 1:
                 return sub_data['median_price'], sub_data['median_price'], sub_data['count'], f"{sub_community} · {ptype} · {bed_key} BR (market)"
 
         # 2. Sub-community + bed (ONLY if no type info — skip if type exists to avoid mixing types)
