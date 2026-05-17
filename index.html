@@ -44,6 +44,8 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
     input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #2563eb; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 1px #e5e7eb; }
     input[type="range"] { -webkit-appearance: none; background: #e5e7eb; height: 4px; border-radius: 2px; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     @media (max-width: 767px) {
       .mobile-cards { display: flex; flex-direction: column; gap: 8px; }
       .mobile-cards thead { display: none; }
@@ -63,12 +65,14 @@
         <div class="text-[13px] font-semibold tracking-tight text-heading">Huspy Market Intel</div>
         <span class="text-[10px] text-muted-2 font-medium tracking-wide uppercase bg-gray-100 px-1.5 py-0.5 rounded">Dubai</span>
       </div>
-      <div class="flex items-center gap-1.5">
-        <template x-for="v in ['overview','communities','agents','opportunities','advisor']" :key="v">
-          <button @click="navigate(v)" :class="view===v || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all" x-text="v.charAt(0).toUpperCase()+v.slice(1)"></button>
-        </template>
-        <div class="w-px h-5 bg-border mx-1.5"></div>
-        <div class="flex rounded-lg border border-border p-0.5 bg-gray-50">
+      <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
+        <div class="flex items-center gap-1 shrink-0">
+          <template x-for="v in ['overview','communities','agents','opportunities','advisor']" :key="v">
+            <button @click="navigate(v)" :class="view===v || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all whitespace-nowrap" x-text="v.charAt(0).toUpperCase()+v.slice(1)"></button>
+          </template>
+        </div>
+        <div class="w-px h-5 bg-border mx-1.5 shrink-0"></div>
+        <div class="flex rounded-lg border border-border p-0.5 bg-gray-50 shrink-0">
           <template x-for="m in ['sale','rent']" :key="m">
             <button @click="setMode(m)" :class="mode===m ? 'bg-accent text-white shadow-sm' : 'text-muted hover:text-gray-700'" class="px-3 py-1 rounded-md text-[11px] font-semibold transition-all uppercase tracking-wide" x-text="m"></button>
           </template>
@@ -396,19 +400,19 @@
           <tbody>
             <template x-for="s in commDetailSubs()" :key="s.name">
               <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
-                <td class="px-5 py-2.5 font-medium" x-text="s.name"></td>
-                <td class="px-3 py-2.5">
+                <td class="px-5 py-2.5 font-medium" data-label="Name" x-text="s.name"></td>
+                <td class="px-3 py-2.5" data-label="Bedrooms">
                   <div class="flex gap-1 flex-wrap">
                     <template x-for="b in s.bedBadges" :key="b.label">
                       <span @click.stop="toggleBedFilter(b.key)" class="inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-medium cursor-pointer transition-colors" :class="selectedBed === b.key ? 'bg-accent text-white' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'" x-text="b.label + ' ' + b.count"></span>
                     </template>
                   </div>
                 </td>
-                <td class="px-3 py-2.5 text-right font-semibold" x-text="s.count"></td>
-                <td class="px-3 py-2.5 text-right text-heading font-medium" x-text="fmtAed(s.avg_price)"></td>
-                <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(s.market_avg_price)"></td>
-                <td class="px-3 py-2.5 text-right text-muted" x-text="s.market_count != null ? fmt(s.market_count) : '—'"></td>
-                <td class="px-3 py-2.5 text-right text-[11px]">
+                <td class="px-3 py-2.5 text-right font-semibold" data-label="Listings" x-text="s.count"></td>
+                <td class="px-3 py-2.5 text-right text-heading font-medium" data-label="Huspy avg" x-text="fmtAed(s.avg_price)"></td>
+                <td class="px-3 py-2.5 text-right text-muted" data-label="Market avg" x-text="fmtAed(s.market_avg_price)"></td>
+                <td class="px-3 py-2.5 text-right text-muted" data-label="Market" x-text="s.market_count != null ? fmt(s.market_count) : '—'"></td>
+                <td class="px-3 py-2.5 text-right text-[11px]" data-label="Diff">
                   <template x-if="s.avg_price && s.market_avg_price">
                     <div>
                       <span :class="s.avg_price > s.market_avg_price ? 'text-down' : 'text-up'" class="font-semibold" x-text="((s.avg_price - s.market_avg_price) > 0 ? '+' : '') + fmtAed(s.avg_price - s.market_avg_price)"></span>
@@ -417,16 +421,18 @@
                   </template>
                   <template x-if="!s.avg_price || !s.market_avg_price"><span class="text-muted">—</span></template>
                 </td>
-                <td class="px-5 py-2.5 text-right font-semibold" x-text="s.market_count ? (s.count / s.market_count * 100).toFixed(2) + '%' : '—'"></td>
+                <td class="px-5 py-2.5 text-right font-semibold" data-label="Share" x-text="s.market_count ? (s.count / s.market_count * 100).toFixed(2) + '%' : '—'"></td>
               </tr>
             </template>
           </tbody>
         </table>
+        </div>
       </div>
 
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="commDetailAgents().length">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Agent leaderboard</div>
-        <table class="w-full text-[12px]">
+        <div class="overflow-x-auto">
+        <table class="w-full text-[12px] mobile-cards">
           <thead class="text-muted bg-gray-50">
             <tr class="border-b border-border">
               <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
@@ -439,21 +445,22 @@
           <tbody>
             <template x-for="a in commDetailAgents()" :key="a.name">
               <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50 cursor-pointer" @click="selectAgent(a.name)">
-                <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" x-text="a.name"></td>
-                <td class="px-3 py-2.5">
+                <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" data-label="Agent" x-text="a.name"></td>
+                <td class="px-3 py-2.5" data-label="Bedrooms">
                   <div class="flex gap-1 flex-wrap">
                     <template x-for="b in a.bedBadges" :key="b.label">
                       <span @click.stop="toggleBedFilter(b.key)" class="inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-medium cursor-pointer transition-colors" :class="selectedBed === b.key ? 'bg-accent text-white' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'" x-text="b.label + ' ' + b.count"></span>
                     </template>
                   </div>
                 </td>
-                <td class="px-3 py-2.5 text-right font-semibold" x-text="a.count"></td>
-                <td class="px-3 py-2.5 text-right text-heading font-medium" x-text="fmtAed(a.avg_price)"></td>
-                <td class="px-5 py-2.5 text-right text-muted" x-text="a.share_pct != null ? a.share_pct.toFixed(1) + '%' : '—'"></td>
+                <td class="px-3 py-2.5 text-right font-semibold" data-label="Listings" x-text="a.count"></td>
+                <td class="px-3 py-2.5 text-right text-heading font-medium" data-label="Avg price" x-text="fmtAed(a.avg_price)"></td>
+                <td class="px-5 py-2.5 text-right text-muted" data-label="Share" x-text="a.share_pct != null ? a.share_pct.toFixed(1) + '%' : '—'"></td>
               </tr>
             </template>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
 
@@ -592,7 +599,7 @@
 
       <!-- URL Input -->
       <div class="rounded-2xl border border-border bg-white p-6 shadow-sm">
-        <div class="flex gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
           <input x-model="advisorUrl" type="text" placeholder="Paste listing URL here…" class="flex-1 bg-gray-50 border border-border rounded-xl px-4 py-3 text-[13px] text-gray-900 placeholder-muted-2 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10" @keydown.enter="runAdvisor()">
           <button @click="runAdvisor()" :disabled="advisorLoading" class="bg-accent hover:bg-accent/90 disabled:bg-gray-300 text-white px-6 py-3 rounded-xl text-[13px] font-semibold transition-all min-w-[120px]">
             <span x-show="!advisorLoading">Analyze</span>
@@ -642,7 +649,7 @@
               </div>
             </div>
             <!-- Property summary bar -->
-            <div class="px-6 py-3 bg-white flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px] border-t" :class="advisorResult.verdict === 'Signature' ? 'border-purple-100' : advisorResult.verdict === 'Hot' ? 'border-orange-100' : 'border-gray-100'">
+            <div class="px-6 py-3 bg-white flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] border-t" :class="advisorResult.verdict === 'Signature' ? 'border-purple-100' : advisorResult.verdict === 'Hot' ? 'border-orange-100' : 'border-gray-100'">
               <span class="text-muted">Agent: <span class="text-heading font-medium" x-text="advisorResult.listing.agent"></span></span>
               <span class="text-muted" x-text="advisorResult.listing.location"></span>
               <span class="text-muted" x-text="(advisorResult.listing.beds === 0 ? 'Studio' : advisorResult.listing.beds + ' BR') + ' ' + advisorResult.listing.type"></span>
@@ -653,7 +660,7 @@
           </div>
 
           <!-- Price + League side by side -->
-          <div class="grid md:grid-cols-5 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <!-- Price card -->
             <div class="md:col-span-2 rounded-2xl border border-border bg-white p-5 shadow-sm">
               <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Pricing</div>
@@ -693,6 +700,7 @@
                 </div>
                 <div class="text-[10px] text-muted-2 mt-0.5" x-text="advisorResult.market.count + ' active listings · ' + advisorResult.market.promoted + ' with spend'"></div>
               </div>
+              <div class="overflow-x-auto">
               <table class="w-full text-[11px]">
                 <thead class="text-muted bg-gray-50">
                   <tr class="border-b border-border">
@@ -722,6 +730,7 @@
                   </template>
                 </tbody>
               </table>
+              </div>
               <div class="flex justify-between text-[10px] text-muted px-5 py-2.5 bg-gray-50 border-t border-border">
                 <span x-text="'Rank ' + advisorResult.price_rank + ' of ' + advisorResult.market.count"></span>
                 <span :class="advisorResult.gap_pct < 0 ? 'text-up font-medium' : advisorResult.gap_pct > 5 ? 'text-down font-medium' : ''" x-text="advisorResult.gap_pct < 0 ? Math.abs(advisorResult.gap_pct) + '% below peer median' : advisorResult.gap_pct + '% above peer median'"></span>
@@ -790,9 +799,9 @@
       </div>
 
       <!-- Tabs -->
-      <div class="flex flex-wrap rounded-lg border border-border p-0.5 bg-gray-50 w-fit gap-0.5">
+      <div class="flex overflow-x-auto scrollbar-hide rounded-lg border border-border p-0.5 bg-gray-50 w-fit max-w-full gap-0.5">
         <template x-for="t in ['underpriced','overpriced','stale','wasted_overpriced','wasted_stale','spend_working']" :key="t">
-          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all" x-text="({'underpriced':'Add Spend','overpriced':'Overpriced','stale':'Stale','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working'})[t]"></button>
+          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','overpriced':'Overpriced','stale':'Stale','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working'})[t]"></button>
         </template>
       </div>
 
@@ -800,7 +809,7 @@
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='underpriced'">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Underpriced listings — recommend for Signature / Hot</div>
         <div class="overflow-x-auto">
-          <table class="w-full text-[12px]">
+          <table class="w-full text-[12px] mobile-cards">
             <thead class="text-muted bg-gray-50">
               <tr class="border-b border-border">
                 <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
@@ -849,7 +858,7 @@
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='overpriced'">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Overpriced listings — need price reduction conversation</div>
         <div class="overflow-x-auto">
-          <table class="w-full text-[12px]">
+          <table class="w-full text-[12px] mobile-cards">
             <thead class="text-muted bg-gray-50">
               <tr class="border-b border-border">
                 <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
@@ -892,7 +901,7 @@
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='stale'">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Stale listings — 30+ days on market</div>
         <div class="overflow-x-auto">
-          <table class="w-full text-[12px]">
+          <table class="w-full text-[12px] mobile-cards">
             <thead class="text-muted bg-gray-50">
               <tr class="border-b border-border">
                 <th class="text-left px-5 py-2.5 font-semibold">Agent</th>
@@ -931,7 +940,7 @@
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm" x-show="oppTab==='coverage_gaps'">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Coverage gaps — where should we recruit / farm next</div>
         <div class="overflow-x-auto">
-          <table class="w-full text-[12px]">
+          <table class="w-full text-[12px] mobile-cards">
             <thead class="text-muted bg-gray-50">
               <tr class="border-b border-border">
                 <th class="text-left px-5 py-2.5 font-semibold">Community</th>
@@ -962,7 +971,7 @@
       <div class="rounded-2xl border border-down/30 bg-down/5 overflow-hidden shadow-sm" x-show="oppTab==='wasted_overpriced'">
         <div class="px-5 py-3 border-b border-down/20 text-[11px] font-semibold uppercase tracking-wider text-down">⚠ Spend on overpriced listings — budget being wasted</div>
         <div class="overflow-x-auto">
-          <table class="w-full text-[12px]">
+          <table class="w-full text-[12px] mobile-cards">
             <thead class="text-muted bg-down/5">
               <tr class="border-b border-down/10">
                 <th class="text-left px-5 py-2.5 font-semibold">Spend</th>
@@ -1000,7 +1009,7 @@
       <div class="rounded-2xl border border-amber-300 bg-amber-50 overflow-hidden shadow-sm" x-show="oppTab==='wasted_stale'">
         <div class="px-5 py-3 border-b border-amber-200 text-[11px] font-semibold uppercase tracking-wider text-amber-700">⚠ Spend on stale listings — 30+ days, not converting</div>
         <div class="overflow-x-auto">
-          <table class="w-full text-[12px]">
+          <table class="w-full text-[12px] mobile-cards">
             <thead class="text-muted bg-amber-50">
               <tr class="border-b border-amber-200">
                 <th class="text-left px-5 py-2.5 font-semibold">Spend</th>
@@ -1038,7 +1047,7 @@
       <div class="rounded-2xl border border-up/30 bg-up/5 overflow-hidden shadow-sm" x-show="oppTab==='spend_working'">
         <div class="px-5 py-3 border-b border-up/20 text-[11px] font-semibold uppercase tracking-wider text-up">✓ Spend working — competitively priced + fresh</div>
         <div class="overflow-x-auto">
-          <table class="w-full text-[12px]">
+          <table class="w-full text-[12px] mobile-cards">
             <thead class="text-muted bg-up/5">
               <tr class="border-b border-up/10">
                 <th class="text-left px-5 py-2.5 font-semibold">Spend</th>
@@ -1092,7 +1101,8 @@
 
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Communities</div>
-        <table class="w-full text-[12px]">
+        <div class="overflow-x-auto">
+        <table class="w-full text-[12px] mobile-cards">
           <thead class="text-muted bg-gray-50">
             <tr class="border-b border-border">
               <th class="text-left px-5 py-2.5 font-semibold">Community</th>
@@ -1105,21 +1115,22 @@
           <tbody>
             <template x-for="c in agentDetailComms()" :key="c.name">
               <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50 cursor-pointer" @click="agentDrillComm = c.name; view = 'agent-community'; window.scrollTo(0,0)">
-                <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" x-text="c.name"></td>
-                <td class="px-3 py-2.5">
+                <td class="px-5 py-2.5 font-medium hover:text-accent transition-colors" data-label="Community" x-text="c.name"></td>
+                <td class="px-3 py-2.5" data-label="Bedrooms">
                   <div class="flex gap-1 flex-wrap">
                     <template x-for="b in c.bedBadges" :key="b.label">
                       <span class="inline-flex rounded-md bg-blue-50 text-blue-600 px-1.5 py-0.5 text-[10px] font-medium" x-text="b.label + ' ' + b.count"></span>
                     </template>
                   </div>
                 </td>
-                <td class="px-3 py-2.5 text-right font-semibold" x-text="c.count"></td>
-                <td class="px-3 py-2.5 text-right text-heading" x-text="fmtAed(c.avg_price)"></td>
-                <td class="px-5 py-2.5 text-right text-muted" x-text="c.share != null ? c.share.toFixed(1) + '%' : '—'"></td>
+                <td class="px-3 py-2.5 text-right font-semibold" data-label="Listings" x-text="c.count"></td>
+                <td class="px-3 py-2.5 text-right text-heading" data-label="Avg price" x-text="fmtAed(c.avg_price)"></td>
+                <td class="px-5 py-2.5 text-right text-muted" data-label="Share" x-text="c.share != null ? c.share.toFixed(1) + '%' : '—'"></td>
               </tr>
             </template>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
 
@@ -1150,7 +1161,7 @@
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">Individual listings</div>
         <div class="overflow-x-auto">
-          <table class="w-full text-[12px]">
+          <table class="w-full text-[12px] mobile-cards">
             <thead class="text-muted bg-gray-50">
               <tr class="border-b border-border">
                 <th class="text-left px-5 py-2.5 font-semibold">Sub-community</th>
@@ -1170,27 +1181,27 @@
             <tbody>
               <template x-for="(l, idx) in agentDrillListings()" :key="idx">
                 <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
-                  <td class="px-5 py-2.5 font-medium" x-text="l.sub_community || '—'"></td>
-                  <td class="px-3 py-2.5">
+                  <td class="px-5 py-2.5 font-medium" data-label="Sub-community" x-text="l.sub_community || '—'"></td>
+                  <td class="px-3 py-2.5" data-label="Type">
                     <span class="inline-flex rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-600 font-medium" x-text="l.type || '—'"></span>
                   </td>
-                  <td class="px-3 py-2.5 text-right" x-text="l.beds === 0 ? 'Studio' : l.beds != null ? l.beds + ' BR' : '—'"></td>
-                  <td class="px-3 py-2.5 text-right text-muted" x-text="l.sqft ? fmt(l.sqft) + ' sqft' : '—'"></td>
-                  <td class="px-3 py-2.5 text-right font-semibold text-heading" x-text="fmtAed(l.price)"></td>
-                  <td class="px-3 py-2.5 text-right text-muted" x-text="l.psqft ? fmt(l.psqft) : '—'"></td>
-                  <td class="px-3 py-2.5 text-right text-muted" x-text="fmtAed(l.market_median)"></td>
-                  <td class="px-3 py-2.5 text-right">
+                  <td class="px-3 py-2.5 text-right" data-label="Beds" x-text="l.beds === 0 ? 'Studio' : l.beds != null ? l.beds + ' BR' : '—'"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" data-label="Size" x-text="l.sqft ? fmt(l.sqft) + ' sqft' : '—'"></td>
+                  <td class="px-3 py-2.5 text-right font-semibold text-heading" data-label="Price" x-text="fmtAed(l.price)"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" data-label="AED/sqft" x-text="l.psqft ? fmt(l.psqft) : '—'"></td>
+                  <td class="px-3 py-2.5 text-right text-muted" data-label="Market med" x-text="fmtAed(l.market_median)"></td>
+                  <td class="px-3 py-2.5 text-right" data-label="vs Market">
                     <span x-show="l.vs_market != null && l.vs_market < 0" class="text-up font-semibold" x-text="l.vs_market.toFixed(1) + '%'"></span>
                     <span x-show="l.vs_market != null && l.vs_market > 0" class="text-down font-semibold" x-text="'+' + l.vs_market.toFixed(1) + '%'"></span>
                     <span x-show="l.vs_market != null && l.vs_market === 0" class="text-muted">0%</span>
                     <span x-show="l.vs_market == null" class="text-muted-2">—</span>
                   </td>
-                  <td class="px-3 py-2.5">
+                  <td class="px-3 py-2.5" data-label="Spend">
                     <span x-show="l.promo === 'Signature'" class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold bg-purple-50 text-purple-600">Signature</span>
                     <span x-show="l.promo === 'Hot'" class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold bg-orange-50 text-orange-600">Hot</span>
                     <span x-show="!l.promo" class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-medium bg-gray-50 text-gray-400 border border-gray-200">No spend</span>
                   </td>
-                  <td class="px-3 py-2.5 text-right">
+                  <td class="px-3 py-2.5 text-right" data-label="Price rank">
                     <template x-if="l.rank != null">
                       <span class="inline-flex items-center gap-0.5 text-[11px] font-semibold" :class="l.rank <= Math.ceil(l.rank_total * 0.25) ? 'text-up' : l.rank >= Math.ceil(l.rank_total * 0.75) ? 'text-down' : 'text-heading'">
                         <span x-text="l.rank + '/' + l.rank_total"></span>
@@ -1198,8 +1209,8 @@
                     </template>
                     <template x-if="l.rank == null"><span class="text-muted-2">—</span></template>
                   </td>
-                  <td class="px-3 py-2.5 text-right" :class="(l.dom||0) > 30 ? 'text-down font-semibold' : (l.dom||0) > 14 ? 'text-amber-500 font-medium' : ''" x-text="l.dom != null ? l.dom + 'd' : '—'"></td>
-                  <td class="px-5 py-2.5 text-muted text-[11px] truncate max-w-[200px]">
+                  <td class="px-3 py-2.5 text-right" data-label="DOM" :class="(l.dom||0) > 30 ? 'text-down font-semibold' : (l.dom||0) > 14 ? 'text-amber-500 font-medium' : ''" x-text="l.dom != null ? l.dom + 'd' : '—'"></td>
+                  <td class="px-5 py-2.5 text-muted text-[11px] truncate max-w-[200px]" data-label="Title">
                     <a :href="l.url ? 'https://www.bayut.com' + l.url : '#'" target="_blank" class="hover:text-accent hover:underline" x-text="l.title || '—'"></a>
                   </td>
                 </tr>
