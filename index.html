@@ -220,7 +220,7 @@
                     </div>
                   </td>
                   <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Huspy" x-text="fmt(r.count)"></td>
-                  <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : 'N/A'"></td>
+                  <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
                   <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : 'N/A'"></td>
                   <td class="px-5 py-3 text-right" data-label="Δ pp">
                     <span x-show="r.delta != null && r.delta > 0" class="inline-flex items-center gap-0.5 text-up bg-up-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↑ +<span x-text="r.delta.toFixed(2)"></span>pp</span>
@@ -498,7 +498,7 @@
                 <td class="px-5 py-3 font-medium" data-label="Community"><span x-text="r.name"></span><template x-if="r.smallN"><span class="ml-1.5 text-[9px] bg-amber-50 text-amber-600 border border-amber-200 rounded-full px-1.5 py-0.5 font-semibold">low n</span></template></td>
                 <td class="px-3 py-3" data-label="Types"><div class="flex gap-1 flex-wrap"><template x-for="t in r.topTypes" :key="t.name"><span class="inline-flex rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-500 font-medium" x-text="t.abbr + ' ' + t.count"></span></template></div></td>
                 <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Huspy" x-text="fmt(r.count)"></td>
-                <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : 'N/A'"></td>
+                <td class="px-3 py-3 text-right text-muted" data-label="Market" x-text="r.market != null ? fmt(r.market) : '—'"></td>
                 <td class="px-3 py-3 text-right font-semibold text-heading" data-label="Share" x-text="r.share != null ? r.share.toFixed(2) + '%' : 'N/A'"></td>
                 <td class="px-3 py-3 text-right text-heading" data-label="Huspy avg" x-text="fmtAed(r.avg_price)"></td>
                 <td class="px-3 py-3 text-right text-muted" data-label="Market avg" x-text="fmtAed(r.market_avg)"></td>
