@@ -65,6 +65,9 @@ def parse_listing_card(card) -> dict | None:
             m = re.search(r"(\d+)", beds_text)
             if m:
                 beds = int(m.group(1))
+    # Apartments with no beds field are studios (Bayut omits "Studio" on some cards)
+    if beds is None and get_aria("Type") == "Apartment":
+        beds = 0
 
     baths_text = get_aria("Baths")
     baths = int(re.search(r"(\d+)", baths_text).group(1)) if baths_text and re.search(r"(\d+)", baths_text) else None
