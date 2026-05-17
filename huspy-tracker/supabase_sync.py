@@ -363,12 +363,35 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
     opportunities = compute_opportunities(snapshot, market_data=market_data)
     peer_medians = compute_peer_medians(snapshot)
 
+    # Compute price rank per community+type+beds group
+    from collections import defaultdict as _dd
+    rank_groups = _dd(list)
+    for l in listings:
+        if l.get('price_num') and l.get('community') and l.get('bedrooms') is not None and l.get('type'):
+            key = (l['community'], l['purpose'], l['type'], l['bedrooms'])
+            rank_groups[key].append(l['price_num'])
+    # Sort each group so we can binary-search rank
+    for k in rank_groups:
+        rank_groups[k] = sorted(rank_groups[k])
+
+    def get_price_rank(l):
+        """Return (rank, total) within community+type+beds peers. 1 = cheapest."""
+        if not (l.get('price_num') and l.get('community') and l.get('bedrooms') is not None and l.get('type')):
+            return None, None
+        key = (l['community'], l['purpose'], l['type'], l['bedrooms'])
+        prices = rank_groups.get(key)
+        if not prices or len(prices) < 2:
+            return None, None
+        rank = sum(1 for p in prices if p < l['price_num']) + 1
+        return rank, len(prices)
+
     # Compact listing-level data for agent drill-down
-    # Format: [agent, community, sub_community, type, beds, price, dom, promo, psqft, sqft, purpose, title, url]
+    # Format: [agent, community, sub_community, type, beds, price, dom, promo, psqft, sqft, purpose, title, url, rank, rank_total]
     listing_rows = []
     for l in listings:
         if not l.get('agent'):
             continue
+        rank, rank_total = get_price_rank(l)
         listing_rows.append([
             l.get('agent', ''),
             l.get('community', ''),
@@ -383,6 +406,8 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
             l.get('purpose', ''),
             l.get('title', ''),
             l.get('url', ''),
+            rank,
+            rank_total,
         ])
 
     return {
@@ -398,7 +423,7 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
         "opportunities": opportunities,
         "peer_medians": peer_medians,
         "listings": listing_rows,
-        "listings_schema": ["agent","community","sub_community","type","beds","price","dom","promo","psqft","sqft","purpose","title","url"],
+        "listings_schema": ["agent","community","sub_community","type","beds","price","dom","promo","psqft","sqft","purpose","title","url","rank","rank_total"],
     }
 
 

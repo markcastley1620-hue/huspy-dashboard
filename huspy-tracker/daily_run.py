@@ -86,7 +86,7 @@ def _enrich_supabase_with_market(date_str, snapshot, market_data):
 
     resp = requests.get(
         f'{SUPABASE_URL}/rest/v1/market_intel_snapshots?snapshot_date=eq.{date_str}&select=data',
-        headers={'apikey': ANON_KEY, 'Authorization': f'Bearer {ANON_KEY}'}, timeout=15,
+        headers={'apikey': ANON_KEY, 'Authorization': f'Bearer {ANON_KEY}'}, timeout=60,
     )
     if resp.status_code != 200 or not resp.json():
         return
