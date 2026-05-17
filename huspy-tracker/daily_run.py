@@ -15,18 +15,22 @@ from report import generate_report
 
 
 def _fill_missing_agents(result):
-    """Fetch agent names from detail pages for listings missing them."""
+    """Fetch agent names and DOM from detail pages for listings missing them."""
+    import re as _re
     import requests as req
+    from datetime import datetime as _dt
     from bs4 import BeautifulSoup
     from concurrent.futures import ThreadPoolExecutor, as_completed
     API_KEY = os.environ.get('SCRAPINGBEE_API_KEY', 'QNG91WITJC8K7U39RMHTB7CAVQOUGTK8C09PPFJESMCYT2MNGJY19FLUQWDK3NABEC4PWPVF5HWI2CR0')
 
     listings = result['listings']
-    missing = [(i, l) for i, l in enumerate(listings) if not l.get('agent') and l.get('url')]
-    if not missing:
-        print('  All agents attributed')
+    # Fetch detail pages for: missing agent OR missing DOM
+    need_detail = [(i, l) for i, l in enumerate(listings)
+                   if l.get('url') and (not l.get('agent') or l.get('dom') is None)]
+    if not need_detail:
+        print('  All agents + DOM filled')
         return
-    print(f'  Filling {len(missing)} missing agents from detail pages...')
+    print(f'  Fetching {len(need_detail)} detail pages (agent + DOM)...')
 
     def fetch(idx_l):
         idx, l = idx_l
@@ -36,20 +40,41 @@ def _fill_missing_agents(result):
                 'stealth_proxy': 'true', 'country_code': 'ae',
             }, timeout=120)
             soup = BeautifulSoup(r.text, 'lxml')
-            el = soup.find(attrs={'aria-label': 'Agent name'})
-            return (idx, el.get_text(strip=True) if el else None)
+            agent_el = soup.find(attrs={'aria-label': 'Agent name'})
+            agent = agent_el.get_text(strip=True) if agent_el else None
+            listed_date = None
+            dom = None
+            text = soup.get_text()
+            date_match = _re.search(r'(?:Listed|Added)\s+(?:on\s+)?(\d+)\w*\s+(?:of\s+)?(\w+)\s+(\d{4})', text)
+            if date_match:
+                try:
+                    day, month, year = date_match.group(1), date_match.group(2), date_match.group(3)
+                    listed_date = _dt.strptime(f'{day} {month} {year}', '%d %B %Y').strftime('%Y-%m-%d')
+                    dom = (_dt.utcnow() - _dt.strptime(listed_date, '%Y-%m-%d')).days
+                except (ValueError, Exception):
+                    pass
+            return (idx, agent, listed_date, dom)
         except:
-            return (idx, None)
+            return (idx, None, None, None)
 
-    found = 0
+    agents_found = 0
+    doms_found = 0
     with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = {executor.submit(fetch, m): m for m in missing}
+        futures = {executor.submit(fetch, m): m for m in need_detail}
+        done = 0
         for future in as_completed(futures):
-            idx, name = future.result()
-            if name:
-                listings[idx]['agent'] = name
-                found += 1
-    print(f'  Recovered {found}/{len(missing)} agents')
+            idx, agent, listed_date, dom = future.result()
+            done += 1
+            if agent and not listings[idx].get('agent'):
+                listings[idx]['agent'] = agent
+                agents_found += 1
+            if dom is not None and listings[idx].get('dom') is None:
+                listings[idx]['dom'] = dom
+                listings[idx]['listed_date'] = listed_date
+                doms_found += 1
+            if done % 50 == 0:
+                print(f'    Progress: {done}/{len(need_detail)}')
+    print(f'  Recovered {agents_found} agents, {doms_found} DOMs from {len(need_detail)} detail pages')
 
 
 def _enrich_supabase_with_market(date_str, snapshot, market_data):

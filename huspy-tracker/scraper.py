@@ -240,6 +240,21 @@ def scrape_all_listings(concurrency: int = 10) -> dict:
             else:
                 print(f"  Page {page_num}: failed")
 
+    # Deduplicate by listing_id (pagination overlap creates dupes)
+    pre_dedup = len(all_listings)
+    seen_ids = set()
+    deduped = []
+    for l in all_listings:
+        lid = l.get('listing_id')
+        if lid and lid in seen_ids:
+            continue
+        if lid:
+            seen_ids.add(lid)
+        deduped.append(l)
+    all_listings = deduped
+    if pre_dedup != len(all_listings):
+        print(f"  Deduped: {pre_dedup} → {len(all_listings)} ({pre_dedup - len(all_listings)} duplicates removed)")
+
     elapsed = time.time() - start
     result = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
