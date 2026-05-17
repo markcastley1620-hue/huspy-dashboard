@@ -157,6 +157,9 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         # Skip unattributed listings — no actionable agent
         if not l.get('agent'):
             continue
+        # Skip listings that already have spend (Signature/Hot)
+        if l.get('promo'):
+            continue
 
         community = l.get('community')
         if not community:
