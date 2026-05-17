@@ -1037,6 +1037,7 @@
                 <th class="text-right px-3 py-2.5 font-semibold">AED/sqft</th>
                 <th class="text-right px-3 py-2.5 font-semibold">Market med</th>
                 <th class="text-right px-3 py-2.5 font-semibold">vs Market</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Price rank</th>
                 <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
                 <th class="text-left px-3 py-2.5 font-semibold">Spend</th>
                 <th class="text-left px-5 py-2.5 font-semibold">Title</th>
@@ -1060,11 +1061,19 @@
                     <span x-show="l.vs_market != null && l.vs_market === 0" class="text-muted">0%</span>
                     <span x-show="l.vs_market == null" class="text-muted-2">—</span>
                   </td>
+                  <td class="px-3 py-2.5 text-right">
+                    <template x-if="l.rank != null">
+                      <span class="inline-flex items-center gap-0.5 text-[11px] font-semibold" :class="l.rank <= Math.ceil(l.rank_total * 0.25) ? 'text-up' : l.rank >= Math.ceil(l.rank_total * 0.75) ? 'text-down' : 'text-heading'">
+                        <span x-text="l.rank + '/' + l.rank_total"></span>
+                      </span>
+                    </template>
+                    <template x-if="l.rank == null"><span class="text-muted-2">—</span></template>
+                  </td>
                   <td class="px-3 py-2.5 text-right" :class="(l.dom||0) > 30 ? 'text-down font-semibold' : (l.dom||0) > 14 ? 'text-amber-500 font-medium' : ''" x-text="l.dom != null ? l.dom + 'd' : '—'"></td>
                   <td class="px-3 py-2.5">
                     <span x-show="l.promo === 'Signature'" class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold bg-purple-50 text-purple-600">Signature</span>
                     <span x-show="l.promo === 'Hot'" class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold bg-orange-50 text-orange-600">Hot</span>
-                    <span x-show="!l.promo" class="text-muted-2 text-[10px]">None</span>
+                    <span x-show="!l.promo" class="text-muted-2 text-[10px]">—</span>
                   </td>
                   <td class="px-5 py-2.5 text-muted text-[11px] truncate max-w-[200px]">
                     <a :href="l.url ? 'https://www.bayut.com' + l.url : '#'" target="_blank" class="hover:text-accent hover:underline" x-text="l.title || '—'"></a>
@@ -1072,7 +1081,7 @@
                 </tr>
               </template>
               <template x-if="agentDrillListings().length === 0">
-                <tr><td colspan="11" class="px-5 py-8 text-center text-muted">No listings found</td></tr>
+                <tr><td colspan="12" class="px-5 py-8 text-center text-muted">No listings found</td></tr>
               </template>
             </tbody>
           </table>
