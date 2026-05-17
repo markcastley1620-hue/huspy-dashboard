@@ -214,7 +214,7 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
     avg_price = int(sum(all_prices) / len(all_prices)) if all_prices else 0
     median_price = sorted(all_prices)[len(all_prices) // 2] if all_prices else 0
 
-    # Per-bed market medians
+    # Per-bed market medians + individual prices for ranking
     by_bed = {}
     for bed_key, prices in all_by_bed.items():
         by_bed[bed_key] = {
@@ -223,15 +223,17 @@ def scrape_community_market(community: str, slug: str, purpose: str, pages: int 
             "median_price": int(stat_median(prices)),
             "min_price": min(prices),
             "max_price": max(prices),
+            "prices": sorted(prices),
         }
 
-    # Per-bed+type market medians
+    # Per-bed+type market medians + individual prices for ranking
     by_bed_type = {}
     for bt_key, prices in all_by_bed_type.items():
         by_bed_type[bt_key] = {
             "count": len(prices),
             "avg_price": int(sum(prices) / len(prices)),
             "median_price": int(stat_median(prices)),
+            "prices": sorted(prices),
         }
 
     return {

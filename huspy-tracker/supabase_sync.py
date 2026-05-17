@@ -363,27 +363,44 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
     opportunities = compute_opportunities(snapshot, market_data=market_data)
     peer_medians = compute_peer_medians(snapshot)
 
-    # Compute price rank per community+type+beds group
-    from collections import defaultdict as _dd
-    rank_groups = _dd(list)
-    for l in listings:
-        if l.get('price_num') and l.get('community') and l.get('bedrooms') is not None and l.get('type'):
-            key = (l['community'], l['purpose'], l['type'], l['bedrooms'])
-            rank_groups[key].append(l['price_num'])
-    # Sort each group so we can binary-search rank
-    for k in rank_groups:
-        rank_groups[k] = sorted(rank_groups[k])
-
+    # Compute price rank against MARKET prices (not Huspy-only)
+    # Uses individual prices from market scraper sample
     def get_price_rank(l):
-        """Return (rank, total) within community+type+beds peers. 1 = cheapest."""
+        """Return (rank, total) against market peers. 1 = cheapest in market."""
         if not (l.get('price_num') and l.get('community') and l.get('bedrooms') is not None and l.get('type')):
             return None, None
-        key = (l['community'], l['purpose'], l['type'], l['bedrooms'])
-        prices = rank_groups.get(key)
-        if not prices or len(prices) < 2:
+        if not market_data:
             return None, None
-        rank = sum(1 for p in prices if p < l['price_num']) + 1
-        return rank, len(prices)
+
+        community = l['community']
+        purpose = l['purpose']
+        bed_key = str(l['bedrooms']) if l['bedrooms'] > 0 else 'Studio'
+        ptype = l['type']
+        bt_key = f"{bed_key}|{ptype}"
+
+        comm_data = market_data.get(purpose, {}).get(community, {})
+        if not comm_data:
+            return None, None
+
+        # Try bed+type prices first (tightest comp)
+        bt = comm_data.get('by_bed_type', {}).get(bt_key, {})
+        market_prices = bt.get('prices', [])
+
+        # Fallback to bed-only prices
+        if not market_prices:
+            bd = comm_data.get('by_bed', {}).get(bed_key, {})
+            market_prices = bd.get('prices', [])
+
+        if not market_prices or len(market_prices) < 2:
+            return None, None
+
+        # Rank this listing's price against market prices
+        # Include this listing in the pool for accurate ranking
+        price = l['price_num']
+        all_prices = sorted(market_prices + [price])
+        total = len(all_prices)
+        rank = all_prices.index(price) + 1
+        return rank, total
 
     # Compact listing-level data for agent drill-down
     # Format: [agent, community, sub_community, type, beds, price, dom, promo, psqft, sqft, purpose, title, url, rank, rank_total]
