@@ -806,7 +806,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="o in (latest?.data?.opportunities?.[mode]?.underpriced || [])" :key="o.url">
+              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.underpriced || [])" :key="o.url + idx">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
@@ -854,7 +854,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="o in (latest?.data?.opportunities?.[mode]?.overpriced || [])" :key="o.url">
+              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.overpriced || [])" :key="o.url + idx">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
@@ -895,7 +895,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="o in (latest?.data?.opportunities?.[mode]?.stale || [])" :key="o.url">
+              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.stale || [])" :key="o.url + idx">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
@@ -1043,7 +1043,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="l in agentDrillListings()" :key="l.url">
+              <template x-for="(l, idx) in agentDrillListings()" :key="idx">
                 <tr class="border-b border-border-subtle last:border-0 hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="l.sub_community || '—'"></td>
                   <td class="px-3 py-2.5">
