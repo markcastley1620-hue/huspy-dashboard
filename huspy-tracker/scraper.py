@@ -203,8 +203,26 @@ def get_total_listings(html: str) -> int:
     return int(m.group(1)) if m else 0
 
 
-def scrape_all_listings(concurrency: int = 10) -> dict:
-    """Scrape all Huspy listings with concurrent page fetching."""
+def _dedup_listings(listings):
+    """Deduplicate listings by listing_id, keeping first occurrence."""
+    seen = set()
+    result = []
+    for l in listings:
+        lid = l.get('listing_id')
+        if lid and lid in seen:
+            continue
+        if lid:
+            seen.add(lid)
+        result.append(l)
+    return result
+
+
+def scrape_all_listings(concurrency: int = 3) -> dict:
+    """Scrape all Huspy listings with multi-pass to handle pagination instability.
+    
+    Bayut's pagination shifts between requests, causing overlap and missed listings.
+    Lower concurrency reduces churn. A second pass fills remaining gaps.
+    """
     print(f"⬡ Huspy Tracker — Full scrape (concurrency={concurrency})")
     start = time.time()
 
@@ -212,7 +230,7 @@ def scrape_all_listings(concurrency: int = 10) -> dict:
     _, html1 = scrape_page(1)
     total_expected = get_total_listings(html1)
     page1_listings = parse_page_listings(html1)
-    total_pages = (total_expected // 24) + 1
+    total_pages = (total_expected + 23) // 24  # ceiling division
 
     print(f"  {total_expected} listings, {total_pages} pages")
     print(f"  Page 1: {len(page1_listings)} listings")
@@ -220,7 +238,7 @@ def scrape_all_listings(concurrency: int = 10) -> dict:
     all_listings = list(page1_listings)
     credits_used = 75
 
-    # Scrape remaining pages concurrently
+    # Pass 1: scrape all pages
     remaining_pages = list(range(2, total_pages + 1))
 
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
@@ -240,20 +258,31 @@ def scrape_all_listings(concurrency: int = 10) -> dict:
             else:
                 print(f"  Page {page_num}: failed")
 
-    # Deduplicate by listing_id (pagination overlap creates dupes)
-    pre_dedup = len(all_listings)
-    seen_ids = set()
-    deduped = []
-    for l in all_listings:
-        lid = l.get('listing_id')
-        if lid and lid in seen_ids:
-            continue
-        if lid:
-            seen_ids.add(lid)
-        deduped.append(l)
-    all_listings = deduped
-    if pre_dedup != len(all_listings):
-        print(f"  Deduped: {pre_dedup} → {len(all_listings)} ({pre_dedup - len(all_listings)} duplicates removed)")
+    all_listings = _dedup_listings(all_listings)
+    unique_pass1 = len(all_listings)
+    gap = total_expected - unique_pass1
+    print(f"  Pass 1: {unique_pass1} unique / {total_expected} expected ({gap} gap)")
+
+    # Pass 2: if significant gap, re-scrape to fill it
+    if gap > total_expected * 0.05:  # >5% gap
+        print(f"  Pass 2: re-scraping {total_pages} pages to fill {gap} gap...")
+        pass2_pages = list(range(1, total_pages + 1))
+        with ThreadPoolExecutor(max_workers=concurrency) as executor:
+            futures = {executor.submit(scrape_page, p): p for p in pass2_pages}
+            completed = 0
+            for future in as_completed(futures):
+                page_num, html = future.result()
+                completed += 1
+                credits_used += 75
+                if html:
+                    listings = parse_page_listings(html)
+                    all_listings.extend(listings)
+                if completed % 20 == 0:
+                    print(f"    Pass 2 progress: {completed}/{len(pass2_pages)}")
+        all_listings = _dedup_listings(all_listings)
+        print(f"  Pass 2: {len(all_listings)} unique ({len(all_listings) - unique_pass1} new)")
+
+    print(f"  Coverage: {len(all_listings)}/{total_expected} ({len(all_listings)/total_expected*100:.1f}%)" if total_expected else "")
 
     elapsed = time.time() - start
     result = {
