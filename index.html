@@ -96,17 +96,17 @@
 
       <!-- KPIs -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm cursor-pointer hover:border-accent/30 hover:shadow-md transition-all" @click="setMode('sale'); navigate('communities')">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Sale share</div>
           <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="marketShare('sale')"></div>
           <div class="text-[11px] text-muted mt-2" x-text="marketShareSub('sale')"></div>
         </div>
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm cursor-pointer hover:border-accent/30 hover:shadow-md transition-all" @click="setMode('rent'); navigate('communities')">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Rent share</div>
           <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="marketShare('rent')"></div>
           <div class="text-[11px] text-muted mt-2" x-text="marketShareSub('rent')"></div>
         </div>
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm cursor-pointer hover:border-accent/30 hover:shadow-md transition-all" @click="navigate('agents')">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold" x-text="mode + ' listings'"></div>
           <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="fmt(block()?.total)"></div>
           <div class="flex items-center gap-1 mt-2" x-show="prevBlock() && block()?.total != null && prevBlock()?.total != null && latest?.snapshot_date !== previous?.snapshot_date">
@@ -114,7 +114,7 @@
             <span class="text-[11px] text-muted">vs prev</span>
           </div>
         </div>
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm cursor-pointer hover:border-accent/30 hover:shadow-md transition-all" @click="navigate('communities')">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Gaining share</div>
           <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="movers().up.length"></div>
           <div class="text-[11px] text-muted mt-2">communities with positive Δ</div>
@@ -226,7 +226,7 @@
                     <span x-show="r.delta != null && r.delta > 0" class="inline-flex items-center gap-0.5 text-up bg-up-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↑ +<span x-text="r.delta.toFixed(2)"></span>pp</span>
                     <span x-show="r.delta != null && r.delta < 0" class="inline-flex items-center gap-0.5 text-down bg-down-bg rounded-full px-2 py-0.5 text-[11px] font-semibold">↓ <span x-text="r.delta.toFixed(2)"></span>pp</span>
                     <span x-show="r.delta != null && r.delta === 0" class="text-muted-2 text-[11px]">0.00pp</span>
-                    <span x-show="r.delta == null" class="text-muted-2 text-[11px]">—</span>
+                    <span x-show="r.delta == null" class="text-muted-2 text-[11px]">N/A</span>
                   </td>
                 </tr>
               </template>
@@ -767,32 +767,32 @@
 
       <!-- Summary cards -->
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" x-show="latest?.data?.opportunities">
-        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm cursor-pointer hover:border-up/30 hover:shadow-md transition-all" @click="oppTab='underpriced'">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Add Spend</div>
           <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="latest?.data?.opportunities?.summary?.[mode]?.underpriced || 0"></div>
           <div class="text-[11px] text-muted mt-1">underpriced, no spend</div>
         </div>
-        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm cursor-pointer hover:border-down/30 hover:shadow-md transition-all" @click="oppTab='overpriced'">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Overpriced</div>
           <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="latest?.data?.opportunities?.summary?.[mode]?.overpriced || 0"></div>
           <div class="text-[11px] text-muted mt-1">price talk needed</div>
         </div>
-        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
+        <div class="rounded-2xl border border-border bg-white p-4 shadow-sm cursor-pointer hover:border-amber-300 hover:shadow-md transition-all" @click="oppTab='stale'">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Stale (30d+)</div>
           <div class="text-[28px] font-bold mt-1 leading-none text-amber-500" x-text="latest?.data?.opportunities?.summary?.[mode]?.stale || 0"></div>
           <div class="text-[11px] text-muted mt-1">no spend, going stale</div>
         </div>
-        <div class="rounded-2xl border border-down bg-down/5 p-4 shadow-sm">
+        <div class="rounded-2xl border border-down bg-down/5 p-4 shadow-sm cursor-pointer hover:shadow-md transition-all" @click="oppTab='wasted_overpriced'">
           <div class="text-[10px] uppercase tracking-widest text-down font-semibold">⚠ Spend + Overpriced</div>
           <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="latest?.data?.opportunities?.summary?.[mode]?.wasted_overpriced || 0"></div>
           <div class="text-[11px] text-down/70 mt-1">wasting budget</div>
         </div>
-        <div class="rounded-2xl border border-amber-300 bg-amber-50 p-4 shadow-sm">
+        <div class="rounded-2xl border border-amber-300 bg-amber-50 p-4 shadow-sm cursor-pointer hover:shadow-md transition-all" @click="oppTab='wasted_stale'">
           <div class="text-[10px] uppercase tracking-widest text-amber-600 font-semibold">⚠ Spend + Stale</div>
           <div class="text-[28px] font-bold mt-1 leading-none text-amber-600" x-text="latest?.data?.opportunities?.summary?.[mode]?.wasted_stale || 0"></div>
           <div class="text-[11px] text-amber-600/70 mt-1">spend not converting</div>
         </div>
-        <div class="rounded-2xl border border-up bg-up/5 p-4 shadow-sm">
+        <div class="rounded-2xl border border-up bg-up/5 p-4 shadow-sm cursor-pointer hover:shadow-md transition-all" @click="oppTab='spend_working'">
           <div class="text-[10px] uppercase tracking-widest text-up font-semibold">✓ Spend Working</div>
           <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="latest?.data?.opportunities?.summary?.[mode]?.spend_working || 0"></div>
           <div class="text-[11px] text-up/70 mt-1">well-positioned</div>
