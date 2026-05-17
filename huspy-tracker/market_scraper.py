@@ -350,6 +350,13 @@ if __name__ == "__main__":
 # Sub-community slug mapping for direct Bayut scraping
 # Format: (community_slug, sub_community_slug) -> allows URL construction
 # Bayut pattern: bayut.com/for-sale/apartments/dubai/{community_slug}/{sub_slug}/
+
+# Short slugs for type-specific Bayut URLs (townhouses/villas pages use these)
+SHORT_SLUGS = {
+    "DAMAC Hills": "damac-hills",
+    "DAMAC Hills 2 (Akoya by DAMAC)": "damac-hills-2",
+}
+
 def _slugify(name):
     """Convert a sub-community name to a Bayut URL slug."""
     import re
