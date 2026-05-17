@@ -147,11 +147,12 @@ def parse_listing_card(card) -> dict | None:
         except (ValueError, Exception):
             pass
 
-    # Promotional status
+    # Promotional status — check both text content AND aria-labels (badges are often images)
     promo = None
-    if "Signature" in card_text:
+    card_html = str(card)
+    if card.find(attrs={"aria-label": "Signature"}) or "Signature" in card_text:
         promo = "Signature"
-    elif "Hot" in card_text:
+    elif card.find(attrs={"aria-label": "Hot"}) or "Hot" in card_text:
         promo = "Hot"
 
     # TruBroker verification (agent badge, not spend)
