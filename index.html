@@ -1440,11 +1440,33 @@
     <div x-show="!loading && view==='concentration'" x-cloak class="space-y-6 fade-in">
       <div>
         <h2 class="text-lg font-semibold text-heading">Where's the stock?</h2>
-        <p class="text-[12px] text-muted mt-0.5">Full breakdown of Huspy's <span class="font-semibold" x-text="mode"></span> listings — by area, bedrooms, price, and type</p>
+        <p class="text-[12px] text-muted mt-0.5">Full breakdown of Huspy's <span class="font-semibold" x-text="mode"></span> listings — filter by area or agent to drill in</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="relative min-w-[200px]">
+          <select x-model="spreadComm" class="w-full bg-white border border-border rounded-lg px-3 py-2 text-[12px] text-gray-900 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm appearance-none cursor-pointer">
+            <option value="">All communities</option>
+            <template x-for="c in spreadCommOptions()" :key="c">
+              <option :value="c" x-text="c"></option>
+            </template>
+          </select>
+        </div>
+        <div class="relative min-w-[200px]">
+          <select x-model="spreadAgent" class="w-full bg-white border border-border rounded-lg px-3 py-2 text-[12px] text-gray-900 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm appearance-none cursor-pointer">
+            <option value="">All agents</option>
+            <template x-for="a in spreadAgentOptions()" :key="a">
+              <option :value="a" x-text="a"></option>
+            </template>
+          </select>
+        </div>
+        <button x-show="spreadComm || spreadAgent" @click="spreadComm = ''; spreadAgent = ''" class="text-[11px] text-accent font-medium hover:underline">✕ Clear filters</button>
+        <div class="ml-auto text-[11px] text-muted font-medium" x-text="spreadFiltered().length + ' listings'"></div>
       </div>
 
       <!-- Warning banner -->
-      <div x-show="concData().top5 > 50" class="rounded-2xl border border-down/30 bg-down-bg p-4 flex items-start gap-3">
+      <div x-show="!spreadComm && !spreadAgent && concData().top5 > 50" class="rounded-2xl border border-down/30 bg-down-bg p-4 flex items-start gap-3">
         <span class="text-[18px]">⚠️</span>
         <div>
           <div class="text-[13px] font-semibold text-down">Heavy area concentration</div>
@@ -1459,19 +1481,19 @@
         <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
           <div class="flex items-center justify-between mb-4">
             <div class="text-[13px] font-semibold text-heading">📍 By area</div>
-            <div class="flex gap-2 text-[10px]">
+            <div x-show="!spreadComm" class="flex gap-2 text-[10px]">
               <span class="text-muted">Top 5: <span class="font-bold" :class="concData().top5 > 50 ? 'text-down' : 'text-heading'" x-text="concData().top5.toFixed(0) + '%'"></span></span>
               <span class="text-muted">Top 10: <span class="font-bold text-heading" x-text="concData().top10.toFixed(0) + '%'"></span></span>
             </div>
           </div>
           <div class="space-y-2">
-            <template x-for="(r, i) in concData().rows.slice(0, 12)" :key="r.name">
-              <div class="flex items-center gap-2.5 cursor-pointer" @click="selectCommunity(r.name)">
-                <div class="w-32 sm:w-40 text-[11px] font-medium truncate hover:text-accent transition-colors" x-text="r.name"></div>
+            <template x-for="(r, i) in spreadAreaBars()" :key="r.name">
+              <div class="flex items-center gap-2.5 cursor-pointer" @click="spreadComm = spreadComm === r.name ? '' : r.name">
+                <div class="w-32 sm:w-40 text-[11px] font-medium truncate transition-colors" :class="spreadComm === r.name ? 'text-accent' : 'hover:text-accent'" x-text="r.name"></div>
                 <div class="flex-1 h-5 bg-gray-100 rounded-lg overflow-hidden">
-                  <div class="h-full rounded-lg bar-anim" :class="i < 5 ? 'bg-accent' : 'bg-gray-300'" :style="'width:' + (r.pct / concData().rows[0].pct * 100) + '%'"></div>
+                  <div class="h-full rounded-lg bar-anim" :class="spreadComm === r.name ? 'bg-accent' : i < 5 ? 'bg-accent/70' : 'bg-gray-300'" :style="'width:' + r.barPct + '%'"></div>
                 </div>
-                <div class="w-14 text-right text-[10px] font-semibold tabular-nums" :class="i < 5 ? 'text-accent' : 'text-muted'" x-text="r.count"></div>
+                <div class="w-14 text-right text-[10px] font-semibold tabular-nums" :class="spreadComm === r.name ? 'text-accent' : i < 5 ? 'text-accent' : 'text-muted'" x-text="r.count"></div>
               </div>
             </template>
           </div>
@@ -1536,6 +1558,25 @@
               </div>
             </template>
           </div>
+        </div>
+      </div>
+
+      <!-- ===== ROW 3: By Agent (when no agent filter) ===== -->
+      <div x-show="!spreadAgent" class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <div class="text-[13px] font-semibold text-heading mb-4">👤 By agent <span class="text-[11px] font-normal text-muted" x-text="'(top 15' + (spreadComm ? ' in ' + spreadComm : '') + ')'"></span></div>
+        <div class="space-y-2">
+          <template x-for="(r, i) in spreadAgentBars()" :key="r.name">
+            <div class="flex items-center gap-2.5 cursor-pointer" @click="spreadAgent = r.name">
+              <div class="w-36 sm:w-44 text-[11px] font-medium truncate hover:text-accent transition-colors" x-text="r.name"></div>
+              <div class="flex-1 h-5 bg-gray-100 rounded-lg overflow-hidden">
+                <div class="h-full rounded-lg bar-anim bg-violet-400" :style="'width:' + r.barPct + '%'"></div>
+              </div>
+              <div class="w-20 text-right text-[10px] tabular-nums">
+                <span class="font-semibold text-heading" x-text="r.count"></span>
+                <span class="text-muted" x-text="' (' + r.pct.toFixed(0) + '%)'" ></span>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -1607,6 +1648,8 @@ function dashboard() {
     selectedCommunity: null,
     selectedAgent: null,
     agentDrillComm: null,
+    spreadComm: '',
+    spreadAgent: '',
     selectedBed: null,
     oppTab: 'underpriced',
     agentSearch: '',
@@ -1638,7 +1681,7 @@ function dashboard() {
     },
 
     setMode(m) { this.mode = m; localStorage.setItem('huspy-mode', m); },
-    navigate(v) { this.view = v; this.search = ''; this.agentDrillComm = null; if (!['community-detail','agent-detail','agent-community'].includes(v)) { this.selectedCommunity = null; this.selectedAgent = null; this.selectedBed = null; } window.scrollTo(0, 0); },
+    navigate(v) { this.view = v; this.search = ''; this.agentDrillComm = null; this.spreadComm = ''; this.spreadAgent = ''; if (!['community-detail','agent-detail','agent-community'].includes(v)) { this.selectedCommunity = null; this.selectedAgent = null; this.selectedBed = null; } window.scrollTo(0, 0); },
     block() { return this.latest?.data?.[this.mode] || null; },
     prevBlock() { return this.previous?.data?.[this.mode] || null; },
     fmt(n) { return n == null ? 'N/A' : new Intl.NumberFormat('en-US').format(n); },
@@ -1806,8 +1849,47 @@ function dashboard() {
       const top20 = rows.length >= 20 ? rows[19].cumPct : (rows[rows.length - 1]?.cumPct || 0);
       return { top5, top10, top20, rows };
     },
+    spreadFiltered() {
+      let listings = this._allListings();
+      if (this.spreadComm) listings = listings.filter(l => l.community === this.spreadComm);
+      if (this.spreadAgent) listings = listings.filter(l => l.agent === this.spreadAgent);
+      return listings;
+    },
+    spreadCommOptions() {
+      const comms = new Set();
+      let listings = this._allListings();
+      if (this.spreadAgent) listings = listings.filter(l => l.agent === this.spreadAgent);
+      listings.forEach(l => { if (l.community) comms.add(l.community); });
+      return [...comms].sort();
+    },
+    spreadAgentOptions() {
+      let listings = this._allListings();
+      if (this.spreadComm) listings = listings.filter(l => l.community === this.spreadComm);
+      const counts = {};
+      listings.forEach(l => { if (l.agent && l.agent !== 'Unattributed') counts[l.agent] = (counts[l.agent] || 0) + 1; });
+      return Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([n]) => n);
+    },
+    spreadAreaBars() {
+      const listings = this.spreadFiltered();
+      const counts = {};
+      listings.forEach(l => { if (l.community) counts[l.community] = (counts[l.community] || 0) + 1; });
+      const rows = Object.entries(counts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count).slice(0, 12);
+      const max = rows.length ? rows[0].count : 1;
+      rows.forEach(r => r.barPct = r.count / max * 100);
+      return rows;
+    },
+    spreadAgentBars() {
+      const listings = this.spreadFiltered();
+      const counts = {};
+      listings.forEach(l => { if (l.agent && l.agent !== 'Unattributed') counts[l.agent] = (counts[l.agent] || 0) + 1; });
+      const total = listings.length || 1;
+      const rows = Object.entries(counts).map(([name, count]) => ({ name, count, pct: count / total * 100 })).sort((a, b) => b.count - a.count).slice(0, 15);
+      const max = rows.length ? rows[0].count : 1;
+      rows.forEach(r => r.barPct = r.count / max * 100);
+      return rows;
+    },
     spreadBeds() {
-      const listings = this._allListings();
+      const listings = this.spreadFiltered();
       const counts = {};
       listings.forEach(l => {
         const k = l.beds != null ? (l.beds === 0 ? 'Studio' : l.beds + ' BR') : 'Unknown';
@@ -1823,7 +1905,7 @@ function dashboard() {
       return rows;
     },
     spreadPriceBands() {
-      const listings = this._allListings();
+      const listings = this.spreadFiltered();
       const isSale = this.mode === 'sale';
       const bands = isSale
         ? [['Under 1M', 0, 1e6], ['1M–2M', 1e6, 2e6], ['2M–5M', 2e6, 5e6], ['5M–10M', 5e6, 1e7], ['10M+', 1e7, Infinity]]
@@ -1838,7 +1920,7 @@ function dashboard() {
       return rows;
     },
     spreadTypes() {
-      const listings = this._allListings();
+      const listings = this.spreadFiltered();
       const counts = {};
       listings.forEach(l => { const t = l.type || 'Unknown'; counts[t] = (counts[t] || 0) + 1; });
       const total = listings.length || 1;
