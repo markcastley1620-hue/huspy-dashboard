@@ -818,11 +818,22 @@
         </div>
       </div>
 
-      <!-- Tabs -->
-      <div class="flex overflow-x-auto scrollbar-hide rounded-lg border border-border p-0.5 bg-gray-50 w-fit max-w-full gap-0.5">
-        <template x-for="t in ['underpriced','new_underpriced','overpriced','stale','sole_listings','wasted_overpriced','wasted_stale','spend_working','agent_efficiency','community_heatmap']" :key="t">
-          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','new_underpriced':'🚨 Fresh Deals','overpriced':'Overpriced','stale':'Stale','sole_listings':'🏆 1/1 No Competition','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working','agent_efficiency':'🎯 Agent Efficiency','community_heatmap':'🗺 Opportunity Map'})[t]"></button>
-        </template>
+      <!-- Tabs + Area filter -->
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex overflow-x-auto scrollbar-hide rounded-lg border border-border p-0.5 bg-gray-50 w-fit max-w-full gap-0.5">
+          <template x-for="t in ['underpriced','new_underpriced','overpriced','stale','sole_listings','wasted_overpriced','wasted_stale','spend_working','agent_efficiency','community_heatmap']" :key="t">
+            <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','new_underpriced':'🚨 Fresh Deals','overpriced':'Overpriced','stale':'Stale','sole_listings':'🏆 1/1 No Competition','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working','agent_efficiency':'🎯 Agent Efficiency','community_heatmap':'🗺 Opportunity Map'})[t]"></button>
+          </template>
+        </div>
+        <div class="flex items-center gap-2 ml-auto">
+          <select x-model="oppCommFilter" class="bg-white border border-border rounded-lg px-3 py-1.5 text-[11px] text-gray-900 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm appearance-none cursor-pointer min-w-[160px]">
+            <option value="">All areas</option>
+            <template x-for="c in oppCommOptions()" :key="c">
+              <option :value="c" x-text="c"></option>
+            </template>
+          </select>
+          <button x-show="oppCommFilter" @click="oppCommFilter = ''" class="text-[11px] text-accent font-medium hover:underline">✕</button>
+        </div>
       </div>
 
       <!-- Underpriced table -->
@@ -845,7 +856,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.underpriced || [])" :key="o.url + idx">
+              <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.underpriced)" :key="o.url + idx">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
@@ -870,7 +881,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.[mode]?.underpriced?.length)"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No underpriced listings found</td></tr></template>
+              <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.underpriced).length"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No underpriced listings found</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -895,7 +906,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.overpriced || [])" :key="o.url + idx">
+              <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.overpriced)" :key="o.url + idx">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
@@ -915,7 +926,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.[mode]?.overpriced?.length)"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No overpriced listings found</td></tr></template>
+              <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.overpriced).length"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No overpriced listings found</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -938,7 +949,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.stale || [])" :key="o.url + idx">
+              <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.stale)" :key="o.url + idx">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
@@ -956,7 +967,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.[mode]?.stale?.length)"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No stale listings found</td></tr></template>
+              <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.stale).length"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No stale listings found</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -981,7 +992,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="(o, idx) in (latest?.data?.opportunities?.sole_listings?.[mode] || [])" :key="'sl'+idx">
+              <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.sole_listings?.[mode])" :key="'sl'+idx">
                 <tr class="border-b border-border-subtle hover:bg-gray-50">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5"><div class="text-heading" x-text="o.sub_community"></div><div class="text-[10px] text-muted" x-text="o.type + ' · ' + o.community"></div></td>
@@ -992,7 +1003,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.sole_listings?.[mode]?.length)"><tr><td colspan="7" class="px-5 py-8 text-center text-muted">All listings have market comparables</td></tr></template>
+              <template x-if="!oppFilter(latest?.data?.opportunities?.sole_listings?.[mode]).length"><tr><td colspan="7" class="px-5 py-8 text-center text-muted">All listings have market comparables</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -1017,7 +1028,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.wasted_overpriced || [])" :key="'wo'+idx">
+              <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.wasted_overpriced)" :key="'wo'+idx">
                 <tr class="border-b border-down/10 hover:bg-down/5">
                   <td class="px-5 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.promo==='Signature' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'" x-text="o.promo"></span></td>
                   <td class="px-3 py-2.5 font-medium" x-text="o.agent"></td>
@@ -1031,7 +1042,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.[mode]?.wasted_overpriced?.length)"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">✓ No wasted spend on overpriced listings</td></tr></template>
+              <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.wasted_overpriced).length"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">✓ No wasted spend on overpriced listings</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -1056,7 +1067,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.wasted_stale || [])" :key="'ws'+idx">
+              <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.wasted_stale)" :key="'ws'+idx">
                 <tr class="border-b border-amber-200 hover:bg-amber-100/50">
                   <td class="px-5 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.promo==='Signature' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'" x-text="o.promo"></span></td>
                   <td class="px-3 py-2.5 font-medium" x-text="o.agent"></td>
@@ -1070,7 +1081,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.[mode]?.wasted_stale?.length)"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">✓ No stale listings with spend</td></tr></template>
+              <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.wasted_stale).length"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">✓ No stale listings with spend</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -1095,7 +1106,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="(o, idx) in (latest?.data?.opportunities?.[mode]?.spend_working || [])" :key="'sw'+idx">
+              <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.spend_working)" :key="'sw'+idx">
                 <tr class="border-b border-up/10 hover:bg-up/5">
                   <td class="px-5 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.promo==='Signature' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'" x-text="o.promo"></span></td>
                   <td class="px-3 py-2.5 font-medium" x-text="o.agent"></td>
@@ -1109,7 +1120,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.[mode]?.spend_working?.length)"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">No promoted listings with market data</td></tr></template>
+              <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.spend_working).length"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">No promoted listings with market data</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -1135,7 +1146,7 @@
               </tr>
             </thead>
             <tbody>
-              <template x-for="(o, idx) in (latest?.data?.opportunities?.new_underpriced?.[mode] || [])" :key="'nu'+idx">
+              <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.new_underpriced?.[mode])" :key="'nu'+idx">
                 <tr class="border-b border-accent/10 hover:bg-accent/5">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5"><div class="text-heading" x-text="o.sub_community || o.community"></div><div class="text-[10px] text-muted" x-text="o.type + ' · ' + o.community"></div></td>
@@ -1149,7 +1160,7 @@
                   <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.new_underpriced?.[mode]?.length)"><tr><td colspan="10" class="px-5 py-8 text-center text-muted">No fresh underpriced listings in the last 7 days</td></tr></template>
+              <template x-if="!oppFilter(latest?.data?.opportunities?.new_underpriced?.[mode]).length"><tr><td colspan="10" class="px-5 py-8 text-center text-muted">No fresh underpriced listings in the last 7 days</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -1652,6 +1663,7 @@ function dashboard() {
     spreadAgent: '',
     selectedBed: null,
     oppTab: 'underpriced',
+    oppCommFilter: '',
     agentSearch: '',
     agentMultiComm: false,
     agentSortCol: 'count',
@@ -1681,7 +1693,7 @@ function dashboard() {
     },
 
     setMode(m) { this.mode = m; localStorage.setItem('huspy-mode', m); },
-    navigate(v) { this.view = v; this.search = ''; this.agentDrillComm = null; this.spreadComm = ''; this.spreadAgent = ''; if (!['community-detail','agent-detail','agent-community'].includes(v)) { this.selectedCommunity = null; this.selectedAgent = null; this.selectedBed = null; } window.scrollTo(0, 0); },
+    navigate(v) { this.view = v; this.search = ''; this.agentDrillComm = null; this.spreadComm = ''; this.spreadAgent = ''; this.oppCommFilter = ''; if (!['community-detail','agent-detail','agent-community'].includes(v)) { this.selectedCommunity = null; this.selectedAgent = null; this.selectedBed = null; } window.scrollTo(0, 0); },
     block() { return this.latest?.data?.[this.mode] || null; },
     prevBlock() { return this.previous?.data?.[this.mode] || null; },
     fmt(n) { return n == null ? 'N/A' : new Intl.NumberFormat('en-US').format(n); },
@@ -1848,6 +1860,21 @@ function dashboard() {
       const top10 = rows.length >= 10 ? rows[9].cumPct : (rows[rows.length - 1]?.cumPct || 0);
       const top20 = rows.length >= 20 ? rows[19].cumPct : (rows[rows.length - 1]?.cumPct || 0);
       return { top5, top10, top20, rows };
+    },
+    oppCommOptions() {
+      const comms = new Set();
+      const opps = this.latest?.data?.opportunities || {};
+      // Gather communities from all listing-level tabs
+      for (const tab of ['underpriced','overpriced','stale','wasted_overpriced','wasted_stale','spend_working']) {
+        for (const o of (opps?.[this.mode]?.[tab] || [])) { if (o.community) comms.add(o.community); }
+      }
+      for (const o of (opps?.new_underpriced?.[this.mode] || [])) { if (o.community) comms.add(o.community); }
+      for (const o of (opps?.sole_listings?.[this.mode] || [])) { if (o.community) comms.add(o.community); }
+      return [...comms].sort();
+    },
+    oppFilter(arr) {
+      if (!this.oppCommFilter) return arr || [];
+      return (arr || []).filter(o => o.community === this.oppCommFilter);
     },
     spreadFiltered() {
       let listings = this._allListings();
