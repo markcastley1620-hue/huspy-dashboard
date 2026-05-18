@@ -67,8 +67,8 @@
       </div>
       <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
         <div class="flex items-center gap-1 shrink-0">
-          <template x-for="v in ['overview','communities','agents','gaps','concentration','opportunities','advisor']" :key="v">
-            <button @click="navigate(v)" :class="view===v || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all whitespace-nowrap" x-text="v.charAt(0).toUpperCase()+v.slice(1)"></button>
+          <template x-for="v in ['overview','communities','agents','gaps','spread','opportunities','advisor']" :key="v">
+            <button @click="navigate(v === 'spread' ? 'concentration' : v)" :class="(v === 'spread' ? view==='concentration' : view===v) || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all whitespace-nowrap" x-text="({'spread':'Spread','gaps':'Gaps'})[v] || v.charAt(0).toUpperCase()+v.slice(1)"></button>
           </template>
         </div>
         <div class="w-px h-5 bg-border mx-1.5 shrink-0"></div>
@@ -1439,70 +1439,76 @@
     <!-- Concentration View -->
     <div x-show="!loading && view==='concentration'" x-cloak class="space-y-6 fade-in">
       <div>
-        <h2 class="text-lg font-semibold text-heading">Portfolio Concentration</h2>
-        <p class="text-[12px] text-muted mt-0.5">How much of Huspy's stock is concentrated in the top communities</p>
+        <h2 class="text-lg font-semibold text-heading">Where's the stock?</h2>
+        <p class="text-[12px] text-muted mt-0.5">How spread out Huspy's listings are across communities</p>
       </div>
 
-      <!-- KPI Cards -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 5</div>
-          <div class="text-2xl font-bold mt-1" :class="concData().top5 > 50 ? 'text-down' : 'text-heading'" x-text="concData().top5.toFixed(1) + '%'"></div>
-          <div x-show="concData().top5 > 50" class="text-[10px] text-down font-medium mt-0.5">⚠ High concentration</div>
-        </div>
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 10</div>
-          <div class="text-2xl font-bold text-heading mt-1" x-text="concData().top10.toFixed(1) + '%'"></div>
-        </div>
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 20</div>
-          <div class="text-2xl font-bold text-heading mt-1" x-text="concData().top20.toFixed(1) + '%'"></div>
-        </div>
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">HHI Index</div>
-          <div class="text-2xl font-bold text-heading mt-1" x-text="concData().hhi"></div>
-          <div class="text-[10px] text-muted mt-0.5" x-text="concData().hhiRaw < 1500 ? 'Low concentration' : concData().hhiRaw < 2500 ? 'Moderate' : 'High concentration'"></div>
+      <!-- Warning banner -->
+      <div x-show="concData().top5 > 50" class="rounded-2xl border border-down/30 bg-down-bg p-4 flex items-start gap-3">
+        <span class="text-[18px]">⚠️</span>
+        <div>
+          <div class="text-[13px] font-semibold text-down">Heavy concentration</div>
+          <div class="text-[12px] text-gray-600 mt-0.5">Over half of all <span class="font-semibold" x-text="mode"></span> listings sit in just 5 communities. If any of those areas slow down, it hits hard.</div>
         </div>
       </div>
 
-      <!-- Cumulative Bar Chart -->
+      <!-- 3 simple cards -->
+      <div class="grid grid-cols-3 gap-4">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm text-center">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 5 areas</div>
+          <div class="text-[32px] font-bold mt-2 leading-none" :class="concData().top5 > 50 ? 'text-down' : 'text-heading'" x-text="concData().top5.toFixed(0) + '%'"></div>
+          <div class="text-[11px] text-muted mt-1">of all stock</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm text-center">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 10 areas</div>
+          <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="concData().top10.toFixed(0) + '%'"></div>
+          <div class="text-[11px] text-muted mt-1">of all stock</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm text-center">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 20 areas</div>
+          <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="concData().top20.toFixed(0) + '%'"></div>
+          <div class="text-[11px] text-muted mt-1">of all stock</div>
+        </div>
+      </div>
+
+      <!-- Simple horizontal bars — each bar = that community's share -->
       <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-        <div class="text-[12px] font-semibold text-heading mb-3">Cumulative Concentration</div>
-        <div class="space-y-1.5">
-          <template x-for="(r, i) in concData().rows.slice(0, 20)" :key="r.name">
+        <div class="text-[12px] font-semibold text-heading mb-4">Biggest areas</div>
+        <div class="space-y-2.5">
+          <template x-for="(r, i) in concData().rows.slice(0, 15)" :key="r.name">
             <div class="flex items-center gap-3">
-              <div class="w-5 text-[10px] text-muted text-right tabular-nums" x-text="i + 1"></div>
-              <div class="w-28 sm:w-36 text-[11px] text-heading font-medium truncate" x-text="r.name"></div>
-              <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden relative">
-                <div class="h-full rounded-full bar-anim" :class="r.cumPct > 50 ? 'bg-red-400' : r.cumPct > 30 ? 'bg-amber-400' : 'bg-accent'" :style="'width:' + r.cumPct + '%'"></div>
-                <span class="absolute inset-0 flex items-center justify-end pr-2 text-[9px] font-semibold" :class="r.cumPct > 20 ? 'text-white' : 'text-muted'" x-text="r.cumPct.toFixed(1) + '%'"></span>
+              <div class="w-36 sm:w-44 text-[11px] text-heading font-medium truncate" x-text="r.name"></div>
+              <div class="flex-1 h-6 bg-gray-100 rounded-lg overflow-hidden relative">
+                <div class="h-full rounded-lg bar-anim" :class="i < 5 ? 'bg-accent' : 'bg-gray-300'" :style="'width:' + (r.pct / concData().rows[0].pct * 100) + '%'"></div>
               </div>
+              <div class="w-16 text-right text-[11px] font-semibold tabular-nums" x-text="r.count + ' (' + r.pct.toFixed(1) + '%)'" :class="i < 5 ? 'text-accent' : 'text-muted'"></div>
             </div>
           </template>
         </div>
       </div>
 
-      <!-- Concentration Table -->
+      <!-- Full table -->
       <div class="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+        <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">All communities ranked</div>
         <div class="overflow-x-auto">
           <table class="w-full text-[12px] mobile-cards">
             <thead>
               <tr class="border-b border-border bg-gray-50/50">
-                <th class="text-left px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Rank</th>
+                <th class="text-left px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">#</th>
                 <th class="text-left px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Community</th>
-                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Count</th>
-                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">% of Total</th>
-                <th class="text-right px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Cumulative %</th>
+                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Listings</th>
+                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Share</th>
+                <th class="text-right px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Running total</th>
               </tr>
             </thead>
             <tbody>
               <template x-for="r in concData().rows" :key="r.name">
-                <tr class="border-b border-border-subtle hover:bg-gray-50 transition-colors">
-                  <td class="px-5 py-2.5 text-muted tabular-nums" data-label="Rank" x-text="r.rank"></td>
-                  <td class="px-3 py-2.5 font-medium text-heading" data-label="Community" x-text="r.name"></td>
-                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Count" x-text="fmt(r.count)"></td>
-                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="% of Total" x-text="r.pct.toFixed(2) + '%'"></td>
-                  <td class="px-5 py-2.5 text-right tabular-nums font-medium" data-label="Cumulative %" :class="r.cumPct > 80 ? 'text-muted' : r.cumPct > 50 ? 'text-amber-600' : 'text-heading'" x-text="r.cumPct.toFixed(1) + '%'"></td>
+                <tr class="border-b border-border-subtle hover:bg-gray-50 transition-colors cursor-pointer" @click="selectCommunity(r.name)">
+                  <td class="px-5 py-2.5 text-muted tabular-nums" data-label="#" x-text="r.rank"></td>
+                  <td class="px-3 py-2.5 font-medium text-heading hover:text-accent transition-colors" data-label="Community" x-text="r.name"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Listings" x-text="r.count"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Share" x-text="r.pct.toFixed(1) + '%'"></td>
+                  <td class="px-5 py-2.5 text-right tabular-nums font-medium" data-label="Running total" :class="r.cumPct > 80 ? 'text-muted' : r.cumPct > 50 ? 'text-amber-600' : 'text-heading'" x-text="r.cumPct.toFixed(1) + '%'"></td>
                 </tr>
               </template>
               <template x-if="concData().rows.length === 0">
