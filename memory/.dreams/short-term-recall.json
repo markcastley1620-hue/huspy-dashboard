@@ -1,0 +1,370 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-18T04:21:16.259Z",
+  "entries": {
+    "memory:memory/2026-05-16.md:19:30": {
+      "key": "memory:memory/2026-05-16.md:19:30",
+      "path": "memory/2026-05-16.md",
+      "startLine": 19,
+      "endLine": 30,
+      "source": "memory",
+      "snippet": "- Branding: Jamie Neep, +971 585119476, jamie.neep@huspy.io (test agent) ## Identity Change - Renamed from Rook to **Nexus** ⬡ - Role: overall AI admin operator for Mark — monitors trading bots, work bots, handles direct tasks, coordinates everything - Updated IDENTITY.md, Telegram bot name + description ## ScrapingBee - API key stored in `bayut-brochure/.env` - Account: ~1.48M credits remaining out of 3M - Stealth proxy = 75 credits/call, required for Bayut (regular proxy gets CAPTCHA'd)",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.8995276174595195,
+      "maxScore": 0.6331758724865065,
+      "firstRecalledAt": "2026-05-16T04:49:52.659Z",
+      "lastRecalledAt": "2026-05-16T05:08:16.509Z",
+      "queryHashes": [
+        "bf8a65092333",
+        "bc32f96877e4",
+        "8b229f4f2ba6"
+      ],
+      "recallDays": [
+        "2026-05-16"
+      ],
+      "conceptTags": [
+        "jamie.neep",
+        "huspy.io",
+        "identity.md",
+        "bayut-brochure",
+        "1.48m",
+        "credits/call",
+        "branding",
+        "jamie"
+      ]
+    },
+    "memory:memory/2026-05-16.md:1:26": {
+      "key": "memory:memory/2026-05-16.md:1:26",
+      "path": "memory/2026-05-16.md",
+      "startLine": 1,
+      "endLine": 26,
+      "source": "memory",
+      "snippet": "# 2026-05-16 ## Huspy Tracker — Built & Deployed - Built full Huspy listings tracker: scraper (concurrent, 10 threads, ~3min for 73 pages), analytics engine, Telegram report formatter - First baseline captured: 1,718/1,742 listings scraped - Daily cron set for 6:00 AM Dubai time — scrapes, compares, sends report to Mark's Telegram - Uses ~5,500 ScrapingBee credits/day (stealth proxy) - Data stored in `huspy-tracker/data/YYYY-MM-DD.json` - Agent name extraction still needs refinement — not captured from ARIA labels yet - Day-over-day comparison (gaining/losing communities) will kick in from tomorrow with 2 snapshots ## Bayut Brochure Generator — v2 Progress - Redesigned brochure: gold accen",
+      "recallCount": 5,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3.4115438822487447,
+      "maxScore": 0.8867182707350213,
+      "firstRecalledAt": "2026-05-16T04:49:52.659Z",
+      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "queryHashes": [
+        "bf8a65092333",
+        "bc32f96877e4",
+        "8b229f4f2ba6",
+        "be692d38369c",
+        "7937e812a75a"
+      ],
+      "recallDays": [
+        "2026-05-16",
+        "2026-05-17",
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "718/1",
+        "credits/day",
+        "day-over-day",
+        "gaining/losing",
+        "huspy",
+        "tracker",
+        "built",
+        "deployed"
+      ]
+    },
+    "memory:memory/2026-05-16.md:111:127": {
+      "key": "memory:memory/2026-05-16.md:111:127",
+      "path": "memory/2026-05-16.md",
+      "startLine": 111,
+      "endLine": 127,
+      "source": "memory",
+      "snippet": "- No Lovable API for triggering deploys - Decision: built new dashboard from scratch on GitHub Pages for full autonomy - Lovable Vite config uses TanStack Start SSR + Cloudflare Workers — too complex for static hosting ## Scraper v2 — Extended Fields - Added: listing_id, url, agent, listed_date, dom, promo (Signature/Hot), price_sqft - Coverage: agents 80%, DOM 45% (date not always on card), psqft 100%, promo detection works - 37 Hot + 9 Signature = 46 promoted listings found - DOM gap: need to scrape individual listing pages for full coverage (future improvement) - Standing orders updated: daily ship + 06:00 brief, data scope expansion allowed, Opportunity Engine is Priority 3 ## Dashboar",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-17T06:19:41.961Z",
+      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "queryHashes": [
+        "2c4e69042416",
+        "f17d9ae5fcb9",
+        "7937e812a75a"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "listing-id",
+        "listed-date",
+        "signature/hot",
+        "price-sqft",
+        "lovable",
+        "api",
+        "triggering",
+        "deploys"
+      ]
+    },
+    "memory:memory/2026-05-16.md:56:81": {
+      "key": "memory:memory/2026-05-16.md:56:81",
+      "path": "memory/2026-05-16.md",
+      "startLine": 56,
+      "endLine": 81,
+      "source": "memory",
+      "snippet": "- Data stored in `huspy-tracker/data/YYYY-MM-DD.json` - Agent name extraction still needs refinement — not captured from ARIA labels yet - Day-over-day comparison (gaining/losing communities) will kick in from tomorrow with 2 snapshots ## Bayut Brochure Generator — v2 Progress - Redesigned brochure: gold accent, stat cards, agent branding card with photo - Watermark removal rewritten multiple times: tried OpenCV inpainting (blotchy), alpha-reversal (dark spots), median blending (too weak), multi-image estimation, LaMa neural inpainting - LaMa with center-band mask is current approach — still not perfect, Mark flagged logo still visible - Scraper uses ScrapingBee stealth proxy + ARIA labels,",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.893707766953237,
+      "maxScore": 0.6312361296239404,
+      "firstRecalledAt": "2026-05-17T06:31:36.946Z",
+      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "queryHashes": [
+        "be692d38369c",
+        "f17d9ae5fcb9",
+        "7937e812a75a"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "day-over-day",
+        "gaining/losing",
+        "alpha-reversal",
+        "multi-image",
+        "center-band",
+        "data",
+        "stored",
+        "huspy"
+      ]
+    },
+    "memory:memory/2026-05-16.md:39:61": {
+      "key": "memory:memory/2026-05-16.md:39:61",
+      "path": "memory/2026-05-16.md",
+      "startLine": 39,
+      "endLine": 61,
+      "source": "memory",
+      "snippet": "- Lovable site still exists at huspy-stock.lovable.app but couldn't get autonomous deploys working (needs manual \"Update\" click) ## Market Data Fixes - Fixed Arabian Ranches 3 sale: total_market was 3 (bad regex), now 649 (3.54% share) - Fixed regex: `\\s*Properties` → `\\s+Properties` (require space to avoid false matches) - Fixed Bayut slugs: Town Square → town-square, Dubai South → dubai-south - Removed non-existent Bayut communities: Emaar Beachfront, Emaar South, Residential District, District One, Port de La Mer (nested under parent communities on Bayut) - Added 35+ new community slugs to market_scraper.py - Re-enriched both 2026-05-15 and 2026-05-16 snapshots with corrected market data",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2.3064538648510418,
+      "maxScore": 0.8840725155969047,
+      "firstRecalledAt": "2026-05-17T06:31:36.946Z",
+      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "queryHashes": [
+        "be692d38369c",
+        "0a25ba599131",
+        "7937e812a75a"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "huspy-stock.lovable.app",
+        "total-market",
+        "3.54",
+        "town-square",
+        "dubai-south",
+        "non-existent",
+        "market-scraper.py",
+        "re-enriched"
+      ]
+    },
+    "memory:memory/2026-05-16.md:19:44": {
+      "key": "memory:memory/2026-05-16.md:19:44",
+      "path": "memory/2026-05-16.md",
+      "startLine": 19,
+      "endLine": 44,
+      "source": "memory",
+      "snippet": "- Branding: Jamie Neep, +971 585119476, jamie.neep@huspy.io (test agent) ## Identity Change - Renamed from Rook to **Nexus** ⬡ - Role: overall AI admin operator for Mark — monitors trading bots, work bots, handles direct tasks, coordinates everything - Updated IDENTITY.md, Telegram bot name + description ## ScrapingBee - API key stored in `bayut-brochure/.env` - Account: ~1.48M credits remaining out of 3M - Stealth proxy = 75 credits/call, required for Bayut (regular proxy gets CAPTCHA'd) ## Huspy Dashboard v2 — GitHub Pages - Built standalone dashboard: single HTML + Alpine.js + Tailwind CDN - Deployed to GitHub Pages: https://markcastley1620-hue.github.io/huspy-dashboard/ - Repo: markca",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2.0567061792708463,
+      "maxScore": 0.7943083050710062,
+      "firstRecalledAt": "2026-05-17T06:31:36.946Z",
+      "lastRecalledAt": "2026-05-18T02:47:44.454Z",
+      "queryHashes": [
+        "be692d38369c",
+        "f17d9ae5fcb9",
+        "0a25ba599131"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "jamie.neep",
+        "huspy.io",
+        "identity.md",
+        "bayut-brochure",
+        "1.48m",
+        "credits/call",
+        "alpine.js",
+        "branding"
+      ]
+    },
+    "memory:memory/2026-05-16.md:76:96": {
+      "key": "memory:memory/2026-05-16.md:76:96",
+      "path": "memory/2026-05-16.md",
+      "startLine": 76,
+      "endLine": 96,
+      "source": "memory",
+      "snippet": "- Account: ~1.48M credits remaining out of 3M - Stealth proxy = 75 credits/call, required for Bayut (regular proxy gets CAPTCHA'd) ## Huspy Dashboard v2 — GitHub Pages - Built standalone dashboard: single HTML + Alpine.js + Tailwind CDN - Deployed to GitHub Pages: https://markcastley1620-hue.github.io/huspy-dashboard/ - Repo: markcastley1620-hue/huspy-dashboard (gh-pages branch) - GitHub token: ghp_A9...5Y3E (nexus, fine-grained, 90 days) - Fully autonomous: `git push` → auto-deploy, no clicks needed - Features: sale/rent toggle, market share cards, property type bar, community table with type badges, community detail with types/beds/price bands/sub-communities/agents, agent leaderboard - D",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.4223526270096651,
+      "maxScore": 0.7911682307046574,
+      "firstRecalledAt": "2026-05-17T06:31:36.946Z",
+      "lastRecalledAt": "2026-05-18T02:47:44.454Z",
+      "queryHashes": [
+        "be692d38369c",
+        "0a25ba599131"
+      ],
+      "recallDays": [
+        "2026-05-17",
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "1.48m",
+        "credits/call",
+        "alpine.js",
+        "gh-pages",
+        "ghp-a9",
+        "fine-grained",
+        "auto-deploy",
+        "sale/rent"
+      ]
+    },
+    "memory:memory/2026-05-17.md:1:30": {
+      "key": "memory:memory/2026-05-17.md:1:30",
+      "path": "memory/2026-05-17.md",
+      "startLine": 1,
+      "endLine": 30,
+      "source": "memory",
+      "snippet": "# 2026-05-17 — Integrity Layer Started ## Critical Discovery: Systematic Data Issues - Bayut company page doesn't show promo badges → search pages do (via aria-label) - Only found 35 promos from company page → 375 after cross-checking 593 search pages - Community-level data was being injected as sub-community data (12,435 fake entries) - Bayut URL paths are nested for 7+ communities (dubailand/villanova not just villanova) - Type-specific URLs needed for townhouses/villas (/for-sale/townhouses/ not /for-sale/property/) ## Integrity Layer v1 Shipped - INTEGRITY.md spec: schema contract, 25 rules, migration plan, 5-day timeline - validator.py: 15 listing rules + 4 comp rules, validation engi",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-17T18:58:07.035Z",
+      "lastRecalledAt": "2026-05-17T18:58:07.035Z",
+      "queryHashes": [
+        "f17d9ae5fcb9"
+      ],
+      "recallDays": [
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "aria-label",
+        "cross-checking",
+        "community-level",
+        "sub-community",
+        "dubailand/villanova",
+        "type-specific",
+        "townhouses/villas",
+        "for-sale/townhouses"
+      ]
+    },
+    "memory:memory/2026-05-16.md:94:116": {
+      "key": "memory:memory/2026-05-16.md:94:116",
+      "path": "memory/2026-05-16.md",
+      "startLine": 94,
+      "endLine": 116,
+      "source": "memory",
+      "snippet": "- Fixed regex: `\\s*Properties` → `\\s+Properties` (require space to avoid false matches) - Fixed Bayut slugs: Town Square → town-square, Dubai South → dubai-south - Removed non-existent Bayut communities: Emaar Beachfront, Emaar South, Residential District, District One, Port de La Mer (nested under parent communities on Bayut) - Added 35+ new community slugs to market_scraper.py - Re-enriched both 2026-05-15 and 2026-05-16 snapshots with corrected market data - Added by_type (property types) to supabase_sync.py output ## Market Share — Key Fix - Market share now calculated per type: rent listings at huspy / rent listings on market, same for sale - Previously was combined (all huspy / all ma",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.7314404038449425,
+      "maxScore": 0.9375688198403703,
+      "firstRecalledAt": "2026-05-17T18:58:07.035Z",
+      "lastRecalledAt": "2026-05-18T02:47:44.454Z",
+      "queryHashes": [
+        "f17d9ae5fcb9",
+        "0a25ba599131"
+      ],
+      "recallDays": [
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "town-square",
+        "dubai-south",
+        "non-existent",
+        "market-scraper.py",
+        "re-enriched",
+        "by-type",
+        "supabase-sync.py",
+        "fixed"
+      ]
+    },
+    "memory:memory/2026-05-18.md:1:9": {
+      "key": "memory:memory/2026-05-18.md:1:9",
+      "path": "memory/2026-05-18.md",
+      "startLine": 1,
+      "endLine": 9,
+      "source": "memory",
+      "snippet": "## Daily Run Pipeline Change - Market scrape no longer runs daily — now every other day (even-numbered days) - Only scrapes market data for communities with NEW listings (compared to previous snapshot) - Huspy listing scrape still runs daily - On non-market days, Supabase enrichment uses the most recent market data file - Massively reduces ScrapingBee credit burn (~140 calls → only new-listing communities × 2) - Updated daily_run.py and cron job payload",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-18T04:21:16.259Z",
+      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "queryHashes": [
+        "7937e812a75a"
+      ],
+      "recallDays": [
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "even-numbered",
+        "non-market",
+        "new-listing",
+        "daily-run.py",
+        "run",
+        "pipeline",
+        "change",
+        "market"
+      ]
+    },
+    "memory:memory/2026-05-17.md:29:40": {
+      "key": "memory:memory/2026-05-17.md:29:40",
+      "path": "memory/2026-05-17.md",
+      "startLine": 29,
+      "endLine": 40,
+      "source": "memory",
+      "snippet": "## Key: Mark's Telegram 6499001671 ## Late Night Batch — All Completed (~11 PM Dubai) - **Listing scrape (wild-kel)**: 1573/1712 listings captured, agent recovery for 331 agents done - **Sub-community scrape (grand-haven)**: 192 sub-communities processed - **Promo cross-check (mellow-c)**: 326 promos found across 632 search groups (Phase 2 complete) - **Supabase sync**: Ran successfully multiple times — 678-691 sale, 895 rent, 79-80 sale comms, 68-69 rent comms - **Amaranta deep-dive**: Scraped townhouse/apartment breakdowns, 411 entries upgraded with type-specific data - **ZaZEN Ivy**: 23 cards scraped with bedroom breakdowns - **fresh-ri FAILED**: Tried to read data/2026-05-18.json (doesn",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.6318029776082722,
+      "maxScore": 0.6318029776082722,
+      "firstRecalledAt": "2026-05-18T04:21:16.259Z",
+      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "queryHashes": [
+        "7937e812a75a"
+      ],
+      "recallDays": [
+        "2026-05-18"
+      ],
+      "conceptTags": [
+        "wild-kel",
+        "1573/1712",
+        "sub-community",
+        "grand-haven",
+        "sub-communities",
+        "cross-check",
+        "mellow-c",
+        "678-691"
+      ]
+    }
+  }
+}

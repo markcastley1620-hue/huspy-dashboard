@@ -6,6 +6,8 @@ Scrapes all listings, saves snapshot, syncs to Supabase, generates report.
 
 import sys
 import os
+import json
+from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from scraper import scrape_all_listings, save_snapshot
@@ -209,6 +211,36 @@ def _enrich_supabase_with_market(date_str, snapshot, market_data):
     print('  ✓ Market enrichment pushed')
 
 
+def _get_previous_snapshot(data_dir="data"):
+    """Load the most recent snapshot before today."""
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    files = sorted(f for f in os.listdir(data_dir)
+                   if f.endswith(".json") and not f.startswith("market") and not f.startswith("scrape")
+                   and f.replace(".json", "") < today)
+    if not files:
+        return None
+    with open(os.path.join(data_dir, files[-1])) as f:
+        return json.load(f)
+
+
+def _find_new_listing_communities(current_listings, previous_snapshot):
+    """Return set of community names that have listings not in the previous snapshot."""
+    if not previous_snapshot:
+        # No previous data — all communities are "new"
+        return {l["community"] for l in current_listings if l.get("community")}
+    prev_ids = {l["listing_id"] for l in previous_snapshot.get("listings", [])}
+    new_communities = set()
+    for l in current_listings:
+        if l["listing_id"] not in prev_ids and l.get("community"):
+            new_communities.add(l["community"])
+    return new_communities
+
+
+def _is_market_day():
+    """Market scrape runs on even days (every other day)."""
+    return datetime.now(timezone.utc).day % 2 == 0
+
+
 def run():
     print("⬡ NEXUS — Daily Huspy Run")
     print()
@@ -217,7 +249,7 @@ def run():
     run_id = run_record["run_id"]
     print(f"  Run ID: {run_id}")
 
-    # 1. Scrape listings
+    # 1. Scrape Huspy listings (every day)
     result = scrape_all_listings(concurrency=3)
     path = save_snapshot(result)
     print(f"  Saved: {path}")
@@ -228,7 +260,7 @@ def run():
     registry = set(COMMUNITY_SLUGS.keys())
     audit = validate_snapshot(result["listings"], community_registry=registry)
     print_report(audit)
-    result["listings"] = audit["accepted_records"]  # Only use validated records
+    result["listings"] = audit["accepted_records"]
     result["total_scraped"] = len(audit["accepted_records"])
     save_snapshot(result)
     print()
@@ -238,26 +270,47 @@ def run():
     save_snapshot(result)
     print()
 
-    # 2. Market comparison scrape
-    print("Scraping market data...")
-    market_result = scrape_market_data(concurrency=8)
-    save_market_data(market_result)
-    print()
+    # 2. Market scrape — only on even days, only for communities with new listings
+    market_result = None
+    do_market = _is_market_day()
+    if do_market:
+        prev = _get_previous_snapshot()
+        new_comms = _find_new_listing_communities(result["listings"], prev)
+        if new_comms:
+            # Filter COMMUNITY_SLUGS to only new-listing communities
+            market_communities = {k: v for k, v in COMMUNITY_SLUGS.items() if k in new_comms}
+            print(f"Market day — scraping {len(market_communities)}/{len(COMMUNITY_SLUGS)} communities (new listings only)...")
+            market_result = scrape_market_data(communities=market_communities, concurrency=8)
+            save_market_data(market_result)
+            print()
 
-    # 3. Sync to Supabase (with market data enrichment)
-    # 2b. Sub-community market scrape for important sub-communities
-    print("Scraping important sub-communities...")
-    market_result = scrape_important_subs(result, COMMUNITY_SLUGS, market_result, concurrency=10)
-    save_market_data(market_result)
-    print()
+            print("Scraping important sub-communities (new listings only)...")
+            market_result = scrape_important_subs(result, market_communities, market_result, concurrency=10)
+            save_market_data(market_result)
+            print()
+        else:
+            print("Market day but no new listings — skipping market scrape.")
+            print()
+    else:
+        print("Not a market day — skipping market scrape.")
+        print()
 
+    # 3. Sync to Supabase
     print("Syncing to Supabase...")
     data = transform_snapshot(result)
     date_str = result["date"]
     success = upsert_to_supabase(date_str, data)
-    # Enrich with market comparison
-    if success:
+    # Enrich with market comparison if we scraped market data today
+    if success and market_result:
         _enrich_supabase_with_market(date_str, result, market_result)
+    elif success:
+        # Try to enrich with most recent market data
+        market_files = sorted(f for f in os.listdir("data") if f.startswith("market_2") and f.endswith(".json"))
+        if market_files:
+            with open(os.path.join("data", market_files[-1])) as f:
+                last_market = json.load(f)
+            _enrich_supabase_with_market(date_str, result, last_market)
+            print(f"  (used market data from {market_files[-1]})")
     print(f"  {'✓' if success else '✗'} Supabase sync")
     print()
 
@@ -272,6 +325,12 @@ def run():
         records_rejected=audit["rejected"],
     )
     print(f"  Run {run_id} complete: {audit['accepted']} accepted, {audit['rejected']} rejected")
+    if do_market and market_result:
+        prev = _get_previous_snapshot()
+        new_comms = _find_new_listing_communities(result["listings"], prev)
+        print(f"  Market scraped for {len(new_comms)} communities with new listings")
+    elif not do_market:
+        print("  Market scrape skipped (not market day)")
 
     return report
 

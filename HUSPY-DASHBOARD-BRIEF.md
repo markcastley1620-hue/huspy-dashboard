@@ -110,3 +110,8 @@ BLOCKERS
 - Repo: markcastley1620-hue/huspy-dashboard (gh-pages branch)
 - GitHub token: ghp_A9...5Y3E (nexus, fine-grained, 90 days)
 - Deploy: git push → auto-deploy ~30s
+
+## Data Quality — Misclassified Listings
+Flag individual listings that appear misclassified by the portal in the daily brief under ANOMALIES.
+Example: Serenia District listed under Jumeirah Islands instead of Palm Jumeirah.
+Don't force-override at community level — match the portal. Just flag it.
