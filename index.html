@@ -760,41 +760,52 @@
 
     <!-- ==================== OPPORTUNITIES ==================== -->
     <div x-show="!loading && view==='opportunities'" x-cloak class="space-y-6 fade-in">
-      <div>
-        <h1 class="text-[22px] font-bold tracking-tight text-heading">Opportunities</h1>
-        <p class="text-[12px] text-muted mt-1">Actionable signals from listing data — updated daily</p>
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 class="text-[22px] font-bold tracking-tight text-heading">Opportunities</h1>
+          <p class="text-[12px] text-muted mt-1">Actionable signals from listing data — updated daily</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <select x-model="oppCommFilter" class="bg-white border border-border rounded-lg px-3 py-2 text-[12px] text-gray-900 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm appearance-none cursor-pointer min-w-[180px]">
+            <option value="">All areas</option>
+            <template x-for="c in oppCommOptions()" :key="c">
+              <option :value="c" x-text="c"></option>
+            </template>
+          </select>
+          <button x-show="oppCommFilter" @click="oppCommFilter = ''" class="text-[11px] text-accent font-medium hover:underline">✕</button>
+        </div>
       </div>
 
       <!-- Summary cards -->
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" x-show="latest?.data?.opportunities">
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm cursor-pointer hover:border-up/30 hover:shadow-md transition-all" @click="oppTab='underpriced'">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Add Spend</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="latest?.data?.opportunities?.summary?.[mode]?.underpriced || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="oppFilter(latest?.data?.opportunities?.[mode]?.underpriced).length"></div>
           <div class="text-[11px] text-muted mt-1">underpriced, no spend</div>
         </div>
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm cursor-pointer hover:border-down/30 hover:shadow-md transition-all" @click="oppTab='overpriced'">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Overpriced</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="latest?.data?.opportunities?.summary?.[mode]?.overpriced || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="oppFilter(latest?.data?.opportunities?.[mode]?.overpriced).length"></div>
           <div class="text-[11px] text-muted mt-1">price talk needed</div>
         </div>
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm cursor-pointer hover:border-amber-300 hover:shadow-md transition-all" @click="oppTab='stale'">
           <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Stale (30d+)</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-amber-500" x-text="latest?.data?.opportunities?.summary?.[mode]?.stale || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-amber-500" x-text="oppFilter(latest?.data?.opportunities?.[mode]?.stale).length"></div>
           <div class="text-[11px] text-muted mt-1">no spend, going stale</div>
         </div>
         <div class="rounded-2xl border border-down bg-down/5 p-4 shadow-sm cursor-pointer hover:shadow-md transition-all" @click="oppTab='wasted_overpriced'">
           <div class="text-[10px] uppercase tracking-widest text-down font-semibold">⚠ Spend + Overpriced</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="latest?.data?.opportunities?.summary?.[mode]?.wasted_overpriced || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="oppFilter(latest?.data?.opportunities?.[mode]?.wasted_overpriced).length"></div>
           <div class="text-[11px] text-down/70 mt-1">wasting budget</div>
         </div>
         <div class="rounded-2xl border border-amber-300 bg-amber-50 p-4 shadow-sm cursor-pointer hover:shadow-md transition-all" @click="oppTab='wasted_stale'">
           <div class="text-[10px] uppercase tracking-widest text-amber-600 font-semibold">⚠ Spend + Stale</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-amber-600" x-text="latest?.data?.opportunities?.summary?.[mode]?.wasted_stale || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-amber-600" x-text="oppFilter(latest?.data?.opportunities?.[mode]?.wasted_stale).length"></div>
           <div class="text-[11px] text-amber-600/70 mt-1">spend not converting</div>
         </div>
         <div class="rounded-2xl border border-up bg-up/5 p-4 shadow-sm cursor-pointer hover:shadow-md transition-all" @click="oppTab='spend_working'">
           <div class="text-[10px] uppercase tracking-widest text-up font-semibold">✓ Spend Working</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="latest?.data?.opportunities?.summary?.[mode]?.spend_working || 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="oppFilter(latest?.data?.opportunities?.[mode]?.spend_working).length"></div>
           <div class="text-[11px] text-up/70 mt-1">well-positioned</div>
         </div>
       </div>
@@ -803,7 +814,7 @@
       <div class="grid grid-cols-2 md:grid-cols-3 gap-3" x-show="latest?.data?.opportunities">
         <div class="rounded-2xl border border-accent/30 bg-accent/5 p-4 shadow-sm">
           <div class="text-[10px] uppercase tracking-widest text-accent font-semibold">🚨 Fresh Deals</div>
-          <div class="text-[28px] font-bold mt-1 leading-none text-accent" x-text="(latest?.data?.opportunities?.new_underpriced?.[mode]?.length) ?? 0"></div>
+          <div class="text-[28px] font-bold mt-1 leading-none text-accent" x-text="oppFilter(latest?.data?.opportunities?.new_underpriced?.[mode]).length"></div>
           <div class="text-[11px] text-accent/70 mt-1">&lt;7 days + below market</div>
         </div>
         <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
@@ -818,22 +829,11 @@
         </div>
       </div>
 
-      <!-- Tabs + Area filter -->
-      <div class="flex flex-wrap items-center gap-3">
-        <div class="flex overflow-x-auto scrollbar-hide rounded-lg border border-border p-0.5 bg-gray-50 w-fit max-w-full gap-0.5">
-          <template x-for="t in ['underpriced','new_underpriced','overpriced','stale','sole_listings','wasted_overpriced','wasted_stale','spend_working','agent_efficiency','community_heatmap']" :key="t">
-            <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','new_underpriced':'🚨 Fresh Deals','overpriced':'Overpriced','stale':'Stale','sole_listings':'🏆 1/1 No Competition','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working','agent_efficiency':'🎯 Agent Efficiency','community_heatmap':'🗺 Opportunity Map'})[t]"></button>
-          </template>
-        </div>
-        <div class="flex items-center gap-2 ml-auto">
-          <select x-model="oppCommFilter" class="bg-white border border-border rounded-lg px-3 py-1.5 text-[11px] text-gray-900 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm appearance-none cursor-pointer min-w-[160px]">
-            <option value="">All areas</option>
-            <template x-for="c in oppCommOptions()" :key="c">
-              <option :value="c" x-text="c"></option>
-            </template>
-          </select>
-          <button x-show="oppCommFilter" @click="oppCommFilter = ''" class="text-[11px] text-accent font-medium hover:underline">✕</button>
-        </div>
+      <!-- Tabs -->
+      <div class="flex overflow-x-auto scrollbar-hide rounded-lg border border-border p-0.5 bg-gray-50 w-fit max-w-full gap-0.5">
+        <template x-for="t in ['underpriced','new_underpriced','overpriced','stale','sole_listings','wasted_overpriced','wasted_stale','spend_working','agent_efficiency','community_heatmap']" :key="t">
+          <button @click="oppTab = t" :class="oppTab === t ? 'bg-white shadow-sm text-heading' : 'text-muted hover:text-gray-700'" class="px-3 py-1.5 rounded-md text-[11px] font-medium transition-all whitespace-nowrap shrink-0" x-text="({'underpriced':'Add Spend','new_underpriced':'🚨 Fresh Deals','overpriced':'Overpriced','stale':'Stale','sole_listings':'🏆 1/1 No Competition','wasted_overpriced':'⚠ Spend + Overpriced','wasted_stale':'⚠ Spend + Stale','spend_working':'✓ Spend Working','agent_efficiency':'🎯 Agent Efficiency','community_heatmap':'🗺 Opportunity Map'})[t]"></button>
+        </template>
       </div>
 
       <!-- Underpriced table -->
