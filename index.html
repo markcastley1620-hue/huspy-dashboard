@@ -67,7 +67,7 @@
       </div>
       <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
         <div class="flex items-center gap-1 shrink-0">
-          <template x-for="v in ['overview','communities','agents','opportunities','advisor']" :key="v">
+          <template x-for="v in ['overview','communities','agents','gaps','concentration','opportunities','advisor']" :key="v">
             <button @click="navigate(v)" :class="view===v || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all whitespace-nowrap" x-text="v.charAt(0).toUpperCase()+v.slice(1)"></button>
           </template>
         </div>
@@ -1130,7 +1130,8 @@
                 <th class="text-right px-3 py-2.5 font-semibold">Below mkt</th>
                 <th class="text-right px-3 py-2.5 font-semibold">DOM</th>
                 <th class="text-left px-3 py-2.5 font-semibold">Recommend</th>
-                <th class="text-right px-5 py-2.5 font-semibold">Score</th>
+                <th class="text-right px-3 py-2.5 font-semibold">Score</th>
+                <th class="text-right px-5 py-2.5 font-semibold">Link</th>
               </tr>
             </thead>
             <tbody>
@@ -1144,10 +1145,11 @@
                   <td class="px-3 py-2.5 text-right text-up font-semibold" x-text="o.gap_pct + '%'"></td>
                   <td class="px-3 py-2.5 text-right"><span class="inline-flex rounded-md bg-accent/10 text-accent px-2 py-0.5 text-[10px] font-semibold" x-text="o.dom + 'd'"></span></td>
                   <td class="px-3 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.action?.includes('Signature') ? 'bg-purple-100 text-purple-700' : o.action?.includes('Hot') ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-600'" x-text="o.action"></span></td>
-                  <td class="px-5 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
+                  <td class="px-3 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
-              <template x-if="!(latest?.data?.opportunities?.new_underpriced?.[mode]?.length)"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">No fresh underpriced listings in the last 7 days</td></tr></template>
+              <template x-if="!(latest?.data?.opportunities?.new_underpriced?.[mode]?.length)"><tr><td colspan="10" class="px-5 py-8 text-center text-muted">No fresh underpriced listings in the last 7 days</td></tr></template>
             </tbody>
           </table>
         </div>
@@ -1372,6 +1374,146 @@
       </div>
     </div>
 
+    <!-- Coverage Gaps View -->
+    <div x-show="!loading && view==='gaps'" x-cloak class="space-y-6 fade-in">
+      <div>
+        <h2 class="text-lg font-semibold text-heading">Coverage Gaps</h2>
+        <p class="text-[12px] text-muted mt-0.5">Communities where Bayut market has listings but Huspy has zero or low share</p>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Zero Share Communities</div>
+          <div class="text-2xl font-bold text-heading mt-1" x-text="gapRows().filter(r => r.count === 0).length"></div>
+          <div class="text-[11px] text-muted mt-0.5">Markets with no Huspy presence</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Biggest Untapped Market</div>
+          <div class="text-lg font-bold text-heading mt-1" x-text="gapRows().filter(r => r.count === 0).sort((a,b) => b.market - a.market)[0]?.name || 'N/A'"></div>
+          <div class="text-[11px] text-muted mt-0.5" x-text="gapRows().filter(r => r.count === 0).sort((a,b) => b.market - a.market)[0] ? fmt(gapRows().filter(r => r.count === 0).sort((a,b) => b.market - a.market)[0].market) + ' market listings' : ''"></div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Avg Market Size (Gaps)</div>
+          <div class="text-2xl font-bold text-heading mt-1" x-text="(() => { const gaps = gapRows().filter(r => r.count === 0); return gaps.length ? fmt(Math.round(gaps.reduce((s,r) => s + r.market, 0) / gaps.length)) : 'N/A'; })()"></div>
+          <div class="text-[11px] text-muted mt-0.5">Avg listings in zero-share communities</div>
+        </div>
+      </div>
+
+      <!-- Gaps Table -->
+      <div class="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px] mobile-cards">
+            <thead>
+              <tr class="border-b border-border bg-gray-50/50">
+                <th class="text-left px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Community</th>
+                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Market Total</th>
+                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Huspy Count</th>
+                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Share %</th>
+                <th class="text-right px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Gap Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="r in gapRows()" :key="r.name">
+                <tr class="border-b border-border-subtle hover:bg-gray-50 cursor-pointer transition-colors"
+                    :class="r.count === 0 ? 'bg-red-50/50' : r.share < 0.5 ? 'bg-amber-50/30' : ''"
+                    @click="selectedCommunity = r.name; navigate('community-detail')">
+                  <td class="px-5 py-2.5 font-medium text-heading" data-label="Community" x-text="r.name"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Market Total" x-text="fmt(r.market)"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Huspy Count" :class="r.count === 0 ? 'text-down font-semibold' : ''" x-text="r.count"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Share %">
+                    <span :class="r.count === 0 ? 'text-down' : r.share < 0.5 ? 'text-amber-600' : 'text-muted'" x-text="r.count === 0 ? '0%' : r.share < 0.5 ? r.share.toFixed(2) + '% ⚠' : r.share.toFixed(2) + '%'"></span>
+                  </td>
+                  <td class="px-5 py-2.5 text-right tabular-nums font-medium" data-label="Gap Size" x-text="fmt(r.gap)"></td>
+                </tr>
+              </template>
+              <template x-if="gapRows().length === 0">
+                <tr><td colspan="5" class="px-5 py-8 text-center text-muted">No gap data available</td></tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Concentration View -->
+    <div x-show="!loading && view==='concentration'" x-cloak class="space-y-6 fade-in">
+      <div>
+        <h2 class="text-lg font-semibold text-heading">Portfolio Concentration</h2>
+        <p class="text-[12px] text-muted mt-0.5">How much of Huspy's stock is concentrated in the top communities</p>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 5</div>
+          <div class="text-2xl font-bold mt-1" :class="concData().top5 > 50 ? 'text-down' : 'text-heading'" x-text="concData().top5.toFixed(1) + '%'"></div>
+          <div x-show="concData().top5 > 50" class="text-[10px] text-down font-medium mt-0.5">⚠ High concentration</div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 10</div>
+          <div class="text-2xl font-bold text-heading mt-1" x-text="concData().top10.toFixed(1) + '%'"></div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 20</div>
+          <div class="text-2xl font-bold text-heading mt-1" x-text="concData().top20.toFixed(1) + '%'"></div>
+        </div>
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">HHI Index</div>
+          <div class="text-2xl font-bold text-heading mt-1" x-text="concData().hhi"></div>
+          <div class="text-[10px] text-muted mt-0.5" x-text="concData().hhiRaw < 1500 ? 'Low concentration' : concData().hhiRaw < 2500 ? 'Moderate' : 'High concentration'"></div>
+        </div>
+      </div>
+
+      <!-- Cumulative Bar Chart -->
+      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <div class="text-[12px] font-semibold text-heading mb-3">Cumulative Concentration</div>
+        <div class="space-y-1.5">
+          <template x-for="(r, i) in concData().rows.slice(0, 20)" :key="r.name">
+            <div class="flex items-center gap-3">
+              <div class="w-5 text-[10px] text-muted text-right tabular-nums" x-text="i + 1"></div>
+              <div class="w-28 sm:w-36 text-[11px] text-heading font-medium truncate" x-text="r.name"></div>
+              <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden relative">
+                <div class="h-full rounded-full bar-anim" :class="r.cumPct > 50 ? 'bg-red-400' : r.cumPct > 30 ? 'bg-amber-400' : 'bg-accent'" :style="'width:' + r.cumPct + '%'"></div>
+                <span class="absolute inset-0 flex items-center justify-end pr-2 text-[9px] font-semibold" :class="r.cumPct > 20 ? 'text-white' : 'text-muted'" x-text="r.cumPct.toFixed(1) + '%'"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Concentration Table -->
+      <div class="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-[12px] mobile-cards">
+            <thead>
+              <tr class="border-b border-border bg-gray-50/50">
+                <th class="text-left px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Rank</th>
+                <th class="text-left px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Community</th>
+                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Count</th>
+                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">% of Total</th>
+                <th class="text-right px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Cumulative %</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="r in concData().rows" :key="r.name">
+                <tr class="border-b border-border-subtle hover:bg-gray-50 transition-colors">
+                  <td class="px-5 py-2.5 text-muted tabular-nums" data-label="Rank" x-text="r.rank"></td>
+                  <td class="px-3 py-2.5 font-medium text-heading" data-label="Community" x-text="r.name"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Count" x-text="fmt(r.count)"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="% of Total" x-text="r.pct.toFixed(2) + '%'"></td>
+                  <td class="px-5 py-2.5 text-right tabular-nums font-medium" data-label="Cumulative %" :class="r.cumPct > 80 ? 'text-muted' : r.cumPct > 50 ? 'text-amber-600' : 'text-heading'" x-text="r.cumPct.toFixed(1) + '%'"></td>
+                </tr>
+              </template>
+              <template x-if="concData().rows.length === 0">
+                <tr><td colspan="5" class="px-5 py-8 text-center text-muted">No data available</td></tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </main>
 
 <script>
@@ -1548,6 +1690,35 @@ function dashboard() {
     toggleAgentSort(col) {
       if (this.agentSortCol === col) this.agentSortDir = this.agentSortDir === 'desc' ? 'asc' : 'desc';
       else { this.agentSortCol = col; this.agentSortDir = 'desc'; }
+    },
+    gapRows() {
+      const b = this.block(); if (!b) return [];
+      return Object.entries(b.by_community || {})
+        .filter(([, n]) => (n.market_total || 0) > 0)
+        .map(([name, n]) => ({
+          name, count: n.count || 0, market: n.market_total || 0,
+          share: n.share_pct ?? 0, gap: (n.market_total || 0) - (n.count || 0)
+        }))
+        .sort((a, b) => b.market - a.market);
+    },
+    concData() {
+      const b = this.block(); if (!b) return { top5: 0, top10: 0, top20: 0, hhi: 0, hhiRaw: 0, rows: [] };
+      const total = b.total || 1;
+      const entries = Object.entries(b.by_community || {})
+        .map(([name, n]) => ({ name, count: n.count || 0 }))
+        .filter(r => r.count > 0)
+        .sort((a, b) => b.count - a.count);
+      let cum = 0;
+      const rows = entries.map((r, i) => {
+        const pct = r.count / total * 100;
+        cum += pct;
+        return { rank: i + 1, name: r.name, count: r.count, pct, cumPct: cum };
+      });
+      const top5 = rows.length >= 5 ? rows[4].cumPct : (rows[rows.length - 1]?.cumPct || 0);
+      const top10 = rows.length >= 10 ? rows[9].cumPct : (rows[rows.length - 1]?.cumPct || 0);
+      const top20 = rows.length >= 20 ? rows[19].cumPct : (rows[rows.length - 1]?.cumPct || 0);
+      const hhiRaw = entries.reduce((s, r) => s + Math.pow(r.count / total * 100, 2), 0);
+      return { top5, top10, top20, hhi: Math.round(hhiRaw), hhiRaw, rows };
     },
     commAvgPrice() {
       const n = this.commNode();
