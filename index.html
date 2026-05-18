@@ -67,8 +67,8 @@
       </div>
       <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
         <div class="flex items-center gap-1 shrink-0">
-          <template x-for="v in ['overview','communities','agents','gaps','spread','opportunities','advisor']" :key="v">
-            <button @click="navigate(v === 'spread' ? 'concentration' : v)" :class="(v === 'spread' ? view==='concentration' : view===v) || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all whitespace-nowrap" x-text="({'spread':'Spread','gaps':'Gaps'})[v] || v.charAt(0).toUpperCase()+v.slice(1)"></button>
+          <template x-for="v in ['overview','communities','agents','gaps','spread','changes','opportunities','advisor']" :key="v">
+            <button @click="navigate(v === 'spread' ? 'concentration' : v)" :class="(v === 'spread' ? view==='concentration' : view===v) || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all whitespace-nowrap" x-text="({'spread':'Spread','gaps':'Gaps','changes':'Changes'})[v] || v.charAt(0).toUpperCase()+v.slice(1)"></button>
           </template>
         </div>
         <div class="w-px h-5 bg-border mx-1.5 shrink-0"></div>
@@ -761,6 +761,198 @@
 
       <!-- Error -->
       <div x-show="advisorError" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-[13px] text-red-700" x-text="advisorError"></div>
+    </div>
+
+    <!-- ==================== CHANGES ==================== -->
+    <div x-show="!loading && view==='changes'" x-cloak class="space-y-6 fade-in">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 class="text-[22px] font-bold tracking-tight text-heading">What Changed</h1>
+          <p class="text-[12px] text-muted mt-1" x-text="'Comparing ' + (latest?.snapshot_date || 'today') + ' vs ' + (previous?.snapshot_date || 'yesterday')"></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <select x-model="changesCommFilter" class="bg-white border border-border rounded-lg px-3 py-2 text-[12px] text-gray-900 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 shadow-sm appearance-none cursor-pointer min-w-[180px]">
+            <option value="">All areas</option>
+            <template x-for="c in changesCommOptions()" :key="c">
+              <option :value="c" x-text="c"></option>
+            </template>
+          </select>
+          <button x-show="changesCommFilter" @click="changesCommFilter = ''" class="text-[11px] text-accent font-medium hover:underline">✕</button>
+        </div>
+      </div>
+
+      <!-- No previous data fallback -->
+      <div x-show="!previous" class="rounded-2xl border border-border bg-white p-8 text-center">
+        <p class="text-[13px] text-muted">No previous snapshot available for comparison.</p>
+      </div>
+
+      <template x-if="previous">
+        <div class="space-y-6">
+          <!-- KPI cards -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+              <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Net Change</div>
+              <div class="text-[28px] font-bold mt-1 leading-none" :class="changesData().netChange >= 0 ? 'text-up' : 'text-down'" x-text="(changesData().netChange >= 0 ? '+' : '') + changesData().netChange"></div>
+              <div class="text-[11px] text-muted mt-1" x-text="changesData().todayTotal + ' today vs ' + changesData().yesterdayTotal + ' yesterday'"></div>
+            </div>
+            <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+              <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">New Listings</div>
+              <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="changesData().newListings.length"></div>
+              <div class="text-[11px] text-muted mt-1">added today</div>
+            </div>
+            <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+              <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Removed</div>
+              <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="changesData().removedListings.length"></div>
+              <div class="text-[11px] text-muted mt-1">no longer listed</div>
+            </div>
+            <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+              <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Price Changes</div>
+              <div class="text-[28px] font-bold mt-1 leading-none text-amber-500" x-text="changesData().priceChanges.length"></div>
+              <div class="text-[11px] text-muted mt-1">repriced</div>
+            </div>
+          </div>
+
+          <!-- New Listings -->
+          <div class="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-border-subtle">
+              <h2 class="text-[14px] font-semibold text-heading">New Listings</h2>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-[12px] mobile-cards">
+                <thead><tr class="border-b border-border-subtle bg-bg-sub">
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Agent</th>
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Community</th>
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Sub-community</th>
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Type</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Beds</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Price</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">AED/sqft</th>
+                  <th class="px-5 py-3 text-center font-semibold text-muted uppercase tracking-wider text-[10px]">Link</th>
+                </tr></thead>
+                <tbody>
+                  <template x-for="l in changesData().newListings" :key="l.url">
+                    <tr class="border-b border-border-subtle hover:bg-bg-sub transition-colors">
+                      <td class="px-5 py-3 font-medium" data-label="Agent" x-text="l.agent || '—'"></td>
+                      <td class="px-5 py-3" data-label="Community" x-text="l.community || '—'"></td>
+                      <td class="px-5 py-3 text-muted" data-label="Sub-community" x-text="l.sub_community || '—'"></td>
+                      <td class="px-5 py-3" data-label="Type" x-text="l.type || '—'"></td>
+                      <td class="px-5 py-3 text-right" data-label="Beds" x-text="l.beds != null ? (l.beds === 0 ? 'Studio' : l.beds) : '—'"></td>
+                      <td class="px-5 py-3 text-right font-medium" data-label="Price" x-text="'AED ' + fmt(l.price)"></td>
+                      <td class="px-5 py-3 text-right" data-label="AED/sqft" x-text="l.psqft ? fmt(Math.round(l.psqft)) : '—'"></td>
+                      <td class="px-5 py-3 text-center" data-label="Link"><a :href="l.url?.startsWith('http') ? l.url : 'https://www.bayut.com' + l.url" target="_blank" class="text-accent hover:underline text-[11px]">View ↗</a></td>
+                    </tr>
+                  </template>
+                  <template x-if="!changesData().newListings.length"><tr><td colspan="8" class="px-5 py-8 text-center text-muted">No new listings</td></tr></template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Removed Listings -->
+          <div class="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-border-subtle">
+              <h2 class="text-[14px] font-semibold text-heading">Removed Listings</h2>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-[12px] mobile-cards">
+                <thead><tr class="border-b border-border-subtle bg-bg-sub">
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Agent</th>
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Community</th>
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Sub-community</th>
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Type</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Beds</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Price</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">AED/sqft</th>
+                  <th class="px-5 py-3 text-center font-semibold text-muted uppercase tracking-wider text-[10px]">Link</th>
+                </tr></thead>
+                <tbody>
+                  <template x-for="l in changesData().removedListings" :key="l.url">
+                    <tr class="border-b border-border-subtle hover:bg-bg-sub transition-colors">
+                      <td class="px-5 py-3 font-medium" data-label="Agent" x-text="l.agent || '—'"></td>
+                      <td class="px-5 py-3" data-label="Community" x-text="l.community || '—'"></td>
+                      <td class="px-5 py-3 text-muted" data-label="Sub-community" x-text="l.sub_community || '—'"></td>
+                      <td class="px-5 py-3" data-label="Type" x-text="l.type || '—'"></td>
+                      <td class="px-5 py-3 text-right" data-label="Beds" x-text="l.beds != null ? (l.beds === 0 ? 'Studio' : l.beds) : '—'"></td>
+                      <td class="px-5 py-3 text-right font-medium" data-label="Price" x-text="'AED ' + fmt(l.price)"></td>
+                      <td class="px-5 py-3 text-right" data-label="AED/sqft" x-text="l.psqft ? fmt(Math.round(l.psqft)) : '—'"></td>
+                      <td class="px-5 py-3 text-center" data-label="Link"><a :href="l.url?.startsWith('http') ? l.url : 'https://www.bayut.com' + l.url" target="_blank" class="text-accent hover:underline text-[11px]">View ↗</a></td>
+                    </tr>
+                  </template>
+                  <template x-if="!changesData().removedListings.length"><tr><td colspan="8" class="px-5 py-8 text-center text-muted">No removed listings</td></tr></template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Price Changes -->
+          <div class="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-border-subtle">
+              <h2 class="text-[14px] font-semibold text-heading">Price Changes</h2>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-[12px] mobile-cards">
+                <thead><tr class="border-b border-border-subtle bg-bg-sub">
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Agent</th>
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Community</th>
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Sub-community</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Beds</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Old Price</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">New Price</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Change</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Change %</th>
+                  <th class="px-5 py-3 text-center font-semibold text-muted uppercase tracking-wider text-[10px]">Dir</th>
+                  <th class="px-5 py-3 text-center font-semibold text-muted uppercase tracking-wider text-[10px]">Link</th>
+                </tr></thead>
+                <tbody>
+                  <template x-for="l in changesData().priceChanges" :key="l.url">
+                    <tr class="border-b border-border-subtle hover:bg-bg-sub transition-colors">
+                      <td class="px-5 py-3 font-medium" data-label="Agent" x-text="l.agent || '—'"></td>
+                      <td class="px-5 py-3" data-label="Community" x-text="l.community || '—'"></td>
+                      <td class="px-5 py-3 text-muted" data-label="Sub-community" x-text="l.sub_community || '—'"></td>
+                      <td class="px-5 py-3 text-right" data-label="Beds" x-text="l.beds != null ? (l.beds === 0 ? 'Studio' : l.beds) : '—'"></td>
+                      <td class="px-5 py-3 text-right" data-label="Old Price" x-text="'AED ' + fmt(l.oldPrice)"></td>
+                      <td class="px-5 py-3 text-right font-medium" data-label="New Price" x-text="'AED ' + fmt(l.newPrice)"></td>
+                      <td class="px-5 py-3 text-right font-medium" :class="l.changeAed >= 0 ? 'text-up' : 'text-down'" data-label="Change" x-text="(l.changeAed >= 0 ? '+' : '') + fmt(l.changeAed) + ' AED'"></td>
+                      <td class="px-5 py-3 text-right font-medium" :class="l.changePct >= 0 ? 'text-up' : 'text-down'" data-label="Change %" x-text="(l.changePct >= 0 ? '+' : '') + l.changePct.toFixed(1) + '%'"></td>
+                      <td class="px-5 py-3 text-center text-[16px]" data-label="Direction" :class="l.changeAed >= 0 ? 'text-up' : 'text-down'" x-text="l.changeAed >= 0 ? '↑' : '↓'"></td>
+                      <td class="px-5 py-3 text-center" data-label="Link"><a :href="l.url?.startsWith('http') ? l.url : 'https://www.bayut.com' + l.url" target="_blank" class="text-accent hover:underline text-[11px]">View ↗</a></td>
+                    </tr>
+                  </template>
+                  <template x-if="!changesData().priceChanges.length"><tr><td colspan="10" class="px-5 py-8 text-center text-muted">No price changes detected</td></tr></template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Community Movement -->
+          <div class="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-border-subtle">
+              <h2 class="text-[14px] font-semibold text-heading">Community Movement</h2>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-[12px] mobile-cards">
+                <thead><tr class="border-b border-border-subtle bg-bg-sub">
+                  <th class="px-5 py-3 text-left font-semibold text-muted uppercase tracking-wider text-[10px]">Community</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Yesterday</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Today</th>
+                  <th class="px-5 py-3 text-right font-semibold text-muted uppercase tracking-wider text-[10px]">Net Change</th>
+                </tr></thead>
+                <tbody>
+                  <template x-for="c in changesData().communityMovement" :key="c.community">
+                    <tr class="border-b border-border-subtle hover:bg-bg-sub transition-colors">
+                      <td class="px-5 py-3 font-medium" data-label="Community" x-text="c.community"></td>
+                      <td class="px-5 py-3 text-right" data-label="Yesterday" x-text="c.yesterday"></td>
+                      <td class="px-5 py-3 text-right" data-label="Today" x-text="c.today"></td>
+                      <td class="px-5 py-3 text-right font-medium" :class="c.net > 0 ? 'text-up' : c.net < 0 ? 'text-down' : ''" data-label="Net Change" x-text="(c.net > 0 ? '+' : '') + c.net"></td>
+                    </tr>
+                  </template>
+                  <template x-if="!changesData().communityMovement.length"><tr><td colspan="4" class="px-5 py-8 text-center text-muted">No community changes</td></tr></template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </template>
     </div>
 
     <!-- ==================== OPPORTUNITIES ==================== -->
@@ -1669,6 +1861,7 @@ function dashboard() {
     selectedBed: null,
     oppTab: 'underpriced',
     oppCommFilter: '',
+    changesCommFilter: '',
     agentSearch: '',
     agentMultiComm: false,
     agentSortCol: 'count',
@@ -1698,7 +1891,7 @@ function dashboard() {
     },
 
     setMode(m) { this.mode = m; localStorage.setItem('huspy-mode', m); },
-    navigate(v) { this.view = v; this.search = ''; this.agentDrillComm = null; this.spreadComm = ''; this.spreadAgent = ''; this.oppCommFilter = ''; if (!['community-detail','agent-detail','agent-community'].includes(v)) { this.selectedCommunity = null; this.selectedAgent = null; this.selectedBed = null; } window.scrollTo(0, 0); },
+    navigate(v) { this.view = v; this.search = ''; this.agentDrillComm = null; this.spreadComm = ''; this.spreadAgent = ''; this.oppCommFilter = ''; this.changesCommFilter = ''; if (!['community-detail','agent-detail','agent-community'].includes(v)) { this.selectedCommunity = null; this.selectedAgent = null; this.selectedBed = null; } window.scrollTo(0, 0); },
     block() { return this.latest?.data?.[this.mode] || null; },
     prevBlock() { return this.previous?.data?.[this.mode] || null; },
     fmt(n) { return n == null ? 'N/A' : new Intl.NumberFormat('en-US').format(n); },
@@ -1866,6 +2059,70 @@ function dashboard() {
       const top20 = rows.length >= 20 ? rows[19].cumPct : (rows[rows.length - 1]?.cumPct || 0);
       return { top5, top10, top20, rows };
     },
+    _extractListingId(url) {
+      if (!url) return null;
+      const m = url.match(/(\d{6,})/);
+      return m ? m[1] : url;
+    },
+    _prevListings() {
+      const schema = this.latest?.data?.listings_schema || ['agent','community','sub_community','type','beds','price','dom','promo','psqft','sqft','purpose','title','url'];
+      const rows = this.previous?.data?.listings || [];
+      return rows.map(r => {
+        const o = {};
+        for (let i = 0; i < schema.length; i++) o[schema[i]] = r[i];
+        return o;
+      }).filter(l => l.purpose === this.mode);
+    },
+    changesData() {
+      if (!this.previous) return { netChange: 0, todayTotal: 0, yesterdayTotal: 0, newListings: [], removedListings: [], priceChanges: [], communityMovement: [] };
+      const today = this._allListings();
+      const yesterday = this._prevListings();
+      const todayMap = new Map();
+      const yesterdayMap = new Map();
+      for (const l of today) { const id = this._extractListingId(l.url); if (id) todayMap.set(id, l); }
+      for (const l of yesterday) { const id = this._extractListingId(l.url); if (id) yesterdayMap.set(id, l); }
+      let newListings = [];
+      let removedListings = [];
+      let priceChanges = [];
+      for (const [id, l] of todayMap) { if (!yesterdayMap.has(id)) newListings.push(l); }
+      for (const [id, l] of yesterdayMap) { if (!todayMap.has(id)) removedListings.push(l); }
+      for (const [id, l] of todayMap) {
+        const prev = yesterdayMap.get(id);
+        if (prev && prev.price != null && l.price != null && prev.price !== l.price) {
+          const changeAed = l.price - prev.price;
+          const changePct = prev.price ? (changeAed / prev.price) * 100 : 0;
+          priceChanges.push({ ...l, oldPrice: prev.price, newPrice: l.price, changeAed, changePct });
+        }
+      }
+      // Community filter
+      const cf = this.changesCommFilter;
+      if (cf) {
+        newListings = newListings.filter(l => l.community === cf);
+        removedListings = removedListings.filter(l => l.community === cf);
+        priceChanges = priceChanges.filter(l => l.community === cf);
+      }
+      newListings.sort((a, b) => (b.price || 0) - (a.price || 0));
+      removedListings.sort((a, b) => (b.price || 0) - (a.price || 0));
+      priceChanges.sort((a, b) => Math.abs(b.changePct) - Math.abs(a.changePct));
+      // Community movement
+      const commToday = {}; const commYesterday = {};
+      for (const l of today) { commToday[l.community] = (commToday[l.community] || 0) + 1; }
+      for (const l of yesterday) { commYesterday[l.community] = (commYesterday[l.community] || 0) + 1; }
+      const allComms = new Set([...Object.keys(commToday), ...Object.keys(commYesterday)]);
+      let communityMovement = [...allComms].map(c => ({ community: c, today: commToday[c] || 0, yesterday: commYesterday[c] || 0, net: (commToday[c] || 0) - (commYesterday[c] || 0) })).filter(c => c.net !== 0);
+      if (cf) communityMovement = communityMovement.filter(c => c.community === cf);
+      communityMovement.sort((a, b) => Math.abs(b.net) - Math.abs(a.net));
+      return { netChange: today.length - yesterday.length, todayTotal: today.length, yesterdayTotal: yesterday.length, newListings, removedListings, priceChanges, communityMovement };
+    },
+    changesCommOptions() {
+      const today = this._allListings();
+      const yesterday = this._prevListings();
+      const comms = new Set();
+      for (const l of today) { if (l.community) comms.add(l.community); }
+      for (const l of yesterday) { if (l.community) comms.add(l.community); }
+      return [...comms].sort();
+    },
+
     oppCommOptions() {
       const comms = new Set();
       const opps = this.latest?.data?.opportunities || {};
