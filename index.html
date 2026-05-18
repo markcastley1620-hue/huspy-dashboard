@@ -2229,6 +2229,12 @@ function dashboard() {
     },
     async runAdvisor() {
       if (!this.advisorUrl) return;
+      // Validate URL — only Bayut supported
+      const url = this.advisorUrl.trim();
+      if (!url.includes('bayut.com')) {
+        this.advisorError = 'Only Bayut URLs are supported. Paste a bayut.com listing link.';
+        return;
+      }
       this.advisorLoading = true;
       this.advisorResult = null;
       this.advisorError = null;
@@ -2241,7 +2247,7 @@ function dashboard() {
         }, 500);
         
         // Scrape listing page via ScrapingBee
-        const resp = await fetch(`https://app.scrapingbee.com/api/v1/?api_key=QNG91WITJC8K7U39RMHTB7CAVQOUGTK8C09PPFJESMCYT2MNGJY19FLUQWDK3NABEC4PWPVF5HWI2CR0&url=${encodeURIComponent(this.advisorUrl)}&stealth_proxy=true&country_code=ae`);
+        const resp = await fetch(`https://app.scrapingbee.com/api/v1/?api_key=QNG91WITJC8K7U39RMHTB7CAVQOUGTK8C09PPFJESMCYT2MNGJY19FLUQWDK3NABEC4PWPVF5HWI2CR0&url=${encodeURIComponent(url)}&stealth_proxy=true&country_code=ae`);
         this.advisorProgress = 70;
         this.advisorStep = 'Parsing property details…';
         const html = await resp.text();
@@ -2273,6 +2279,20 @@ function dashboard() {
           } catch(e) {}
         }
         
+        // Validate parsed data
+        if (!price || price <= 0) {
+          clearInterval(progressTimer);
+          this.advisorLoading = false;
+          this.advisorError = 'Could not extract price from this listing. The page may have loaded incorrectly — try again.';
+          return;
+        }
+        if (!location) {
+          clearInterval(progressTimer);
+          this.advisorLoading = false;
+          this.advisorError = 'Could not extract property details. Make sure this is a valid Bayut listing URL.';
+          return;
+        }
+
         // Parse location to get community
         const locParts = location.split(',').map(s => s.trim());
         const community = locParts.length >= 3 ? locParts[locParts.length - 2] : locParts[0];
