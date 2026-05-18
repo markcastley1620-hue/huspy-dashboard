@@ -710,6 +710,7 @@
                     <th class="text-right px-3 py-2 font-semibold">Size</th>
                     <th class="text-right px-3 py-2 font-semibold">AED/sqft</th>
                     <th class="text-left px-3 py-2 font-semibold">Status</th>
+                    <th class="text-right px-3 py-2 font-semibold">Link</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -726,6 +727,10 @@
                           <template x-if="p.badge === 'Hot'"><span class="inline-flex rounded-full bg-orange-100 text-orange-600 px-2 py-0.5 text-[9px] font-semibold">Hot</span></template>
                           <template x-if="p.verified && !p.isTarget"><span class="inline-flex rounded-full bg-blue-50 text-blue-500 px-2 py-0.5 text-[9px] font-semibold">Verified</span></template>
                         </div>
+                      </td>
+                      <td class="px-3 py-2 text-right">
+                        <template x-if="p.isTarget"><a :href="advisorUrl" target="_blank" class="inline-flex rounded-md bg-accent/10 text-accent px-2 py-0.5 text-[9px] font-semibold hover:bg-accent/20 transition-colors">View ↗</a></template>
+                        <template x-if="!p.isTarget && p.url"><a :href="p.url.startsWith('http') ? p.url : 'https://www.bayut.com' + p.url" target="_blank" class="inline-flex rounded-md bg-gray-100 text-muted px-2 py-0.5 text-[9px] font-semibold hover:bg-gray-200 hover:text-heading transition-colors">View ↗</a></template>
                       </td>
                     </tr>
                   </template>
@@ -2320,6 +2325,7 @@ function dashboard() {
           const pEl = card.querySelector('[aria-label="Price"]');
           const aEl = card.querySelector('[aria-label="Area"]');
           const tEl = card.querySelector('[aria-label="Title"]');
+          const linkEl = card.querySelector('a[href*="/property/"]') || card.closest('a') || card.querySelector('a');
           const txt = card.textContent || '';
           if (pEl) {
             const pp = parseInt(pEl.textContent.trim().replace(/,/g, ''));
@@ -2328,7 +2334,8 @@ function dashboard() {
             if (/Signature/i.test(txt)) badge = 'Signature';
             else if (/Hot/i.test(txt)) badge = 'Hot';
             const verified = !!card.querySelector('[aria-label="TruBroker"]') || /TruCheck/i.test(txt);
-            peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0, title: tEl ? tEl.textContent.trim().substring(0,40) : '', badge, verified });
+            const href = linkEl ? linkEl.getAttribute('href') : null;
+            peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0, title: tEl ? tEl.textContent.trim().substring(0,40) : '', badge, verified, url: href });
           }
         });
         
@@ -2342,6 +2349,7 @@ function dashboard() {
           fallDoc.querySelectorAll('[aria-label="Listing"]').forEach(card => {
             const pEl = card.querySelector('[aria-label="Price"]');
             const aEl = card.querySelector('[aria-label="Area"]');
+            const linkEl2 = card.querySelector('a[href*="/property/"]') || card.closest('a') || card.querySelector('a');
             const txt2 = card.textContent || '';
             if (pEl) {
               const pp = parseInt(pEl.textContent.trim().replace(/,/g, ''));
@@ -2350,7 +2358,8 @@ function dashboard() {
               if (/Signature/i.test(txt2)) badge2 = 'Signature';
               else if (/Hot/i.test(txt2)) badge2 = 'Hot';
               const verified2 = !!card.querySelector('[aria-label="TruBroker"]') || /TruCheck/i.test(txt2);
-              peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0, badge: badge2, verified: verified2 });
+              const href2 = linkEl2 ? linkEl2.getAttribute('href') : null;
+              peerListings.push({ price: pp, sqft: aa, psqft: aa > 0 ? Math.round(pp/aa) : 0, badge: badge2, verified: verified2, url: href2 });
             }
           });
           peerLocation = community + ' (community level)';
@@ -2375,7 +2384,7 @@ function dashboard() {
         let allPeers = peerListings.map((p, i) => ({ ...p, rank: i + 1, bar_pct: Math.round(p.price / maxPrice * 100), isTarget: false }));
         // Insert this listing
         const insertIdx = allPeers.filter(p => p.price < price).length;
-        allPeers.splice(insertIdx, 0, { price, sqft, psqft: psqft, rank: insertIdx + 1, bar_pct: Math.round(price / maxPrice * 100), isTarget: true, badge: null, verified: false });
+        allPeers.splice(insertIdx, 0, { price, sqft, psqft: psqft, rank: insertIdx + 1, bar_pct: Math.round(price / maxPrice * 100), isTarget: true, badge: null, verified: false, url: null });
         // Re-rank
         allPeers.forEach((p, i) => p.rank = i + 1);
         priceRank = allPeers.findIndex(p => p.isTarget) + 1;
