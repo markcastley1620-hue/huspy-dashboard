@@ -1440,54 +1440,106 @@
     <div x-show="!loading && view==='concentration'" x-cloak class="space-y-6 fade-in">
       <div>
         <h2 class="text-lg font-semibold text-heading">Where's the stock?</h2>
-        <p class="text-[12px] text-muted mt-0.5">How spread out Huspy's listings are across communities</p>
+        <p class="text-[12px] text-muted mt-0.5">Full breakdown of Huspy's <span class="font-semibold" x-text="mode"></span> listings — by area, bedrooms, price, and type</p>
       </div>
 
       <!-- Warning banner -->
       <div x-show="concData().top5 > 50" class="rounded-2xl border border-down/30 bg-down-bg p-4 flex items-start gap-3">
         <span class="text-[18px]">⚠️</span>
         <div>
-          <div class="text-[13px] font-semibold text-down">Heavy concentration</div>
-          <div class="text-[12px] text-gray-600 mt-0.5">Over half of all <span class="font-semibold" x-text="mode"></span> listings sit in just 5 communities. If any of those areas slow down, it hits hard.</div>
+          <div class="text-[13px] font-semibold text-down">Heavy area concentration</div>
+          <div class="text-[12px] text-gray-600 mt-0.5">Over half of all <span class="font-semibold" x-text="mode"></span> listings sit in just 5 communities.</div>
         </div>
       </div>
 
-      <!-- 3 simple cards -->
-      <div class="grid grid-cols-3 gap-4">
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm text-center">
-          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 5 areas</div>
-          <div class="text-[32px] font-bold mt-2 leading-none" :class="concData().top5 > 50 ? 'text-down' : 'text-heading'" x-text="concData().top5.toFixed(0) + '%'"></div>
-          <div class="text-[11px] text-muted mt-1">of all stock</div>
-        </div>
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm text-center">
-          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 10 areas</div>
-          <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="concData().top10.toFixed(0) + '%'"></div>
-          <div class="text-[11px] text-muted mt-1">of all stock</div>
-        </div>
-        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm text-center">
-          <div class="text-[11px] text-muted font-medium uppercase tracking-wide">Top 20 areas</div>
-          <div class="text-[32px] font-bold mt-2 leading-none text-heading" x-text="concData().top20.toFixed(0) + '%'"></div>
-          <div class="text-[11px] text-muted mt-1">of all stock</div>
-        </div>
-      </div>
+      <!-- ===== ROW 1: Area + Bedroom ===== -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-      <!-- Simple horizontal bars — each bar = that community's share -->
-      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
-        <div class="text-[12px] font-semibold text-heading mb-4">Biggest areas</div>
-        <div class="space-y-2.5">
-          <template x-for="(r, i) in concData().rows.slice(0, 15)" :key="r.name">
-            <div class="flex items-center gap-3">
-              <div class="w-36 sm:w-44 text-[11px] text-heading font-medium truncate" x-text="r.name"></div>
-              <div class="flex-1 h-6 bg-gray-100 rounded-lg overflow-hidden relative">
-                <div class="h-full rounded-lg bar-anim" :class="i < 5 ? 'bg-accent' : 'bg-gray-300'" :style="'width:' + (r.pct / concData().rows[0].pct * 100) + '%'"></div>
-              </div>
-              <div class="w-16 text-right text-[11px] font-semibold tabular-nums" x-text="r.count + ' (' + r.pct.toFixed(1) + '%)'" :class="i < 5 ? 'text-accent' : 'text-muted'"></div>
+        <!-- By Area -->
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="text-[13px] font-semibold text-heading">📍 By area</div>
+            <div class="flex gap-2 text-[10px]">
+              <span class="text-muted">Top 5: <span class="font-bold" :class="concData().top5 > 50 ? 'text-down' : 'text-heading'" x-text="concData().top5.toFixed(0) + '%'"></span></span>
+              <span class="text-muted">Top 10: <span class="font-bold text-heading" x-text="concData().top10.toFixed(0) + '%'"></span></span>
             </div>
-          </template>
+          </div>
+          <div class="space-y-2">
+            <template x-for="(r, i) in concData().rows.slice(0, 12)" :key="r.name">
+              <div class="flex items-center gap-2.5 cursor-pointer" @click="selectCommunity(r.name)">
+                <div class="w-32 sm:w-40 text-[11px] font-medium truncate hover:text-accent transition-colors" x-text="r.name"></div>
+                <div class="flex-1 h-5 bg-gray-100 rounded-lg overflow-hidden">
+                  <div class="h-full rounded-lg bar-anim" :class="i < 5 ? 'bg-accent' : 'bg-gray-300'" :style="'width:' + (r.pct / concData().rows[0].pct * 100) + '%'"></div>
+                </div>
+                <div class="w-14 text-right text-[10px] font-semibold tabular-nums" :class="i < 5 ? 'text-accent' : 'text-muted'" x-text="r.count"></div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- By Bedrooms -->
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[13px] font-semibold text-heading mb-4">🛏 By bedrooms</div>
+          <div class="space-y-2">
+            <template x-for="r in spreadBeds()" :key="r.label">
+              <div class="flex items-center gap-2.5">
+                <div class="w-20 text-[11px] font-medium text-heading" x-text="r.label"></div>
+                <div class="flex-1 h-5 bg-gray-100 rounded-lg overflow-hidden">
+                  <div class="h-full rounded-lg bar-anim bg-indigo-400" :style="'width:' + r.barPct + '%'"></div>
+                </div>
+                <div class="w-20 text-right text-[10px] tabular-nums">
+                  <span class="font-semibold text-heading" x-text="r.count"></span>
+                  <span class="text-muted" x-text="' (' + r.pct.toFixed(0) + '%)'" ></span>
+                </div>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
 
-      <!-- Full table -->
+      <!-- ===== ROW 2: Price + Type ===== -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- By Price Band -->
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[13px] font-semibold text-heading mb-4">💰 By price range</div>
+          <div class="space-y-2">
+            <template x-for="r in spreadPriceBands()" :key="r.label">
+              <div class="flex items-center gap-2.5">
+                <div class="w-28 text-[11px] font-medium text-heading" x-text="r.label"></div>
+                <div class="flex-1 h-5 bg-gray-100 rounded-lg overflow-hidden">
+                  <div class="h-full rounded-lg bar-anim bg-emerald-400" :style="'width:' + r.barPct + '%'"></div>
+                </div>
+                <div class="w-20 text-right text-[10px] tabular-nums">
+                  <span class="font-semibold text-heading" x-text="r.count"></span>
+                  <span class="text-muted" x-text="' (' + r.pct.toFixed(0) + '%)'" ></span>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- By Type -->
+        <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <div class="text-[13px] font-semibold text-heading mb-4">🏠 By property type</div>
+          <div class="space-y-2">
+            <template x-for="r in spreadTypes()" :key="r.label">
+              <div class="flex items-center gap-2.5">
+                <div class="w-28 text-[11px] font-medium text-heading" x-text="r.label"></div>
+                <div class="flex-1 h-5 bg-gray-100 rounded-lg overflow-hidden">
+                  <div class="h-full rounded-lg bar-anim bg-amber-400" :style="'width:' + r.barPct + '%'"></div>
+                </div>
+                <div class="w-20 text-right text-[10px] tabular-nums">
+                  <span class="font-semibold text-heading" x-text="r.count"></span>
+                  <span class="text-muted" x-text="' (' + r.pct.toFixed(0) + '%)'" ></span>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Full ranked table ===== -->
       <div class="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
         <div class="px-5 py-3 border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted">All communities ranked</div>
         <div class="overflow-x-auto">
@@ -1497,6 +1549,9 @@
                 <th class="text-left px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">#</th>
                 <th class="text-left px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Community</th>
                 <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Listings</th>
+                <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Avg price</th>
+                <th class="text-left px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Bedrooms</th>
+                <th class="text-left px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Types</th>
                 <th class="text-right px-3 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Share</th>
                 <th class="text-right px-5 py-3 font-semibold text-muted uppercase tracking-wide text-[10px]">Running total</th>
               </tr>
@@ -1506,13 +1561,28 @@
                 <tr class="border-b border-border-subtle hover:bg-gray-50 transition-colors cursor-pointer" @click="selectCommunity(r.name)">
                   <td class="px-5 py-2.5 text-muted tabular-nums" data-label="#" x-text="r.rank"></td>
                   <td class="px-3 py-2.5 font-medium text-heading hover:text-accent transition-colors" data-label="Community" x-text="r.name"></td>
-                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Listings" x-text="r.count"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums font-semibold" data-label="Listings" x-text="r.count"></td>
+                  <td class="px-3 py-2.5 text-right tabular-nums" data-label="Avg price" x-text="fmtAed(r.avg_price)"></td>
+                  <td class="px-3 py-2.5" data-label="Bedrooms">
+                    <div class="flex gap-1 flex-wrap">
+                      <template x-for="b in r.bedBadges" :key="b.label">
+                        <span class="inline-flex rounded-md bg-indigo-50 text-indigo-600 px-1.5 py-0.5 text-[9px] font-medium" x-text="b.label + ':' + b.count"></span>
+                      </template>
+                    </div>
+                  </td>
+                  <td class="px-3 py-2.5" data-label="Types">
+                    <div class="flex gap-1 flex-wrap">
+                      <template x-for="t in r.typeBadges" :key="t.label">
+                        <span class="inline-flex rounded-md bg-amber-50 text-amber-700 px-1.5 py-0.5 text-[9px] font-medium" x-text="t.label + ':' + t.count"></span>
+                      </template>
+                    </div>
+                  </td>
                   <td class="px-3 py-2.5 text-right tabular-nums" data-label="Share" x-text="r.pct.toFixed(1) + '%'"></td>
                   <td class="px-5 py-2.5 text-right tabular-nums font-medium" data-label="Running total" :class="r.cumPct > 80 ? 'text-muted' : r.cumPct > 50 ? 'text-amber-600' : 'text-heading'" x-text="r.cumPct.toFixed(1) + '%'"></td>
                 </tr>
               </template>
               <template x-if="concData().rows.length === 0">
-                <tr><td colspan="5" class="px-5 py-8 text-center text-muted">No data available</td></tr>
+                <tr><td colspan="8" class="px-5 py-8 text-center text-muted">No data available</td></tr>
               </template>
             </tbody>
           </table>
@@ -1708,23 +1778,76 @@ function dashboard() {
         .sort((a, b) => b.market - a.market);
     },
     concData() {
-      const b = this.block(); if (!b) return { top5: 0, top10: 0, top20: 0, hhi: 0, hhiRaw: 0, rows: [] };
+      const b = this.block(); if (!b) return { top5: 0, top10: 0, top20: 0, rows: [] };
       const total = b.total || 1;
-      const entries = Object.entries(b.by_community || {})
-        .map(([name, n]) => ({ name, count: n.count || 0 }))
+      const bc = b.by_community || {};
+      const entries = Object.entries(bc)
+        .map(([name, n]) => {
+          const beds = n.beds || {};
+          const bedBadges = Object.entries(beds)
+            .map(([k, v]) => ({ label: k === '0' ? 'S' : k + 'BR', count: typeof v === 'object' ? v.count : v, sort: k === 'Studio' || k === '0' ? -1 : parseInt(k) || 99 }))
+            .filter(b => b.count > 0).sort((a, b) => a.sort - b.sort);
+          const bt = n.by_type || {};
+          const typeBadges = Object.entries(bt)
+            .map(([t, d]) => ({ label: t, count: d[this.mode] || d.total || 0 }))
+            .filter(t => t.count > 0).sort((a, b) => b.count - a.count);
+          return { name, count: n.count || 0, avg_price: n.avg_price || null, bedBadges, typeBadges };
+        })
         .filter(r => r.count > 0)
         .sort((a, b) => b.count - a.count);
       let cum = 0;
       const rows = entries.map((r, i) => {
         const pct = r.count / total * 100;
         cum += pct;
-        return { rank: i + 1, name: r.name, count: r.count, pct, cumPct: cum };
+        return { ...r, rank: i + 1, pct, cumPct: cum };
       });
       const top5 = rows.length >= 5 ? rows[4].cumPct : (rows[rows.length - 1]?.cumPct || 0);
       const top10 = rows.length >= 10 ? rows[9].cumPct : (rows[rows.length - 1]?.cumPct || 0);
       const top20 = rows.length >= 20 ? rows[19].cumPct : (rows[rows.length - 1]?.cumPct || 0);
-      const hhiRaw = entries.reduce((s, r) => s + Math.pow(r.count / total * 100, 2), 0);
-      return { top5, top10, top20, hhi: Math.round(hhiRaw), hhiRaw, rows };
+      return { top5, top10, top20, rows };
+    },
+    spreadBeds() {
+      const listings = this._allListings();
+      const counts = {};
+      listings.forEach(l => {
+        const k = l.beds != null ? (l.beds === 0 ? 'Studio' : l.beds + ' BR') : 'Unknown';
+        counts[k] = (counts[k] || 0) + 1;
+      });
+      const order = ['Studio','1 BR','2 BR','3 BR','4 BR','5 BR','6 BR','7+ BR','Unknown'];
+      const total = listings.length || 1;
+      const rows = Object.entries(counts)
+        .map(([label, count]) => ({ label, count, pct: count / total * 100 }))
+        .sort((a, b) => (order.indexOf(a.label) === -1 ? 99 : order.indexOf(a.label)) - (order.indexOf(b.label) === -1 ? 99 : order.indexOf(b.label)));
+      const max = Math.max(...rows.map(r => r.count), 1);
+      rows.forEach(r => r.barPct = r.count / max * 100);
+      return rows;
+    },
+    spreadPriceBands() {
+      const listings = this._allListings();
+      const isSale = this.mode === 'sale';
+      const bands = isSale
+        ? [['Under 1M', 0, 1e6], ['1M–2M', 1e6, 2e6], ['2M–5M', 2e6, 5e6], ['5M–10M', 5e6, 1e7], ['10M+', 1e7, Infinity]]
+        : [['Under 50K', 0, 5e4], ['50K–100K', 5e4, 1e5], ['100K–200K', 1e5, 2e5], ['200K–500K', 2e5, 5e5], ['500K+', 5e5, Infinity]];
+      const total = listings.length || 1;
+      const rows = bands.map(([label, lo, hi]) => {
+        const count = listings.filter(l => l.price >= lo && l.price < hi).length;
+        return { label, count, pct: count / total * 100 };
+      });
+      const max = Math.max(...rows.map(r => r.count), 1);
+      rows.forEach(r => r.barPct = r.count / max * 100);
+      return rows;
+    },
+    spreadTypes() {
+      const listings = this._allListings();
+      const counts = {};
+      listings.forEach(l => { const t = l.type || 'Unknown'; counts[t] = (counts[t] || 0) + 1; });
+      const total = listings.length || 1;
+      const rows = Object.entries(counts)
+        .map(([label, count]) => ({ label, count, pct: count / total * 100 }))
+        .sort((a, b) => b.count - a.count);
+      const max = Math.max(...rows.map(r => r.count), 1);
+      rows.forEach(r => r.barPct = r.count / max * 100);
+      return rows;
     },
     commAvgPrice() {
       const n = this.commNode();
