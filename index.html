@@ -1592,6 +1592,53 @@
         <p class="text-[12px] text-muted mt-1">Every promoted listing — is the spend justified? One view, one answer.</p>
       </div>
 
+      <!-- How to use this -->
+      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <details class="group">
+          <summary class="cursor-pointer text-[13px] font-semibold text-heading flex items-center gap-2 select-none">
+            <span class="text-[16px]">📖</span> How to read this page
+            <svg class="w-4 h-4 text-muted transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="mt-4 space-y-4 text-[12px] text-muted leading-relaxed">
+            <p class="text-heading font-medium">This page shows every Huspy listing that has paid promotion (Hot or Signature). For each one, it answers: <strong>is that spend actually doing anything?</strong></p>
+            
+            <div class="grid md:grid-cols-3 gap-4">
+              <div class="rounded-xl bg-up/5 border border-up/20 p-3">
+                <div class="font-bold text-up text-[11px] uppercase tracking-wider mb-1">✅ Working</div>
+                <p>Listing is <strong>priced at or below market</strong> and has been live <strong>less than 30 days</strong>. The promotion is giving a well-priced listing extra visibility — money well spent.</p>
+                <p class="mt-2 text-[11px] text-up/80 font-medium">→ Action: Leave it. Spend is doing its job.</p>
+              </div>
+              <div class="rounded-xl bg-down/5 border border-down/20 p-3">
+                <div class="font-bold text-down text-[11px] uppercase tracking-wider mb-1">❌ Overpriced</div>
+                <p>Listing is <strong>priced more than 5% above</strong> the market median for its sub-community, type, and bedrooms. Promoting an overpriced listing = paying to show people something they'll skip.</p>
+                <p class="mt-2 text-[11px] text-down/80 font-medium">→ Action: Talk to the agent. Either drop the price to market, or pull the promotion until they do. Don't burn budget on a listing buyers/tenants will ignore.</p>
+              </div>
+              <div class="rounded-xl bg-amber-50 border border-amber-200 p-3">
+                <div class="font-bold text-amber-700 text-[11px] uppercase tracking-wider mb-1">⚠️ Stale</div>
+                <p>Listing has been on the market <strong>30+ days</strong> with promotion running. If spend hasn't converted by now, something else is wrong — price, photos, or the property itself.</p>
+                <p class="mt-2 text-[11px] text-amber-600 font-medium">→ Action: Review the listing. Consider pausing spend, refreshing the listing (new photos/description), or adjusting price. 30 days of paid visibility with no result = money leak.</p>
+              </div>
+            </div>
+
+            <div class="border-t border-border pt-3 space-y-2">
+              <p class="font-semibold text-heading">Reading the table:</p>
+              <ul class="space-y-1.5 pl-1">
+                <li><strong>Gap %</strong> — how far the listing price is from the sub-community market median. <span class="text-up">Negative = below market</span> (good), <span class="text-down">positive = above market</span> (problem). E.g. "+15.2%" means priced 15% above what comparable properties sell/rent for.</li>
+                <li><strong>Market</strong> — the median price of similar listings (same sub-community, property type, bedrooms) on Bayut. This is what buyers/tenants are comparing against.</li>
+                <li><strong>DOM</strong> — Days on Market. How long this listing has been live. Under 14 = fresh, 14-30 = normal, 30+ = going stale.</li>
+                <li><strong>Promo</strong> — <span class="inline-flex px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-700 text-[10px] font-semibold">Signature</span> = premium placement (top of search, featured). <span class="inline-flex px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold">Hot</span> = highlighted listing badge. Signature costs more, so waste matters more.</li>
+                <li><strong>Reason</strong> — plain English summary of why the verdict was given.</li>
+              </ul>
+            </div>
+
+            <div class="border-t border-border pt-3">
+              <p class="font-semibold text-heading">The efficiency number:</p>
+              <p>Working listings ÷ total promoted × 100. If you're at 70%, that means 30% of promoted listings are either overpriced or stale — 30% of spend is doing nothing. Target: 85%+.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+
       <!-- Summary cards -->
       <template x-if="latest?.data?.opportunities?.[mode]?.spend_audit">
         <div>
