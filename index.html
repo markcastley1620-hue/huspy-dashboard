@@ -67,7 +67,7 @@
       </div>
       <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
         <div class="flex items-center gap-1 shrink-0">
-          <template x-for="v in ['overview','communities','agents','spread','opportunities','spend-audit','advisor']" :key="v">
+          <template x-for="v in ['overview','communities','agents','spread','opportunities','advisor']" :key="v">
             <button @click="navigate(v === 'spread' ? 'concentration' : v)" :class="(v === 'spread' ? view==='concentration' : view===v) || (view==='community-detail' && v==='communities') ? 'bg-gray-900 text-white' : 'text-muted hover:text-gray-700 hover:bg-gray-100'" class="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all whitespace-nowrap" x-text="({'spread':'Spread','gaps':'Gaps','changes':'Changes','spend-audit':'Spend Audit'})[v] || v.charAt(0).toUpperCase()+v.slice(1)"></button>
           </template>
         </div>
@@ -1586,111 +1586,6 @@
     </div>
 
     <!-- ==================== SPEND AUDIT ==================== -->
-    <div x-show="!loading && view==='spend-audit'" x-cloak class="space-y-6 fade-in">
-      <div>
-        <h1 class="text-[22px] font-bold tracking-tight text-heading">Spend Audit</h1>
-        <p class="text-[12px] text-muted mt-1">Every promoted listing — is the spend justified?</p>
-      </div>
-
-      <!-- Summary cards -->
-      <template x-if="latest?.data?.opportunities?.[mode]?.spend_audit">
-        <div>
-          <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-            <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
-              <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Total Promoted</div>
-              <div class="text-[28px] font-bold mt-1 leading-none text-heading" x-text="latest.data.opportunities[mode].spend_audit.length"></div>
-            </div>
-            <div class="rounded-2xl border border-up bg-up/5 p-4 shadow-sm">
-              <div class="text-[10px] uppercase tracking-widest text-up font-semibold">✅ Working</div>
-              <div class="text-[28px] font-bold mt-1 leading-none text-up" x-text="latest.data.opportunities[mode].spend_audit.filter(x=>x.verdict==='working').length"></div>
-            </div>
-            <div class="rounded-2xl border border-down bg-down/5 p-4 shadow-sm">
-              <div class="text-[10px] uppercase tracking-widest text-down font-semibold">❌ Overpriced</div>
-              <div class="text-[28px] font-bold mt-1 leading-none text-down" x-text="latest.data.opportunities[mode].spend_audit.filter(x=>x.verdict==='overpriced').length"></div>
-            </div>
-            <div class="rounded-2xl border border-amber-300 bg-amber-50 p-4 shadow-sm">
-              <div class="text-[10px] uppercase tracking-widest text-amber-600 font-semibold">⚠️ Stale</div>
-              <div class="text-[28px] font-bold mt-1 leading-none text-amber-600" x-text="latest.data.opportunities[mode].spend_audit.filter(x=>x.verdict==='stale').length"></div>
-            </div>
-            <div class="bg-white rounded-2xl border border-border p-4">
-              <div class="text-[10px] uppercase tracking-widest font-semibold text-gray-400">Low Data</div>
-              <div class="text-[28px] font-bold mt-1 leading-none text-gray-400" x-text="latest.data.opportunities[mode].spend_audit.filter(x=>x.verdict==='low data').length"></div>
-            </div>
-            <div class="rounded-2xl border border-accent bg-accent-soft p-4 shadow-sm">
-              <div class="text-[10px] uppercase tracking-widest text-accent font-semibold">Efficiency</div>
-              <div class="text-[28px] font-bold mt-1 leading-none text-accent" x-text="latest.data.opportunities[mode].spend_audit.length ? Math.round(latest.data.opportunities[mode].spend_audit.filter(x=>x.verdict==='working').length / latest.data.opportunities[mode].spend_audit.length * 100) + '%' : '—'"></div>
-            </div>
-          </div>
-
-          <!-- Main table -->
-          <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead>
-                  <tr class="border-b border-border">
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Verdict</th>
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Agent</th>
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Location</th>
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Type</th>
-                    <th class="px-4 py-3 text-right text-[10px] uppercase tracking-widest text-muted font-semibold">Price</th>
-                    <th class="px-4 py-3 text-right text-[10px] uppercase tracking-widest text-muted font-semibold">AED/sqft</th>
-                    <th class="px-4 py-3 text-right text-[10px] uppercase tracking-widest text-muted font-semibold">sqft Gap</th>
-                    <th class="px-4 py-3 text-right text-[10px] uppercase tracking-widest text-muted font-semibold">DOM</th>
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Benchmark</th>
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Confidence</th>
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Promo</th>
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Reason</th>
-                    <th class="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted font-semibold">Link</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <template x-for="(o, idx) in latest.data.opportunities[mode].spend_audit" :key="'sa'+idx">
-                    <tr class="border-b border-border-subtle hover:bg-bg-sub transition-colors">
-                      <td class="px-4 py-2.5">
-                        <span x-show="o.verdict==='working'" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-up/10 text-up text-[11px] font-bold">✅ WORKING</span>
-                        <span x-show="o.verdict==='overpriced'" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-down/10 text-down text-[11px] font-bold">❌ OVERPRICED</span>
-                        <span x-show="o.verdict==='stale'" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-100 text-amber-700 text-[11px] font-bold">⚠️ STALE</span>
-                        <span x-show="o.verdict==='low data'" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-gray-100 text-gray-500 text-[11px] font-bold">❓ LOW DATA</span>
-                      </td>
-                      <td class="px-4 py-2.5 text-[12px] text-heading font-medium" x-text="o.agent || '—'"></td>
-                      <td class="px-4 py-2.5 text-[12px] text-muted"><span x-text="o.sub_community || o.community || '—'"></span><span class="text-muted-2" x-show="o.sub_community && o.community" x-text="' · ' + o.community"></span></td>
-                      <td class="px-4 py-2.5 text-[12px] text-muted"><span x-text="o.type"></span><span x-show="o.beds" x-text="' · ' + o.beds + 'BR'"></span></td>
-                      <td class="px-4 py-2.5 text-right text-[12px] text-heading font-medium" x-text="fmtAed(o.price)"></td>
-                      <td class="px-4 py-2.5 text-right text-[12px] font-medium" :class="o.sqft_gap_pct > 15 ? 'text-down' : o.sqft_gap_pct < -15 ? 'text-up' : 'text-muted'" x-text="o.price_sqft ? o.price_sqft.toLocaleString() + (o.market_sqft ? ' / ' + o.market_sqft.toLocaleString() : '') : '—'"></td>
-                      <td class="px-4 py-2.5 text-right text-[12px] font-semibold" :class="o.sqft_gap_pct != null ? (o.sqft_gap_pct > 15 ? 'text-down' : o.sqft_gap_pct < -15 ? 'text-up' : 'text-muted') : 'text-gray-400'" x-text="o.sqft_gap_pct != null ? (o.sqft_gap_pct > 0 ? '+' : '') + o.sqft_gap_pct.toFixed(1) + '%' : '—'"></td>
-                      <td class="px-4 py-2.5 text-right text-[12px]" :class="(o.dom || 0) >= 30 ? 'text-amber-600 font-semibold' : 'text-muted'" x-text="o.dom ?? '—'"></td>
-                      <td class="px-4 py-2.5 text-[11px]">
-                        <span x-show="o.benchmark_level==='tower'" class="inline-flex px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold">tower</span>
-                        <span x-show="o.benchmark_level==='sub_community_sqft'" class="inline-flex px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-semibold">sub sqft</span>
-                        <span x-show="o.benchmark_level==='sub_community_price'" class="inline-flex px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-semibold">sub price</span>
-                      </td>
-                      <td class="px-4 py-2.5 text-[11px]">
-                        <span x-show="o.confidence==='high'" class="inline-flex px-2 py-0.5 rounded-full bg-up/10 text-up font-semibold">high</span>
-                        <span x-show="o.confidence==='medium'" class="inline-flex px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-semibold">medium</span>
-                        <span x-show="o.confidence==='low'" class="inline-flex px-2 py-0.5 rounded-full bg-gray-100 text-gray-400 font-semibold">low</span>
-                      </td>
-                      <td class="px-4 py-2.5">
-                        <span x-show="o.promo==='Signature'" class="inline-flex px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 text-[10px] font-semibold">Signature</span>
-                        <span x-show="o.promo==='Hot'" class="inline-flex px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold">Hot</span>
-                      </td>
-                      <td class="px-4 py-2.5 text-[12px] text-muted max-w-[220px]" x-text="o.reason || '—'"></td>
-                      <td class="px-4 py-2.5">
-                        <a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="text-accent text-[11px] font-medium hover:underline">View ↗</a>
-                      </td>
-                    </tr>
-                  </template>
-                  <template x-if="!latest.data.opportunities[mode].spend_audit.length">
-                    <tr><td colspan="14" class="px-5 py-8 text-center text-muted text-[12px]">No promoted listings found</td></tr>
-                  </template>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template x-if="!latest?.data?.opportunities?.[mode]?.spend_audit">
-        <div class="rounded-2xl border border-border bg-white p-8 text-center text-muted text-[12px]">No spend audit data available. Run supabase_sync.py to generate.</div>
-      </template>
     </div>
 
   </main>
