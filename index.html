@@ -862,7 +862,7 @@
             </thead>
             <tbody>
               <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.underpriced)" :key="o.url + idx">
-                <tr class="border-b border-border-subtle hover:bg-gray-50">
+                <tr class="border-b border-border-subtle hover:bg-gray-50 cursor-pointer" @click="openDrawer(o)">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
                     <div class="text-heading" x-text="o.sub_community || o.community"></div>
@@ -883,7 +883,7 @@
                           x-text="o.action"></span>
                   </td>
                   <td class="px-3 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
-                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
               <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.underpriced).length"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No underpriced listings found</td></tr></template>
@@ -912,7 +912,7 @@
             </thead>
             <tbody>
               <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.overpriced)" :key="o.url + idx">
-                <tr class="border-b border-border-subtle hover:bg-gray-50">
+                <tr class="border-b border-border-subtle hover:bg-gray-50 cursor-pointer" @click="openDrawer(o)">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
                     <div class="text-heading" x-text="o.sub_community || o.community"></div>
@@ -928,7 +928,7 @@
                   <td class="px-3 py-2.5 text-right text-down font-semibold" x-text="'+' + o.gap_pct + '%'"></td>
                   <td class="px-3 py-2.5 text-right" :class="(o.dom||0) > 30 ? 'text-down font-semibold' : ''" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
                   <td class="px-3 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
-                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
               <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.overpriced).length"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No overpriced listings found</td></tr></template>
@@ -955,7 +955,7 @@
             </thead>
             <tbody>
               <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.stale)" :key="o.url + idx">
-                <tr class="border-b border-border-subtle hover:bg-gray-50">
+                <tr class="border-b border-border-subtle hover:bg-gray-50 cursor-pointer" @click="openDrawer(o)">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5">
                     <div class="text-heading" x-text="o.sub_community || o.community"></div>
@@ -969,7 +969,7 @@
                     <span x-show="!o.promo" class="text-muted">None</span>
                   </td>
                   <td class="px-3 py-2.5 text-muted text-[11px] truncate max-w-[160px]" x-text="o.title"></td>
-                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
               <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.stale).length"><tr><td colspan="11" class="px-5 py-8 text-center text-muted">No stale listings found</td></tr></template>
@@ -1005,7 +1005,7 @@
                   <td class="px-3 py-2.5 text-right font-semibold" x-text="fmtAed(o.price)"></td>
                   <td class="px-3 py-2.5"><span class="inline-flex rounded-md bg-accent/10 text-accent px-2 py-0.5 text-[10px] font-semibold">1/1 — sole listing</span></td>
                   <td class="px-3 py-2.5 text-right" :class="(o.dom||0) > 30 ? 'text-down font-semibold' : ''" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
-                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
               <template x-if="!oppFilter(latest?.data?.opportunities?.sole_listings?.[mode]).length"><tr><td colspan="7" class="px-5 py-8 text-center text-muted">All listings have market comparables</td></tr></template>
@@ -1034,7 +1034,7 @@
             </thead>
             <tbody>
               <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.wasted_overpriced)" :key="'wo'+idx">
-                <tr class="border-b border-down/10 hover:bg-down/5">
+                <tr class="border-b border-down/10 hover:bg-down/5 cursor-pointer" @click="openDrawer(o)">
                   <td class="px-5 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.promo==='Signature' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'" x-text="o.promo"></span></td>
                   <td class="px-3 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5"><div class="text-heading" x-text="o.sub_community || o.community"></div><div class="text-[10px] text-muted" x-text="o.type"></div></td>
@@ -1044,7 +1044,7 @@
                   <td class="px-3 py-2.5 text-right text-down font-semibold" x-text="'+' + o.gap_pct + '%'"></td>
                   <td class="px-3 py-2.5 text-right" :class="(o.dom||0) > 30 ? 'text-down font-semibold' : ''" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
                   <td class="px-3 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
-                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
               <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.wasted_overpriced).length"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">✓ No wasted spend on overpriced listings</td></tr></template>
@@ -1073,7 +1073,7 @@
             </thead>
             <tbody>
               <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.wasted_stale)" :key="'ws'+idx">
-                <tr class="border-b border-amber-200 hover:bg-amber-100/50">
+                <tr class="border-b border-amber-200 hover:bg-amber-100/50 cursor-pointer" @click="openDrawer(o)">
                   <td class="px-5 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.promo==='Signature' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'" x-text="o.promo"></span></td>
                   <td class="px-3 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5"><div class="text-heading" x-text="o.sub_community || o.community"></div><div class="text-[10px] text-muted" x-text="o.type"></div></td>
@@ -1083,7 +1083,7 @@
                   <td class="px-3 py-2.5 text-right" :class="o.gap_pct > 0 ? 'text-down font-semibold' : 'text-up font-semibold'" x-text="(o.gap_pct > 0 ? '+' : '') + o.gap_pct + '%'"></td>
                   <td class="px-3 py-2.5 text-right text-down font-semibold" x-text="o.dom + 'd'"></td>
                   <td class="px-3 py-2.5 text-muted text-[11px] truncate max-w-[160px]" x-text="o.title"></td>
-                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
               <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.wasted_stale).length"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">✓ No stale listings with spend</td></tr></template>
@@ -1112,7 +1112,7 @@
             </thead>
             <tbody>
               <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.[mode]?.spend_working)" :key="'sw'+idx">
-                <tr class="border-b border-up/10 hover:bg-up/5">
+                <tr class="border-b border-up/10 hover:bg-up/5 cursor-pointer" @click="openDrawer(o)">
                   <td class="px-5 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.promo==='Signature' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'" x-text="o.promo"></span></td>
                   <td class="px-3 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5"><div class="text-heading" x-text="o.sub_community || o.community"></div><div class="text-[10px] text-muted" x-text="o.type"></div></td>
@@ -1122,7 +1122,7 @@
                   <td class="px-3 py-2.5 text-right text-up font-semibold" x-text="(o.gap_pct > 0 ? '+' : '') + o.gap_pct + '%'"></td>
                   <td class="px-3 py-2.5 text-right" x-text="o.dom != null ? o.dom + 'd' : '—'"></td>
                   <td class="px-3 py-2.5 text-muted text-[11px] truncate max-w-[160px]" x-text="o.title"></td>
-                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
               <template x-if="!oppFilter(latest?.data?.opportunities?.[mode]?.spend_working).length"><tr><td colspan="9" class="px-5 py-8 text-center text-muted">No promoted listings with market data</td></tr></template>
@@ -1152,7 +1152,7 @@
             </thead>
             <tbody>
               <template x-for="(o, idx) in oppFilter(latest?.data?.opportunities?.new_underpriced?.[mode])" :key="'nu'+idx">
-                <tr class="border-b border-accent/10 hover:bg-accent/5">
+                <tr class="border-b border-accent/10 hover:bg-accent/5 cursor-pointer" @click="openDrawer(o)">
                   <td class="px-5 py-2.5 font-medium" x-text="o.agent"></td>
                   <td class="px-3 py-2.5"><div class="text-heading" x-text="o.sub_community || o.community"></div><div class="text-[10px] text-muted" x-text="o.type + ' · ' + o.community"></div></td>
                   <td class="px-3 py-2.5 text-right" x-text="o.beds === 0 ? 'Studio' : o.beds + ' BR'"></td>
@@ -1162,7 +1162,7 @@
                   <td class="px-3 py-2.5 text-right"><span class="inline-flex rounded-md bg-accent/10 text-accent px-2 py-0.5 text-[10px] font-semibold" x-text="o.dom + 'd'"></span></td>
                   <td class="px-3 py-2.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="o.action?.includes('Signature') ? 'bg-purple-100 text-purple-700' : o.action?.includes('Hot') ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-600'" x-text="o.action"></span></td>
                   <td class="px-3 py-2.5 text-right font-bold text-heading" x-text="o.score"></td>
-                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
+                  <td class="px-5 py-2.5 text-right"><a x-show="o.url" :href="'https://www.bayut.com' + o.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a></td>
                 </tr>
               </template>
               <template x-if="!oppFilter(latest?.data?.opportunities?.new_underpriced?.[mode]).length"><tr><td colspan="10" class="px-5 py-8 text-center text-muted">No fresh underpriced listings in the last 7 days</td></tr></template>
@@ -1377,7 +1377,7 @@
                   <td class="px-3 py-2.5 text-right" data-label="DOM" :class="(l.dom||0) > 30 ? 'text-down font-semibold' : (l.dom||0) > 14 ? 'text-amber-500 font-medium' : ''" x-text="l.dom != null ? l.dom + 'd' : '—'"></td>
                   <td class="px-3 py-2.5 text-muted text-[11px] truncate max-w-[160px]" data-label="Title" x-text="l.title || '—'"></td>
                   <td class="px-5 py-2.5 text-right" data-label="Link">
-                    <a x-show="l.url" :href="'https://www.bayut.com' + l.url" target="_blank" class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a>
+                    <a x-show="l.url" :href="'https://www.bayut.com' + l.url" target="_blank" @click.stop class="inline-flex items-center gap-1 rounded-md bg-accent/10 text-accent px-2.5 py-1 text-[10px] font-semibold hover:bg-accent/20 transition-colors whitespace-nowrap">View ↗</a>
                   </td>
                 </tr>
               </template>
@@ -1590,6 +1590,189 @@
 
   </main>
 
+  <!-- ==================== LISTING DETAIL DRAWER ==================== -->
+  <!-- Backdrop -->
+  <div
+    x-show="drawerOpen"
+    x-cloak
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    @click="closeDrawer()"
+    class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50"
+  ></div>
+
+  <!-- Drawer Panel -->
+  <div
+    x-show="drawerOpen"
+    x-cloak
+    x-transition:enter="ease-out duration-250"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    style="transform: translateX(0); transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;"
+    class="fixed right-0 top-0 bottom-0 z-50 w-full max-w-[520px] bg-white shadow-2xl flex flex-col overflow-hidden"
+    @keydown.escape.window="closeDrawer()"
+  >
+    <template x-if="drawerListing">
+      <div class="flex flex-col h-full">
+        <!-- Drawer Header -->
+        <div class="flex items-start justify-between px-6 py-4 border-b border-border bg-white shrink-0">
+          <div class="flex-1 min-w-0 pr-4">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[10px] uppercase tracking-widest text-muted font-semibold" x-text="drawerListing.community"></span>
+              <span x-show="drawerListing.sub_community" class="text-muted-2">›</span>
+              <span x-show="drawerListing.sub_community" class="text-[10px] uppercase tracking-widest text-muted" x-text="drawerListing.sub_community"></span>
+            </div>
+            <h2 class="text-[16px] font-bold text-heading mt-0.5 truncate" x-text="drawerListing.title || ((drawerListing.beds === 0 ? 'Studio' : (drawerListing.beds + ' BR')) + ' ' + (drawerListing.type || '') + ' in ' + drawerListing.community)"></h2>
+            <div class="flex items-center gap-2 mt-1 flex-wrap">
+              <span class="inline-flex rounded-md bg-gray-100 px-2 py-0.5 text-[10px] text-gray-600 font-medium" x-text="drawerListing.type"></span>
+              <span class="text-[11px] text-muted" x-text="drawerListing.beds === 0 ? 'Studio' : drawerListing.beds + ' BR'"></span>
+              <span x-show="drawerListing.promo === 'Signature'" class="inline-flex rounded-full bg-purple-100 text-purple-600 px-2 py-0.5 text-[10px] font-semibold">Signature</span>
+              <span x-show="drawerListing.promo === 'Hot'" class="inline-flex rounded-full bg-orange-100 text-orange-600 px-2 py-0.5 text-[10px] font-semibold">Hot</span>
+              <span x-show="!drawerListing.promo" class="inline-flex rounded-full bg-gray-50 border border-gray-200 text-gray-400 px-2 py-0.5 text-[10px]">No spend</span>
+            </div>
+          </div>
+          <button @click="closeDrawer()" class="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-muted transition-colors text-[18px] leading-none">×</button>
+        </div>
+
+        <!-- Drawer Body (scrollable) -->
+        <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+
+          <!-- Price hero -->
+          <div class="rounded-2xl border border-border bg-gray-50 p-5">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">Listing price</div>
+                <div class="text-[28px] font-bold text-heading mt-1 leading-none" x-text="drawerListing.price >= 1e6 ? 'AED ' + (drawerListing.price/1e6).toFixed(2) + 'M' : 'AED ' + fmt(drawerListing.price)"></div>
+                <div class="text-[11px] text-muted mt-1" x-show="drawerListing.psqft" x-text="fmt(drawerListing.psqft) + ' AED/sqft'"></div>
+              </div>
+              <div>
+                <div class="text-[10px] uppercase tracking-widest text-muted font-semibold">vs Market median</div>
+                <div class="text-[28px] font-bold mt-1 leading-none" :class="drawerListing.market_median ? (drawerListing.gap_pct < -5 ? 'text-up' : drawerListing.gap_pct > 5 ? 'text-down' : 'text-heading') : 'text-muted-2'" x-text="drawerListing.market_median ? ((drawerListing.gap_pct > 0 ? '+' : '') + drawerListing.gap_pct + '%') : '—'"></div>
+                <div class="text-[11px] text-muted mt-1" x-text="drawerListing.market_median ? 'median: ' + (drawerListing.market_median >= 1e6 ? (drawerListing.market_median/1e6).toFixed(2) + 'M' : fmt(drawerListing.market_median) + ' AED') : 'No market data'"></div>
+              </div>
+            </div>
+            <!-- Price rank bar -->
+            <template x-if="drawerPriceRank() && drawerPriceRank().total > 1">
+              <div class="mt-4 pt-4 border-t border-border">
+                <div class="flex items-center justify-between mb-1.5 text-[11px] text-muted">
+                  <span>Price rank in community</span>
+                  <span class="font-semibold text-heading" x-text="drawerPriceRank().rank + ' of ' + drawerPriceRank().total + ' Huspy listings'"></span>
+                </div>
+                <div class="h-2 rounded-full bg-gray-200 overflow-hidden">
+                  <div class="h-full rounded-full bg-accent bar-anim" :style="'width:' + (drawerPriceRank().rank / drawerPriceRank().total * 100) + '%'"></div>
+                </div>
+                <div class="flex justify-between text-[9px] text-muted-2 mt-1">
+                  <span>Cheapest</span>
+                  <span>Most expensive</span>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Listing details grid -->
+          <div class="rounded-2xl border border-border bg-white p-5">
+            <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-3">Listing details</div>
+            <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-[12px]">
+              <div>
+                <div class="text-[10px] text-muted-2 uppercase tracking-wider">Agent</div>
+                <div class="font-semibold text-heading mt-0.5 cursor-pointer hover:text-accent transition-colors" @click="closeDrawer(); selectAgent(drawerListing.agent)" x-text="drawerListing.agent"></div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-2 uppercase tracking-wider">Days on market</div>
+                <div class="font-semibold mt-0.5" :class="(drawerListing.dom || 0) > 30 ? 'text-down' : (drawerListing.dom || 0) > 14 ? 'text-amber-500' : 'text-heading'" x-text="drawerListing.dom != null ? drawerListing.dom + ' days' : '—'"></div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-2 uppercase tracking-wider">Size</div>
+                <div class="font-semibold text-heading mt-0.5" x-text="drawerListing.sqft ? fmt(drawerListing.sqft) + ' sqft' : '—'"></div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-2 uppercase tracking-wider">AED / sqft</div>
+                <div class="font-semibold text-heading mt-0.5" x-text="drawerListing.psqft ? fmt(drawerListing.psqft) : '—'"></div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-2 uppercase tracking-wider">Community</div>
+                <div class="font-semibold text-heading mt-0.5 cursor-pointer hover:text-accent transition-colors" @click="closeDrawer(); selectCommunity(drawerListing.community)" x-text="drawerListing.community"></div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-2 uppercase tracking-wider">Sub-community</div>
+                <div class="font-semibold text-heading mt-0.5" x-text="drawerListing.sub_community || '—'"></div>
+              </div>
+              <div x-show="drawerListing.score != null">
+                <div class="text-[10px] text-muted-2 uppercase tracking-wider">Opportunity score</div>
+                <div class="font-bold text-[16px] text-accent mt-0.5" x-text="drawerListing.score"></div>
+              </div>
+              <div x-show="drawerListing.action">
+                <div class="text-[10px] text-muted-2 uppercase tracking-wider">Recommendation</div>
+                <div class="mt-0.5"><span class="inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold" :class="drawerListing.action?.includes('Signature') ? 'bg-purple-100 text-purple-700' : drawerListing.action?.includes('Hot') ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-600'" x-text="drawerListing.action"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comparable Huspy listings -->
+          <div class="rounded-2xl border border-border bg-white overflow-hidden" x-show="drawerComparables().length > 0">
+            <div class="px-5 py-3 border-b border-border">
+              <div class="text-[11px] font-semibold text-muted uppercase tracking-wider">Huspy comparables</div>
+              <div class="text-[10px] text-muted-2 mt-0.5" x-text="'Same community · ' + (drawerListing.beds === 0 ? 'Studio' : drawerListing.beds + ' BR') + ' · ' + drawerComparables().length + ' other listings'"></div>
+            </div>
+            <div class="divide-y divide-border-subtle">
+              <template x-for="(c, i) in drawerComparables()" :key="i">
+                <div
+                  class="flex items-center gap-3 px-5 py-3 text-[12px] hover:bg-gray-50 transition-colors cursor-pointer"
+                  :class="c.price === drawerListing.price && c.agent === drawerListing.agent ? 'bg-accent/5' : ''"
+                  @click="openDrawer(c)"
+                >
+                  <div class="flex-1 min-w-0">
+                    <div class="font-medium text-heading truncate" x-text="c.sub_community || c.community"></div>
+                    <div class="text-[10px] text-muted mt-0.5" x-text="c.agent"></div>
+                  </div>
+                  <div class="text-right shrink-0">
+                    <div class="font-semibold text-heading" x-text="c.price >= 1e6 ? (c.price/1e6).toFixed(2) + 'M' : fmt(c.price)"></div>
+                    <div class="text-[10px] mt-0.5" :class="c.vs_market != null && c.vs_market < -5 ? 'text-up font-medium' : c.vs_market != null && c.vs_market > 5 ? 'text-down font-medium' : 'text-muted'" x-text="c.vs_market != null ? ((c.vs_market > 0 ? '+' : '') + c.vs_market + '% vs mkt') : '—'"></div>
+                  </div>
+                  <div class="shrink-0 text-right w-12">
+                    <div class="text-[10px] text-muted" x-text="c.dom != null ? c.dom + 'd' : '—'"></div>
+                    <div class="mt-0.5">
+                      <span x-show="c.promo === 'Signature'" class="text-[9px] text-purple-600 font-semibold">Sig</span>
+                      <span x-show="c.promo === 'Hot'" class="text-[9px] text-orange-600 font-semibold">Hot</span>
+                      <span x-show="!c.promo" class="text-[9px] text-muted-2">—</span>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- No comparables notice -->
+          <div x-show="drawerComparables().length === 0" class="rounded-2xl border border-border bg-gray-50 px-5 py-4 text-[12px] text-muted">
+            🏆 Only Huspy listing for this community / bed config — no internal comparables.
+          </div>
+
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="shrink-0 border-t border-border bg-white px-6 py-4 flex items-center gap-3">
+          <a
+            :href="drawerListing.url ? 'https://www.bayut.com' + drawerListing.url : '#'"
+            :class="drawerListing.url ? '' : 'pointer-events-none opacity-40'"
+            target="_blank"
+            class="flex-1 flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-all"
+          >View on Bayut ↗</a>
+          <button
+            @click="closeDrawer(); selectCommunity(drawerListing.community)"
+            class="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-heading rounded-xl px-4 py-2.5 text-[13px] font-medium transition-all"
+          >Community detail →</button>
+        </div>
+      </div>
+    </template>
+  </div>
+
 <script>
 const SUPABASE_URL = 'https://qwmjjrcdkrtoitwdsfhe.supabase.co';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3bWpqcmNka3J0b2l0d2RzZmhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTk3MjAsImV4cCI6MjA5NDIzNTcyMH0.FFnbLvx-JPZAYBwUv8remvNrwlH-AV0j5MovWw5UUkU';
@@ -1610,6 +1793,8 @@ function dashboard() {
     selectedBed: null,
     oppTab: 'underpriced',
     oppCommFilter: '',
+    drawerListing: null,
+    drawerOpen: false,
 
     agentSearch: '',
     agentMultiComm: false,
@@ -1920,6 +2105,44 @@ function dashboard() {
     selectCommunity(name) { this.selectedCommunity = name; this.selectedBed = null; this.agentDrillComm = null; this.view = 'community-detail'; window.scrollTo(0, 0); },
     selectAgent(name) { this.selectedAgent = name; this.agentDrillComm = null; this.selectedCommunity = null; this.view = 'agent-detail'; window.scrollTo(0, 0); },
     toggleBedFilter(bed) { this.selectedBed = this.selectedBed === bed ? null : bed; },
+
+    openDrawer(listing) {
+      // Enrich with market median if not already present
+      if (!listing._enriched) {
+        const mktMed = listing.market_median ?? this._getMarketMedian(listing);
+        const gapPct = (mktMed && listing.price) ? Math.round((listing.price - mktMed) / mktMed * 1000) / 10 : (listing.gap_pct ?? null);
+        listing = { ...listing, market_median: mktMed ?? listing.market_median, gap_pct: gapPct ?? listing.gap_pct, _enriched: true };
+      }
+      this.drawerListing = listing;
+      this.drawerOpen = true;
+      document.body.style.overflow = 'hidden';
+    },
+    closeDrawer() {
+      this.drawerOpen = false;
+      document.body.style.overflow = '';
+      setTimeout(() => { this.drawerListing = null; }, 300);
+    },
+    drawerComparables() {
+      const l = this.drawerListing;
+      if (!l) return [];
+      const allL = this._allListings();
+      return allL
+        .filter(x => x.community === l.community && x.beds === l.beds && x.url !== l.url)
+        .map(x => {
+          const med = this._getMarketMedian(x);
+          const vs = (med && x.price) ? Math.round((x.price - med) / med * 1000) / 10 : null;
+          return { ...x, market_median: med, vs_market: vs };
+        })
+        .sort((a, b) => (a.price || 0) - (b.price || 0))
+        .slice(0, 12);
+    },
+    drawerPriceRank() {
+      const l = this.drawerListing; if (!l) return null;
+      const comps = this.drawerComparables();
+      const all = [...comps, l].sort((a, b) => (a.price || 0) - (b.price || 0));
+      const idx = all.findIndex(x => x.url === l.url || (x.price === l.price && x.agent === l.agent));
+      return { rank: idx + 1, total: all.length };
+    },
 
     // Parse compact listing array into object
     _parseListing(row) {
