@@ -183,13 +183,13 @@
               </div>
             </template>
           </div>
-          <h2 class="font-semibold text-sm mb-3">New by Price (Sale)</h2>
+          <h2 class="font-semibold text-sm mb-3" x-text="fp==='rent' ? 'By Price (Rent)' : fp==='sale' ? 'By Price (Sale)' : 'By Price'"></h2>
           <div class="space-y-1.5">
-            <template x-for="[band, count] in Object.entries(data?.salePriceBands || {})" :key="band">
+            <template x-for="[band, count] in priceBands()" :key="band">
               <div class="flex items-center gap-2">
                 <div class="w-20 text-xs text-muted" x-text="band"></div>
                 <div class="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
-                  <div class="bg-emerald-500/60 h-full rounded-full bar" :style="'width:' + (count / Math.max(...Object.values(data?.salePriceBands||{1:1})) * 100) + '%'"></div>
+                  <div class="h-full rounded-full bar" :class="fp==='rent' ? 'bg-blue-500/60' : 'bg-emerald-500/60'" :style="'width:' + (count / priceBands()[0]?.[1] * 100) + '%'"></div>
                 </div>
                 <div class="w-7 text-right text-xs font-medium" x-text="count"></div>
               </div>
@@ -313,6 +313,17 @@
         clearFilters() { this.fp=''; this.fa=''; this.fag=''; this.fl=''; this.ft=''; this.search=''; this.page=1; },
 
         filteredAll() { return this.activeList(); },
+        priceBands() {
+          const c = {};
+          for (const l of this.filteredAll()) {
+            if (l.priceBand) c[l.priceBand] = (c[l.priceBand]||0) + 1;
+          }
+          // Order by predefined bands
+          const saleOrder = ['Under 1M','1M–2M','2M–5M','5M–10M','10M+'];
+          const rentOrder = ['Under 50K','50K–100K','100K–200K','200K–350K','350K+'];
+          const order = this.fp==='rent' ? rentOrder : this.fp==='sale' ? saleOrder : [...saleOrder, ...rentOrder];
+          return order.filter(b => c[b]).map(b => [b, c[b]]);
+        },
         topAreas() {
           const c = {};
           for (const l of this.filteredAll()) c[l.community] = (c[l.community]||0) + 1;
