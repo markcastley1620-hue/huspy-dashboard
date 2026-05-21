@@ -167,10 +167,10 @@
           </div>
         </div>
 
-        <!-- Agent Levels + Price -->
+        <!-- Agent Levels -->
         <div class="bg-white rounded-lg border border-gray-200 p-4">
           <h2 class="font-semibold text-sm mb-3">By Agent Level</h2>
-          <div class="space-y-1.5 mb-5">
+          <div class="space-y-1.5">
             <template x-for="[level, count] in levelBreakdown()" :key="level">
               <div class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded px-1.5 py-1 -mx-1.5" @click="fl=level; view='stock'">
                 <div class="w-24 text-xs flex items-center gap-1">
@@ -183,15 +183,46 @@
               </div>
             </template>
           </div>
-          <h2 class="font-semibold text-sm mb-3" x-text="fp==='rent' ? 'By Price (Rent)' : fp==='sale' ? 'By Price (Sale)' : 'By Price'"></h2>
+        </div>
+      </div>
+
+      <!-- Bedrooms + Price Bands row -->
+      <div class="grid md:grid-cols-2 gap-4 mt-4">
+        <!-- By Bedrooms -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-semibold text-sm" x-text="'By Bedrooms' + (fp ? ' (' + (fp==='rent'?'Rent':'Sale') + ')' : '')"></h2>
+            <span class="text-[11px] text-muted" x-text="'% of ' + bedroomTotal() + ' ' + (fp||'all') + ' listings'"></span>
+          </div>
           <div class="space-y-1.5">
-            <template x-for="[band, count] in priceBands()" :key="band">
+            <template x-for="[beds, count, pct] in bedroomBreakdown()" :key="beds">
+              <div class="flex items-center gap-2">
+                <div class="w-16 text-xs text-muted" x-text="beds"></div>
+                <div class="flex-1 bg-gray-100 rounded-full h-5 overflow-hidden">
+                  <div class="h-full rounded-full bar" :class="fp==='rent' ? 'bg-blue-500/60' : fp==='sale' ? 'bg-emerald-500/60' : 'bg-brand/60'" :style="'width:' + pct + '%'"></div>
+                </div>
+                <div class="w-8 text-right text-xs font-medium" x-text="count"></div>
+                <div class="w-12 text-right text-xs text-muted" x-text="pct.toFixed(1) + '%'"></div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- By Price Band -->
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-semibold text-sm" x-text="'By Price' + (fp ? ' (' + (fp==='rent'?'Rent':'Sale') + ')' : '')"></h2>
+            <span class="text-[11px] text-muted" x-text="'% of ' + priceBandTotal() + ' ' + (fp||'all') + ' listings'"></span>
+          </div>
+          <div class="space-y-1.5">
+            <template x-for="[band, count, pct] in priceBandsWithPct()" :key="band">
               <div class="flex items-center gap-2">
                 <div class="w-20 text-xs text-muted" x-text="band"></div>
-                <div class="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
-                  <div class="h-full rounded-full bar" :class="fp==='rent' ? 'bg-blue-500/60' : 'bg-emerald-500/60'" :style="'width:' + (count / priceBands()[0]?.[1] * 100) + '%'"></div>
+                <div class="flex-1 bg-gray-100 rounded-full h-5 overflow-hidden">
+                  <div class="h-full rounded-full bar" :class="fp==='rent' ? 'bg-blue-500/60' : fp==='sale' ? 'bg-emerald-500/60' : 'bg-brand/60'" :style="'width:' + pct + '%'"></div>
                 </div>
-                <div class="w-7 text-right text-xs font-medium" x-text="count"></div>
+                <div class="w-8 text-right text-xs font-medium" x-text="count"></div>
+                <div class="w-12 text-right text-xs text-muted" x-text="pct.toFixed(1) + '%'"></div>
               </div>
             </template>
           </div>
@@ -313,17 +344,39 @@
         clearFilters() { this.fp=''; this.fa=''; this.fag=''; this.fl=''; this.ft=''; this.search=''; this.page=1; },
 
         filteredAll() { return this.activeList(); },
-        priceBands() {
+        // Scoped to market type: when purpose filter is set, % is against that purpose only
+        // When no purpose filter, splits into sale then rent sections
+        _scopedList() {
+          const list = this.filteredAll();
+          // If purpose filter active, already scoped; if not, return all
+          return list;
+        },
+        bedroomBreakdown() {
+          const list = this._scopedList();
+          const total = list.length;
           const c = {};
-          for (const l of this.filteredAll()) {
+          for (const l of list) {
+            const b = l.bedrooms === 0 ? 'Studio' : l.bedrooms != null ? l.bedrooms + ' Bed' : 'N/A';
+            c[b] = (c[b]||0) + 1;
+          }
+          const order = ['Studio','1 Bed','2 Bed','3 Bed','4 Bed','5 Bed','6 Bed','7 Bed','8 Bed','N/A'];
+          return order.filter(b => c[b]).map(b => [b, c[b], total ? c[b]/total*100 : 0]);
+        },
+        bedroomTotal() { return this._scopedList().length; },
+        priceBandTotal() { return this._scopedList().length; },
+        priceBandsWithPct() {
+          const list = this._scopedList();
+          const total = list.length;
+          const c = {};
+          for (const l of list) {
             if (l.priceBand) c[l.priceBand] = (c[l.priceBand]||0) + 1;
           }
-          // Order by predefined bands
-          const saleOrder = ['Under 1M','1M–2M','2M–5M','5M–10M','10M+'];
-          const rentOrder = ['Under 50K','50K–100K','100K–200K','200K–350K','350K+'];
+          const saleOrder = ['Under 1M','1M\u20132M','2M\u20135M','5M\u201310M','10M+'];
+          const rentOrder = ['Under 50K','50K\u2013100K','100K\u2013200K','200K\u2013350K','350K+'];
           const order = this.fp==='rent' ? rentOrder : this.fp==='sale' ? saleOrder : [...saleOrder, ...rentOrder];
-          return order.filter(b => c[b]).map(b => [b, c[b]]);
+          return order.filter(b => c[b]).map(b => [b, c[b], total ? c[b]/total*100 : 0]);
         },
+        priceBands() { return this.priceBandsWithPct(); },
         topAreas() {
           const c = {};
           for (const l of this.filteredAll()) c[l.community] = (c[l.community]||0) + 1;
