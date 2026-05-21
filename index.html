@@ -65,9 +65,9 @@
     <div class="bg-white rounded-lg border border-gray-200 p-3 mb-4 flex flex-wrap items-center gap-3">
       <!-- Purpose -->
       <div class="flex gap-1.5">
-        <button @click="fp=''" class="chip" :class="fp==='' ? 'chip-on' : 'chip-off'">All</button>
-        <button @click="fp='sale'" class="chip" :class="fp==='sale' ? 'chip-on' : 'chip-off'">Sale</button>
-        <button @click="fp='rent'" class="chip" :class="fp==='rent' ? 'chip-on' : 'chip-off'">Rent</button>
+        <button @click="fp=''; page=1" class="chip" :class="fp==='' ? 'chip-on' : 'chip-off'">All</button>
+        <button @click="fp='sale'; page=1" class="px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all border-2" :class="fp==='sale' ? 'bg-emerald-500 text-white border-emerald-500 shadow-sm' : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:border-emerald-400'">🏷 Sale</button>
+        <button @click="fp='rent'; page=1" class="px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all border-2" :class="fp==='rent' ? 'bg-blue-500 text-white border-blue-500 shadow-sm' : 'bg-blue-50 text-blue-700 border-blue-200 hover:border-blue-400'">🔑 Rent</button>
       </div>
       <div class="w-px h-6 bg-gray-200"></div>
       <!-- Area (typeahead) -->
@@ -104,7 +104,7 @@
       </select>
       <!-- Results count -->
       <span class="ml-auto text-sm text-muted" x-text="activeList().length + ' of ' + (view==='new' ? data?.newListings?.length : data?.allListings?.length) + ' listings'"></span>
-      <button x-show="hasFilters()" @click="clearFilters()" class="text-xs text-brand hover:underline">Clear all</button>
+      <button x-show="hasFilters()" @click="clearFilters()" class="flex items-center gap-1 text-xs text-brand hover:underline"><span>←</span> Clear all</button>
     </div>
 
     <!-- ===== SUMMARY VIEW ===== -->
@@ -116,12 +116,12 @@
           <div class="text-2xl font-bold" x-text="fmt(filteredAll().length)"></div>
           <div x-show="hasFilters()" class="text-[11px] text-muted mt-0.5" x-text="'of ' + fmt(data?.total)"></div>
         </div>
-        <div class="bg-white rounded-lg border border-gray-200 p-4 cursor-pointer" :class="fp==='sale' ? 'ring-2 ring-brand' : ''" @click="fp = fp==='sale' ? '' : 'sale'; page=1">
-          <div class="text-xs text-muted mb-1">For Sale</div>
+        <div class="rounded-lg border-2 p-4 cursor-pointer transition-all" :class="fp==='sale' ? 'bg-emerald-50 border-emerald-500 shadow-sm' : 'bg-white border-gray-200 hover:border-emerald-300'" @click="fp = fp==='sale' ? '' : 'sale'; page=1">
+          <div class="text-xs mb-1" :class="fp==='sale' ? 'text-emerald-600' : 'text-muted'">🏷 For Sale</div>
           <div class="text-2xl font-bold" x-text="fmt(filteredAll().filter(l=>l.purpose==='sale').length)"></div>
         </div>
-        <div class="bg-white rounded-lg border border-gray-200 p-4 cursor-pointer" :class="fp==='rent' ? 'ring-2 ring-brand' : ''" @click="fp = fp==='rent' ? '' : 'rent'; page=1">
-          <div class="text-xs text-muted mb-1">For Rent</div>
+        <div class="rounded-lg border-2 p-4 cursor-pointer transition-all" :class="fp==='rent' ? 'bg-blue-50 border-blue-500 shadow-sm' : 'bg-white border-gray-200 hover:border-blue-300'" @click="fp = fp==='rent' ? '' : 'rent'; page=1">
+          <div class="text-xs mb-1" :class="fp==='rent' ? 'text-blue-600' : 'text-muted'">🔑 For Rent</div>
           <div class="text-2xl font-bold" x-text="fmt(filteredAll().filter(l=>l.purpose==='rent').length)"></div>
         </div>
         <div class="bg-white rounded-lg border border-gray-200 p-4 border-l-4 border-l-green-500">
@@ -201,9 +201,13 @@
 
     <!-- ===== ALL STOCK / NEW LISTINGS TABLE ===== -->
     <div x-show="view==='stock' || view==='new'">
+      <!-- Back to summary -->
+      <button x-show="hasFilters()" @click="view='summary'" class="mb-3 flex items-center gap-1.5 text-sm text-brand hover:underline">
+        <span class="text-base">←</span> Back to Summary
+      </button>
       <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
         <table class="w-full text-sm">
-          <thead class="bg-gray-50 text-left text-muted sticky top-[53px] z-10">
+          <thead class="bg-gray-50 text-left text-muted">
             <tr>
               <th class="px-3 py-2 font-medium cursor-pointer" @click="sortBy('community')">
                 Community <span x-text="sortIcon('community')"></span>
