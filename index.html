@@ -1254,13 +1254,68 @@
         <p class="text-[12px] text-muted mt-1" x-text="(latest?.snapshot_date || '') + '  ·  ' + mode"></p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-7 gap-3">
         <template x-for="s in agentDetailStats()" :key="s.label">
           <div class="rounded-2xl border border-border bg-white p-4 shadow-sm">
             <div class="text-[10px] uppercase tracking-widest text-muted font-semibold" x-text="s.label"></div>
-            <div class="text-[22px] font-bold mt-1.5 leading-none text-heading" x-text="s.value"></div>
+            <div class="text-[22px] font-bold mt-1.5 leading-none" :class="s.color || 'text-heading'" x-text="s.value"></div>
+            <div x-show="s.sub" class="text-[11px] mt-1 font-medium" :class="s.subColor || 'text-muted'" x-text="s.sub"></div>
           </div>
         </template>
+      </div>
+
+      <!-- Agent Performance Scorecard -->
+      <div class="rounded-2xl border border-border bg-white p-5 shadow-sm" x-show="agentScorecardData().hasData">
+        <div class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">Performance scorecard</div>
+        <div class="grid md:grid-cols-3 gap-5">
+
+          <!-- Quality score -->
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl flex flex-col items-center justify-center shrink-0" :class="agentScorecardData().scoreColor === 'text-up' ? 'bg-up/10' : agentScorecardData().scoreColor === 'text-down' ? 'bg-down/10' : 'bg-amber-500/10'">
+              <div class="text-[26px] font-bold leading-none" :class="agentScorecardData().scoreColor" x-text="agentScorecardData().qualityScore"></div>
+              <div class="text-[9px] text-muted uppercase tracking-wider mt-0.5">score</div>
+            </div>
+            <div class="flex-1">
+              <div class="text-[11px] font-semibold text-heading" x-text="agentScorecardData().qualityLabel"></div>
+              <div class="text-[11px] text-muted mt-0.5">Overall quality</div>
+              <div class="mt-2 h-2 rounded-full bg-gray-100 overflow-hidden">
+                <div class="h-full rounded-full bar-anim" :class="agentScorecardData().scoreColor === 'text-up' ? 'bg-up' : agentScorecardData().scoreColor === 'text-down' ? 'bg-down' : 'bg-amber-500'" :style="'width:' + agentScorecardData().qualityScore + '%'"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Avg DOM -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-[11px] font-semibold text-heading">Avg days on market</div>
+              <div class="text-[13px] font-bold" :class="agentScorecardData().domColor" x-text="agentScorecardData().avgDom != null ? agentScorecardData().avgDom + 'd' : '—'"></div>
+            </div>
+            <div class="h-2 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-full rounded-full bar-anim" :class="agentScorecardData().domColor === 'text-up' ? 'bg-up' : agentScorecardData().domColor === 'text-down' ? 'bg-down' : 'bg-amber-500'" :style="'width:' + Math.min((agentScorecardData().avgDom || 0) / 60 * 100, 100) + '%'"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-muted-2 mt-1">
+              <span>Fresh (0d)</span><span>⚠ 30d</span><span>Stale (60d+)</span>
+            </div>
+            <div class="text-[11px] text-muted mt-1.5" x-show="agentScorecardData().avgDom != null" :class="agentScorecardData().domColor" x-text="agentScorecardData().avgDom < 14 ? 'Fast-moving listings' : agentScorecardData().avgDom < 30 ? 'Normal velocity' : 'Slow — consider price review'"></div>
+          </div>
+
+          <!-- Pricing position -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-[11px] font-semibold text-heading">Pricing vs market</div>
+              <div class="text-[13px] font-bold" :class="agentScorecardData().pricingColor" x-text="agentScorecardData().underpricedPct != null ? agentScorecardData().underpricedPct + '% under' : '—'"></div>
+            </div>
+            <div class="h-2 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-full rounded-full bar-anim bg-up" :style="'width:' + (agentScorecardData().underpricedPct || 0) + '%'"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-muted-2 mt-1">
+              <span>0%</span><span>50%</span><span>100%</span>
+            </div>
+            <div class="text-[11px] text-muted mt-1.5" x-show="agentScorecardData().underpricedPct != null">
+              <span x-text="agentScorecardData().underpricedCount"></span> of <span x-text="agentScorecardData().withMktCount"></span> listings below peer median
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
@@ -2224,12 +2279,43 @@ function dashboard() {
         }
       }
       const avg = totalListings > 0 ? totalValue / totalListings : null;
+      const sc = this.agentScorecardData();
       return [
         { label: 'Listings', value: this.fmt(totalListings) },
         { label: 'Communities', value: comms.size },
         { label: 'Avg price', value: this.fmtAed(avg) },
         { label: 'Portfolio share', value: b.total ? (totalListings / b.total * 100).toFixed(1) + '%' : '—' },
+        { label: 'Avg DOM', value: sc.avgDom != null ? sc.avgDom + 'd' : '—', color: sc.domColor },
+        { label: '% Underpriced', value: sc.underpricedPct != null ? sc.underpricedPct + '%' : '—', color: sc.underpricedPct >= 50 ? 'text-up' : sc.underpricedPct >= 25 ? 'text-amber-500' : 'text-muted', sub: sc.underpricedCount != null ? sc.underpricedCount + ' of ' + sc.withMktCount + ' vs market' : null },
+        { label: 'Quality score', value: sc.qualityScore ?? '—', color: sc.scoreColor, sub: sc.qualityLabel, subColor: sc.scoreColor },
       ];
+    },
+    agentScorecardData() {
+      const listings = this._allListings().filter(l => l.agent === this.selectedAgent).map(l => {
+        const mktMed = this._getMarketMedian(l);
+        const vs = (mktMed && l.price) ? Math.round((l.price - mktMed) / mktMed * 1000) / 10 : null;
+        return { ...l, vs_market: vs };
+      });
+      if (!listings.length) return { hasData: false };
+      const withDom = listings.filter(l => l.dom != null);
+      const avgDom = withDom.length ? Math.round(withDom.reduce((s, l) => s + l.dom, 0) / withDom.length) : null;
+      const withMkt = listings.filter(l => l.vs_market != null);
+      const underpricedCount = withMkt.filter(l => l.vs_market < -5).length;
+      const underpricedPct = withMkt.length ? Math.round(underpricedCount / withMkt.length * 100) : null;
+      let qualityScore = 50;
+      if (underpricedPct != null) qualityScore += Math.min(underpricedPct * 0.3, 25);
+      if (avgDom != null) {
+        if (avgDom < 14) qualityScore += 20;
+        else if (avgDom < 30) qualityScore += 10;
+        else if (avgDom > 45) qualityScore -= 15;
+        else if (avgDom > 30) qualityScore -= 5;
+      }
+      qualityScore = Math.max(0, Math.min(100, Math.round(qualityScore)));
+      const qualityLabel = qualityScore >= 75 ? 'Strong' : qualityScore >= 55 ? 'Average' : 'Needs attention';
+      const scoreColor = qualityScore >= 75 ? 'text-up' : qualityScore >= 55 ? 'text-amber-500' : 'text-down';
+      const domColor = avgDom == null ? 'text-muted' : avgDom < 14 ? 'text-up' : avgDom < 30 ? 'text-amber-500' : 'text-down';
+      const pricingColor = underpricedPct >= 50 ? 'text-up' : underpricedPct >= 25 ? 'text-amber-500' : 'text-down';
+      return { hasData: true, avgDom, underpricedPct, underpricedCount, withMktCount: withMkt.length, qualityScore, qualityLabel, scoreColor, domColor, pricingColor };
     },
 
     agentDetailComms() {
