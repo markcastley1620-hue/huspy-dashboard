@@ -71,24 +71,24 @@
       </div>
       <div class="w-px h-6 bg-gray-200"></div>
       <!-- Area (typeahead) -->
-      <div class="relative" x-data="{open:false, q:''}" @click.away="open=false">
-        <input type="text" :value="fa || q" @input="q=$event.target.value; fa=''; open=true" @focus="open=true"
-          placeholder="All Areas" class="text-sm border border-gray-200 rounded-lg px-2.5 py-1.5 w-44 bg-white focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand">
-        <button x-show="fa" @click="fa=''; q=''" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">✕</button>
-        <div x-show="open && areaOptions(q).length" class="absolute top-full left-0 mt-1 w-56 max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg z-30">
-          <template x-for="a in areaOptions(q)" :key="'ao-'+a">
-            <div @click="fa=a; q=''; open=false" class="px-3 py-1.5 text-sm hover:bg-brand-light cursor-pointer truncate" x-text="a"></div>
+      <div class="relative" @click.away="areaOpen=false">
+        <input type="text" :value="fa || areaQ" @input="areaQ=$event.target.value; fa=''; areaOpen=true; page=1" @focus="areaOpen=true"
+          placeholder="All Areas" class="text-sm border border-gray-200 rounded-lg px-2.5 py-1.5 w-48 bg-white focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand">
+        <button x-show="fa" @click.stop="fa=''; areaQ=''; page=1" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">✕</button>
+        <div x-show="areaOpen && areaOptions().length" class="absolute top-full left-0 mt-1 w-60 max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg z-30">
+          <template x-for="a in areaOptions()" :key="'ao-'+a">
+            <div @click="fa=a; areaQ=''; areaOpen=false; page=1" class="px-3 py-1.5 text-sm hover:bg-brand-light cursor-pointer truncate" x-text="a"></div>
           </template>
         </div>
       </div>
       <!-- Agent (typeahead) -->
-      <div class="relative" x-data="{open:false, q:''}" @click.away="open=false">
-        <input type="text" :value="fag || q" @input="q=$event.target.value; fag=''; open=true" @focus="open=true"
-          placeholder="All Agents" class="text-sm border border-gray-200 rounded-lg px-2.5 py-1.5 w-44 bg-white focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand">
-        <button x-show="fag" @click="fag=''; q=''" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">✕</button>
-        <div x-show="open && agentOptions(q).length" class="absolute top-full left-0 mt-1 w-56 max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg z-30">
-          <template x-for="a in agentOptions(q)" :key="'go-'+a">
-            <div @click="fag=a; q=''; open=false" class="px-3 py-1.5 text-sm hover:bg-brand-light cursor-pointer truncate" x-text="a"></div>
+      <div class="relative" @click.away="agentOpen=false">
+        <input type="text" :value="fag || agentQ" @input="agentQ=$event.target.value; fag=''; agentOpen=true; page=1" @focus="agentOpen=true"
+          placeholder="All Agents" class="text-sm border border-gray-200 rounded-lg px-2.5 py-1.5 w-48 bg-white focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand">
+        <button x-show="fag" @click.stop="fag=''; agentQ=''; page=1" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">✕</button>
+        <div x-show="agentOpen && agentOptions().length" class="absolute top-full left-0 mt-1 w-60 max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg z-30">
+          <template x-for="a in agentOptions()" :key="'go-'+a">
+            <div @click="fag=a; agentQ=''; agentOpen=false; page=1" class="px-3 py-1.5 text-sm hover:bg-brand-light cursor-pointer truncate" x-text="a"></div>
           </template>
         </div>
       </div>
@@ -269,6 +269,7 @@
         data: null, loading: true,
         view: 'summary', search: '',
         fp: '', fa: '', fag: '', fl: '', ft: '',
+        areaQ: '', agentQ: '', areaOpen: false, agentOpen: false,
         sort: { key: '', dir: 'asc' },
         page: 1, pageSize: 100,
 
@@ -284,12 +285,12 @@
           const c = new Set(this.data.allListings.map(l => l.agent).filter(Boolean));
           return [...c].sort((a,b) => a.localeCompare(b));
         },
-        areaOptions(q) {
-          const s = (q||'').toLowerCase();
+        areaOptions() {
+          const s = (this.areaQ||'').toLowerCase();
           return this.areas.filter(a => !s || a.toLowerCase().includes(s));
         },
-        agentOptions(q) {
-          const s = (q||'').toLowerCase();
+        agentOptions() {
+          const s = (this.agentQ||'').toLowerCase();
           return this.agents.filter(a => !s || a.toLowerCase().includes(s));
         },
         get propTypes() {
@@ -306,19 +307,20 @@
         hasFilters() { return this.fp || this.fa || this.fag || this.fl || this.ft || this.search; },
         clearFilters() { this.fp=''; this.fa=''; this.fag=''; this.fl=''; this.ft=''; this.search=''; this.page=1; },
 
+        filteredAll() { return this.activeList(); },
         topAreas() {
           const c = {};
-          for (const l of this.sourceList()) c[l.community] = (c[l.community]||0) + 1;
+          for (const l of this.filteredAll()) c[l.community] = (c[l.community]||0) + 1;
           return Object.entries(c).sort((a,b) => b[1]-a[1]).slice(0, 15);
         },
         topAgents() {
           const c = {};
-          for (const l of this.sourceList()) if (l.agent) c[l.agent] = (c[l.agent]||0) + 1;
+          for (const l of this.filteredAll()) if (l.agent) c[l.agent] = (c[l.agent]||0) + 1;
           return Object.entries(c).sort((a,b) => b[1]-a[1]).slice(0, 15);
         },
         levelBreakdown() {
           const c = {};
-          for (const l of this.sourceList()) c[l.agentLevel] = (c[l.agentLevel]||0) + 1;
+          for (const l of this.filteredAll()) c[l.agentLevel] = (c[l.agentLevel]||0) + 1;
           return this.levels.filter(l => c[l]).map(l => [l, c[l]]);
         },
 
