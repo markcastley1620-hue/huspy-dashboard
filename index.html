@@ -113,19 +113,20 @@
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
         <div class="bg-white rounded-lg border border-gray-200 p-4">
           <div class="text-xs text-muted mb-1">Total Stock</div>
-          <div class="text-2xl font-bold" x-text="fmt(data?.total)"></div>
+          <div class="text-2xl font-bold" x-text="fmt(filteredAll().length)"></div>
+          <div x-show="hasFilters()" class="text-[11px] text-muted mt-0.5" x-text="'of ' + fmt(data?.total)"></div>
         </div>
-        <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <div class="bg-white rounded-lg border border-gray-200 p-4 cursor-pointer" :class="fp==='sale' ? 'ring-2 ring-brand' : ''" @click="fp = fp==='sale' ? '' : 'sale'; page=1">
           <div class="text-xs text-muted mb-1">For Sale</div>
-          <div class="text-2xl font-bold" x-text="fmt(data?.sale)"></div>
+          <div class="text-2xl font-bold" x-text="fmt(filteredAll().filter(l=>l.purpose==='sale').length)"></div>
         </div>
-        <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <div class="bg-white rounded-lg border border-gray-200 p-4 cursor-pointer" :class="fp==='rent' ? 'ring-2 ring-brand' : ''" @click="fp = fp==='rent' ? '' : 'rent'; page=1">
           <div class="text-xs text-muted mb-1">For Rent</div>
-          <div class="text-2xl font-bold" x-text="fmt(data?.rent)"></div>
+          <div class="text-2xl font-bold" x-text="fmt(filteredAll().filter(l=>l.purpose==='rent').length)"></div>
         </div>
         <div class="bg-white rounded-lg border border-gray-200 p-4 border-l-4 border-l-green-500">
           <div class="text-xs text-muted mb-1">📝 New</div>
-          <div class="text-2xl font-bold text-green-600" x-text="fmt(data?.newCount)"></div>
+          <div class="text-2xl font-bold text-green-600" x-text="fmt(filteredAll().filter(l=>l.isNew).length)"></div>
         </div>
         <div class="bg-white rounded-lg border border-gray-200 p-4 border-l-4 border-l-red-400">
           <div class="text-xs text-muted mb-1">🗑 Removed</div>
