@@ -57,6 +57,23 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
     from statistics import median as stat_median
     listings = snapshot.get("listings", [])
     mkt = market_data or {}
+    # Merge previous market data for communities not scraped today
+    import os as _os, glob as _glob
+    data_dir = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'data')
+    market_files = sorted(_glob.glob(_os.path.join(data_dir, 'market_2*.json')))
+    if len(market_files) >= 2:
+        try:
+            import json as _json
+            with open(market_files[-2]) as _f:
+                prev_mkt = _json.load(_f)
+            for purpose in ['sale', 'rent']:
+                cur = mkt.get(purpose, {})
+                prev = prev_mkt.get(purpose, {})
+                for comm, data in prev.items():
+                    if comm not in cur:
+                        mkt.setdefault(purpose, {})[comm] = data
+        except Exception:
+            pass
     # Build set of community names to distinguish sub-community vs community benchmarks
     all_community_names = set()
     for purpose in ['sale', 'rent']:
@@ -123,8 +140,8 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
             if sub_data and sub_data.get('count', 0) >= 1:
                 return sub_data['median_price'], sub_data['median_price'], sub_data['count'], f"{sub_community} · {ptype} · {bed_key} BR (market)"
 
-        # 2. Sub-community + bed (ONLY if no type info — skip if type exists to avoid mixing types)
-        if sub_community and not ptype:
+        # 2. Sub-community + bed (fallback when exact sub+bed+type missed)
+        if sub_community:
             sub_bed_key = f"{sub_community}|{bed_key}"
             sub_bed_data = comm_data.get('by_sub_bed', {}).get(sub_bed_key)
             if not sub_bed_data:
@@ -133,19 +150,39 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
                 matched_key = _fuzzy_sub_match(sub_community, candidates)
                 if matched_key:
                     sub_bed_data = comm_data['by_sub_bed'][matched_key]
-            if sub_bed_data and sub_bed_data.get('count', 0) >= 2:
+            if sub_bed_data and sub_bed_data.get('count', 0) >= 1:
                 return sub_bed_data['median_price'], sub_bed_data['median_price'], sub_bed_data['count'], f"{sub_community} · {bed_key} BR (market)"
+
+        # 2b. Sub-community + any bed (when specific bed not on page 1 of scrape)
+        if sub_community:
+            by_sub = comm_data.get('by_sub', {})
+            # Collect all entries for this sub-community regardless of bed/type
+            sub_lower = sub_community.lower()
+            sub_prices = []
+            sub_count = 0
+            matched_sub_name = None
+            for k, v in by_sub.items():
+                parts = k.split('|')
+                k_sub = parts[0]
+                if k_sub.lower() == sub_lower or sub_lower in k_sub.lower() or k_sub.lower() in sub_lower:
+                    sub_prices.extend(v.get('prices', []))
+                    sub_count += v.get('count', 0)
+                    matched_sub_name = k_sub
+            if sub_prices and len(sub_prices) >= 1:
+                from statistics import median as _med
+                med_price = _med(sub_prices)
+                return med_price, med_price, sub_count, f"{matched_sub_name or sub_community} · all beds (market)"
 
         # 3. Community + type + bed
         if bt_key and bt_key in comm_data.get('by_bed_type', {}):
             bt = comm_data['by_bed_type'][bt_key]
-            if bt.get('count', 0) >= 2:
+            if bt.get('count', 0) >= 1:
                 return bt.get('median_price'), bt.get('avg_price'), bt.get('count', 0), f"{community} · {ptype} · {bed_key} BR (market)"
 
         # 4. Community + bed (only if type mix is safe)
         if bed_key in comm_data.get('by_bed', {}):
             bd = comm_data['by_bed'][bed_key]
-            if bd.get('count', 0) >= 3:
+            if bd.get('count', 0) >= 1:
                 if ptype:
                     other_typed_counts = sum(
                         v.get('count', 0)
@@ -235,8 +272,7 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         if med is None:
             continue
 
-        # Require sub-community level OR community+type+bed when sub-community page
-        # doesn't have this property type (Bayut doesn't always list townhouses/villas on sub-comm pages)
+        # Only use sub-community level benchmarks — community level is too broad to be useful
         first_part = peer_level.replace(' (market)', '').split(' · ')[0]
         is_sub_level = first_part not in all_community_names
         if not is_sub_level:
@@ -283,6 +319,56 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
                 'peer_level': f"{sub} · {ptype} · {bed_key} BR (sole listing)",
             })
 
+    # === Build internal tower benchmarks from all listings (for spend audit sqft comparison) ===
+    # Key: (tower_lower, beds, type_lower, purpose) -> list of price_sqft values
+    tower_sqft_map = defaultdict(list)
+    sub_sqft_map = defaultdict(list)   # (sub_community_lower, beds, type_lower, purpose)
+    for l in listings:
+        if not l.get('price_sqft') or not l.get('price_num') or l.get('bedrooms') is None:
+            continue
+        beds = l['bedrooms']
+        ptype = (l.get('type') or '').lower()
+        purpose = l['purpose']
+        if l.get('tower'):
+            tower_sqft_map[(l['tower'].lower(), beds, ptype, purpose)].append(l['price_sqft'])
+        if l.get('sub_community'):
+            sub_sqft_map[(l['sub_community'].lower(), beds, ptype, purpose)].append(l['price_sqft'])
+
+    def _median(vals):
+        if not vals:
+            return None
+        s = sorted(vals)
+        n = len(s)
+        return s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2
+
+    def get_sqft_benchmark(listing):
+        """Return (benchmark_level, market_sqft, peer_count) using tower→sub_community cascade."""
+        beds = listing.get('bedrooms')
+        ptype = (listing.get('type') or '').lower()
+        purpose = listing['purpose']
+        price_sqft = listing.get('price_sqft')
+        if not price_sqft:
+            return None, None, 0
+
+        # 1. Tower peers
+        tower = listing.get('tower')
+        if tower:
+            peers = tower_sqft_map.get((tower.lower(), beds, ptype, purpose), [])
+            # Exclude the listing itself if possible (by value — approximate)
+            peers_excl = [v for v in peers if v != price_sqft] or peers
+            if len(peers_excl) >= 3:
+                return 'tower', _median(peers_excl), len(peers_excl)
+
+        # 2. Sub-community sqft peers
+        sub = listing.get('sub_community')
+        if sub:
+            peers = sub_sqft_map.get((sub.lower(), beds, ptype, purpose), [])
+            peers_excl = [v for v in peers if v != price_sqft] or peers
+            if len(peers_excl) >= 3:
+                return 'sub_community_sqft', _median(peers_excl), len(peers_excl)
+
+        return None, None, 0
+
     # Score promoted listings separately (these were excluded from main results)
     promoted_results = {'sale': [], 'rent': []}
     for l in listings:
@@ -303,6 +389,22 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         if not is_sub_level:
             continue
         scored = score_listing(l, med, avg, count, peer_level)
+        # Attach sqft benchmark
+        bench_level, market_sqft, sqft_peer_count = get_sqft_benchmark(l)
+        scored['price_sqft'] = l.get('price_sqft')
+        scored['benchmark_level'] = bench_level or 'sub_community_price'
+        scored['market_sqft'] = int(market_sqft) if market_sqft else None
+        if market_sqft and l.get('price_sqft'):
+            sqft_gap = round((l['price_sqft'] - market_sqft) / market_sqft * 100, 1)
+            scored['sqft_gap_pct'] = sqft_gap
+        else:
+            scored['sqft_gap_pct'] = None
+        if sqft_peer_count >= 10:
+            scored['confidence'] = 'high'
+        elif sqft_peer_count >= 3:
+            scored['confidence'] = 'medium'
+        else:
+            scored['confidence'] = 'low'
         promoted_results[l['purpose']].append(scored)
 
     # Sort and categorize
@@ -315,10 +417,17 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
 
         # Spend alerts: promoted listings with problems
         promo_scored = promoted_results[purpose]
+        def _is_overpriced(s):
+            sqft_gap = s.get('sqft_gap_pct')
+            conf = s.get('confidence', 'low')
+            if sqft_gap is not None and conf != 'low':
+                return sqft_gap > 15
+            return s['gap_pct'] > 5
+
         # Wasted spend: has Signature/Hot but overpriced vs market
         wasted_overpriced = sorted(
-            [s for s in promo_scored if s['gap_pct'] > 5],
-            key=lambda x: x['gap_pct'], reverse=True
+            [s for s in promo_scored if _is_overpriced(s)],
+            key=lambda x: (x.get('sqft_gap_pct') or x['gap_pct']), reverse=True
         )
         # Wasted spend: has Signature/Hot but stale (30+ DOM)
         wasted_stale = sorted(
@@ -327,9 +436,92 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
         )
         # Well-placed spend: promoted and competitively priced
         spend_working = sorted(
-            [s for s in promo_scored if s['gap_pct'] <= 5 and (s['dom'] or 0) < 30],
-            key=lambda x: x['gap_pct']
+            [s for s in promo_scored if not _is_overpriced(s) and (s['dom'] or 0) < 30],
+            key=lambda x: (x.get('sqft_gap_pct') or x['gap_pct'])
         )
+
+        # === SPEND AUDIT: merge all promoted listings with verdict ===
+        def make_reason(s):
+            sqft_gap = s.get('sqft_gap_pct')
+            price_sqft = s.get('price_sqft')
+            market_sqft = s.get('market_sqft')
+            gap = s['gap_pct']
+            dom = s['dom'] or 0
+            confidence = s.get('confidence', 'low')
+            bench = s.get('benchmark_level', 'sub_community_price')
+
+            if confidence == 'low' or (sqft_gap is None):
+                # Fall back to absolute price reasoning
+                if gap > 5 and dom >= 30:
+                    return f"Low data — {gap:+.0f}% vs sub-community median, {dom} days on market"
+                elif gap > 5:
+                    return f"Low data — {gap:+.0f}% above sub-community median"
+                elif dom >= 30:
+                    return f"{dom} days, no movement"
+                else:
+                    desc = "Competitively priced"
+                    if gap < 0:
+                        desc = f"{abs(gap):.0f}% below market"
+                    return f"{desc}, {dom} days"
+
+            # Use sqft gap for reasoning
+            scope = 'tower' if bench == 'tower' else 'sub-community'
+            if sqft_gap > 15:
+                return f"{price_sqft:,}/sqft vs {market_sqft:,} {scope} median — {sqft_gap:+.0f}% above comparable $/sqft"
+            elif sqft_gap < -15:
+                return f"{price_sqft:,}/sqft vs {market_sqft:,} {scope} median — {abs(sqft_gap):.0f}% below comparable $/sqft"
+            else:
+                if dom >= 30:
+                    return f"{price_sqft:,}/sqft vs {market_sqft:,} {scope} median — within range, but {dom} days on market"
+                return f"{price_sqft:,}/sqft vs {market_sqft:,} {scope} median — within range for this {scope}"
+
+        spend_audit_list = []
+        seen_urls = set()
+        for s in promo_scored:
+            url = s.get('url', '')
+            if url in seen_urls:
+                continue
+            seen_urls.add(url)
+            gap = s['gap_pct']
+            dom = s['dom'] or 0
+            sqft_gap = s.get('sqft_gap_pct')
+            confidence = s.get('confidence', 'low')
+
+            # Use sqft gap for verdict when data is available, else absolute price
+            if sqft_gap is not None and confidence != 'low':
+                if sqft_gap > 15:
+                    verdict = 'overpriced'
+                elif dom >= 30:
+                    verdict = 'stale'
+                else:
+                    verdict = 'working'
+            elif confidence == 'low' and sqft_gap is None:
+                # No sqft data at all — fall back to absolute price
+                if gap > 5:
+                    verdict = 'overpriced'
+                elif dom >= 30:
+                    verdict = 'stale'
+                else:
+                    verdict = 'working'
+            else:
+                # Low confidence: don't call overpriced from sqft alone
+                if dom >= 30:
+                    verdict = 'stale'
+                elif gap > 5 and sqft_gap is not None and sqft_gap > 15:
+                    verdict = 'overpriced'
+                elif gap > 5 and sqft_gap is None:
+                    verdict = 'low data'
+                else:
+                    verdict = 'working'
+
+            spend_audit_list.append({
+                **s,
+                'verdict': verdict,
+                'reason': make_reason(s),
+            })
+        # Sort: overpriced first, then stale, then working, then low data
+        verdict_order = {'overpriced': 0, 'stale': 1, 'working': 2, 'low data': 3}
+        spend_audit_list.sort(key=lambda x: (verdict_order.get(x['verdict'], 3), x['gap_pct'] if x['verdict'] == 'overpriced' else -(x['dom'] or 0)))
 
         opps[purpose] = {
             'underpriced': underpriced,
@@ -338,6 +530,7 @@ def compute_opportunities(snapshot: dict, market_data: dict = None) -> dict:
             'wasted_overpriced': wasted_overpriced,
             'wasted_stale': wasted_stale,
             'spend_working': spend_working,
+            'spend_audit': spend_audit_list,
         }
 
     # === FEATURE 1: Agent spend efficiency ===
@@ -710,15 +903,52 @@ def transform_snapshot(snapshot: dict, market_data: dict = None) -> dict:
             rank_total,
         ])
 
+    # Enrich community + sub-community data with market totals/averages
+    sale_comms = build_community_data(sale_listings, "sale")
+    rent_comms = build_community_data(rent_listings, "rent")
+    if market_data:
+        for purpose, comms in [('sale', sale_comms), ('rent', rent_comms)]:
+            for comm_name, comm_val in comms.items():
+                mkt_comm = market_data.get(purpose, {}).get(comm_name, {})
+                if mkt_comm:
+                    comm_val['market_total'] = mkt_comm.get('total_market')
+                    comm_val['market_avg'] = mkt_comm.get('avg_price')
+                    comm_val['market_avg_price'] = mkt_comm.get('avg_price')
+                    comm_val['market_median'] = mkt_comm.get('median_price')
+                    # Fix share_pct: use market share (huspy / market), not portfolio share
+                    if mkt_comm.get('total_market') and comm_val.get('count'):
+                        comm_val['share_pct'] = round(comm_val['count'] / mkt_comm['total_market'] * 100, 2)
+                    # Enrich sub-communities
+                    subs = comm_val.get('sub_communities', {})
+                    by_sub = mkt_comm.get('by_sub', {})
+                    by_sub_bed = mkt_comm.get('by_sub_bed', {})
+                    for sub_name, sub_val in subs.items():
+                        # Sum market counts for this sub-community across all bed/type combos
+                        sub_lower = sub_name.lower()
+                        sub_market_total = 0
+                        sub_market_prices = []
+                        for k, v in by_sub.items():
+                            k_sub = k.split('|')[0]
+                            if k_sub.lower() == sub_lower:
+                                sub_market_total += v.get('count', 0)
+                                sub_market_prices.extend(v.get('prices', []))
+                        if sub_market_total:
+                            sub_val['market_total'] = sub_market_total
+                            sub_val['market_count'] = sub_market_total
+                            sub_val['market_avg'] = int(sum(sub_market_prices) / len(sub_market_prices)) if sub_market_prices else None
+                            sub_val['market_avg_price'] = sub_val['market_avg']
+                            if comm_val.get('market_total'):
+                                sub_val['share_pct'] = round(sub_val['count'] / comm_val['market_total'] * 100, 2)
+
     return {
         "date": date_str,
         "sale": {
             "total": len(sale_listings),
-            "by_community": build_community_data(sale_listings, "sale"),
+            "by_community": sale_comms,
         },
         "rent": {
             "total": len(rent_listings),
-            "by_community": build_community_data(rent_listings, "rent"),
+            "by_community": rent_comms,
         },
         "opportunities": opportunities,
         "peer_medians": peer_medians,

@@ -28,12 +28,17 @@ def _fill_missing_agents(result):
     API_KEY = os.environ.get('SCRAPINGBEE_API_KEY', 'QNG91WITJC8K7U39RMHTB7CAVQOUGTK8C09PPFJESMCYT2MNGJY19FLUQWDK3NABEC4PWPVF5HWI2CR0')
 
     listings = result['listings']
-    # Fetch detail pages for: missing agent OR missing DOM
+    # Fetch detail pages for: missing agent (DOM is nice-to-have, not worth credits alone)
     need_detail = [(i, l) for i, l in enumerate(listings)
-                   if l.get('url') and (not l.get('agent') or l.get('dom') is None)]
+                   if l.get('url') and not l.get('agent')]
     if not need_detail:
-        print('  All agents + DOM filled')
+        print('  All agents filled')
         return
+    # Cap at 200 to keep credits and time reasonable (~15K credits, ~5 min)
+    MAX_DETAIL_PAGES = 400
+    if len(need_detail) > MAX_DETAIL_PAGES:
+        print(f'  {len(need_detail)} need agent data, capping at {MAX_DETAIL_PAGES}')
+        need_detail = need_detail[:MAX_DETAIL_PAGES]
     print(f'  Fetching {len(need_detail)} detail pages (agent + DOM)...')
 
     def fetch(idx_l):
@@ -63,7 +68,7 @@ def _fill_missing_agents(result):
 
     agents_found = 0
     doms_found = 0
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=5) as executor:
         futures = {executor.submit(fetch, m): m for m in need_detail}
         done = 0
         for future in as_completed(futures):
@@ -265,7 +270,21 @@ def run():
     save_snapshot(result)
     print()
 
-    # 1b. Fill missing agents from detail pages
+    # 1b. Carry over agent/DOM from yesterday's snapshot, then fill only truly new unknowns
+    prev = _get_previous_snapshot()
+    if prev:
+        prev_lookup = {l['listing_id']: l for l in prev.get('listings', []) if l.get('listing_id')}
+        carried = 0
+        for l in result['listings']:
+            if l.get('listing_id') and l['listing_id'] in prev_lookup:
+                p = prev_lookup[l['listing_id']]
+                if not l.get('agent') and p.get('agent'):
+                    l['agent'] = p['agent']
+                    carried += 1
+                if l.get('dom') is None and p.get('dom') is not None:
+                    l['dom'] = p['dom']
+                    l['listed_date'] = p.get('listed_date')
+        print(f'  Carried over {carried} agents from yesterday')
     _fill_missing_agents(result)
     save_snapshot(result)
     print()
@@ -295,22 +314,26 @@ def run():
         print("Not a market day — skipping market scrape.")
         print()
 
-    # 3. Sync to Supabase
-    print("Syncing to Supabase...")
-    data = transform_snapshot(result)
-    date_str = result["date"]
-    success = upsert_to_supabase(date_str, data)
-    # Enrich with market comparison if we scraped market data today
-    if success and market_result:
-        _enrich_supabase_with_market(date_str, result, market_result)
-    elif success:
-        # Try to enrich with most recent market data
+    # 3. Load best available market data for opportunities + enrichment
+    effective_market = market_result
+    market_source = 'today'
+    if not effective_market:
         market_files = sorted(f for f in os.listdir("data") if f.startswith("market_2") and f.endswith(".json"))
         if market_files:
             with open(os.path.join("data", market_files[-1])) as f:
-                last_market = json.load(f)
-            _enrich_supabase_with_market(date_str, result, last_market)
-            print(f"  (used market data from {market_files[-1]})")
+                effective_market = json.load(f)
+            market_source = market_files[-1]
+
+    # 4. Sync to Supabase
+    print("Syncing to Supabase...")
+    data = transform_snapshot(result, market_data=effective_market)
+    date_str = result["date"]
+    success = upsert_to_supabase(date_str, data)
+    # Enrich with market comparison
+    if success and effective_market:
+        _enrich_supabase_with_market(date_str, result, effective_market)
+        if market_source != 'today':
+            print(f"  (used market data from {market_source})")
     print(f"  {'✓' if success else '✗'} Supabase sync")
     print()
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-18T04:21:16.259Z",
+  "updatedAt": "2026-05-22T04:27:14.371Z",
   "entries": {
     "memory:memory/2026-05-16.md:19:30": {
       "key": "memory:memory/2026-05-16.md:19:30",
@@ -42,24 +42,26 @@
       "endLine": 26,
       "source": "memory",
       "snippet": "# 2026-05-16 ## Huspy Tracker — Built & Deployed - Built full Huspy listings tracker: scraper (concurrent, 10 threads, ~3min for 73 pages), analytics engine, Telegram report formatter - First baseline captured: 1,718/1,742 listings scraped - Daily cron set for 6:00 AM Dubai time — scrapes, compares, sends report to Mark's Telegram - Uses ~5,500 ScrapingBee credits/day (stealth proxy) - Data stored in `huspy-tracker/data/YYYY-MM-DD.json` - Agent name extraction still needs refinement — not captured from ARIA labels yet - Day-over-day comparison (gaining/losing communities) will kick in from tomorrow with 2 snapshots ## Bayut Brochure Generator — v2 Progress - Redesigned brochure: gold accen",
-      "recallCount": 5,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.4115438822487447,
-      "maxScore": 0.8867182707350213,
+      "totalScore": 4.411543882248745,
+      "maxScore": 1,
       "firstRecalledAt": "2026-05-16T04:49:52.659Z",
-      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "lastRecalledAt": "2026-05-21T03:37:56.909Z",
       "queryHashes": [
         "bf8a65092333",
         "bc32f96877e4",
         "8b229f4f2ba6",
         "be692d38369c",
-        "7937e812a75a"
+        "7937e812a75a",
+        "903eac226902"
       ],
       "recallDays": [
         "2026-05-16",
         "2026-05-17",
-        "2026-05-18"
+        "2026-05-18",
+        "2026-05-21"
       ],
       "conceptTags": [
         "718/1",
@@ -79,21 +81,26 @@
       "endLine": 127,
       "source": "memory",
       "snippet": "- No Lovable API for triggering deploys - Decision: built new dashboard from scratch on GitHub Pages for full autonomy - Lovable Vite config uses TanStack Start SSR + Cloudflare Workers — too complex for static hosting ## Scraper v2 — Extended Fields - Added: listing_id, url, agent, listed_date, dom, promo (Signature/Hot), price_sqft - Coverage: agents 80%, DOM 45% (date not always on card), psqft 100%, promo detection works - 37 Hot + 9 Signature = 46 promoted listings found - DOM gap: need to scrape individual listing pages for full coverage (future improvement) - Standing orders updated: daily ship + 06:00 brief, data scope expansion allowed, Opportunity Engine is Priority 3 ## Dashboar",
-      "recallCount": 3,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 6,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-17T06:19:41.961Z",
-      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "lastRecalledAt": "2026-05-21T03:40:35.747Z",
       "queryHashes": [
         "2c4e69042416",
         "f17d9ae5fcb9",
-        "7937e812a75a"
+        "7937e812a75a",
+        "be6b110f37f0",
+        "d75418cf057e",
+        "c4671f182ef4"
       ],
       "recallDays": [
         "2026-05-17",
-        "2026-05-18"
+        "2026-05-18",
+        "2026-05-20",
+        "2026-05-21"
       ],
       "conceptTags": [
         "listing-id",
@@ -113,21 +120,23 @@
       "endLine": 81,
       "source": "memory",
       "snippet": "- Data stored in `huspy-tracker/data/YYYY-MM-DD.json` - Agent name extraction still needs refinement — not captured from ARIA labels yet - Day-over-day comparison (gaining/losing communities) will kick in from tomorrow with 2 snapshots ## Bayut Brochure Generator — v2 Progress - Redesigned brochure: gold accent, stat cards, agent branding card with photo - Watermark removal rewritten multiple times: tried OpenCV inpainting (blotchy), alpha-reversal (dark spots), median blending (too weak), multi-image estimation, LaMa neural inpainting - LaMa with center-band mask is current approach — still not perfect, Mark flagged logo still visible - Scraper uses ScrapingBee stealth proxy + ARIA labels,",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.893707766953237,
-      "maxScore": 0.6312361296239404,
+      "totalScore": 2.893707766953237,
+      "maxScore": 1,
       "firstRecalledAt": "2026-05-17T06:31:36.946Z",
-      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "lastRecalledAt": "2026-05-21T03:37:56.909Z",
       "queryHashes": [
         "be692d38369c",
         "f17d9ae5fcb9",
-        "7937e812a75a"
+        "7937e812a75a",
+        "903eac226902"
       ],
       "recallDays": [
         "2026-05-17",
-        "2026-05-18"
+        "2026-05-18",
+        "2026-05-21"
       ],
       "conceptTags": [
         "day-over-day",
@@ -147,21 +156,26 @@
       "endLine": 61,
       "source": "memory",
       "snippet": "- Lovable site still exists at huspy-stock.lovable.app but couldn't get autonomous deploys working (needs manual \"Update\" click) ## Market Data Fixes - Fixed Arabian Ranches 3 sale: total_market was 3 (bad regex), now 649 (3.54% share) - Fixed regex: `\\s*Properties` → `\\s+Properties` (require space to avoid false matches) - Fixed Bayut slugs: Town Square → town-square, Dubai South → dubai-south - Removed non-existent Bayut communities: Emaar Beachfront, Emaar South, Residential District, District One, Port de La Mer (nested under parent communities on Bayut) - Added 35+ new community slugs to market_scraper.py - Re-enriched both 2026-05-15 and 2026-05-16 snapshots with corrected market data",
-      "recallCount": 3,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2.3064538648510418,
-      "maxScore": 0.8840725155969047,
+      "totalScore": 5.306453864851042,
+      "maxScore": 1,
       "firstRecalledAt": "2026-05-17T06:31:36.946Z",
-      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "lastRecalledAt": "2026-05-21T03:37:56.909Z",
       "queryHashes": [
         "be692d38369c",
         "0a25ba599131",
-        "7937e812a75a"
+        "7937e812a75a",
+        "5fa8888dc22f",
+        "22e9730b1dd7",
+        "903eac226902"
       ],
       "recallDays": [
         "2026-05-17",
-        "2026-05-18"
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-21"
       ],
       "conceptTags": [
         "huspy-stock.lovable.app",
@@ -181,21 +195,28 @@
       "endLine": 44,
       "source": "memory",
       "snippet": "- Branding: Jamie Neep, +971 585119476, jamie.neep@huspy.io (test agent) ## Identity Change - Renamed from Rook to **Nexus** ⬡ - Role: overall AI admin operator for Mark — monitors trading bots, work bots, handles direct tasks, coordinates everything - Updated IDENTITY.md, Telegram bot name + description ## ScrapingBee - API key stored in `bayut-brochure/.env` - Account: ~1.48M credits remaining out of 3M - Stealth proxy = 75 credits/call, required for Bayut (regular proxy gets CAPTCHA'd) ## Huspy Dashboard v2 — GitHub Pages - Built standalone dashboard: single HTML + Alpine.js + Tailwind CDN - Deployed to GitHub Pages: https://markcastley1620-hue.github.io/huspy-dashboard/ - Repo: markca",
-      "recallCount": 3,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2.0567061792708463,
-      "maxScore": 0.7943083050710062,
+      "totalScore": 7.056706179270846,
+      "maxScore": 1,
       "firstRecalledAt": "2026-05-17T06:31:36.946Z",
-      "lastRecalledAt": "2026-05-18T02:47:44.454Z",
+      "lastRecalledAt": "2026-05-21T03:41:34.554Z",
       "queryHashes": [
         "be692d38369c",
         "f17d9ae5fcb9",
-        "0a25ba599131"
+        "0a25ba599131",
+        "be6b110f37f0",
+        "5fa8888dc22f",
+        "22e9730b1dd7",
+        "903eac226902",
+        "4b93dda25f54"
       ],
       "recallDays": [
         "2026-05-17",
-        "2026-05-18"
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-21"
       ],
       "conceptTags": [
         "jamie.neep",
@@ -215,20 +236,28 @@
       "endLine": 96,
       "source": "memory",
       "snippet": "- Account: ~1.48M credits remaining out of 3M - Stealth proxy = 75 credits/call, required for Bayut (regular proxy gets CAPTCHA'd) ## Huspy Dashboard v2 — GitHub Pages - Built standalone dashboard: single HTML + Alpine.js + Tailwind CDN - Deployed to GitHub Pages: https://markcastley1620-hue.github.io/huspy-dashboard/ - Repo: markcastley1620-hue/huspy-dashboard (gh-pages branch) - GitHub token: ghp_A9...5Y3E (nexus, fine-grained, 90 days) - Fully autonomous: `git push` → auto-deploy, no clicks needed - Features: sale/rent toggle, market share cards, property type bar, community table with type badges, community detail with types/beds/price bands/sub-communities/agents, agent leaderboard - D",
-      "recallCount": 2,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.4223526270096651,
-      "maxScore": 0.7911682307046574,
+      "totalScore": 7.422352627009666,
+      "maxScore": 1,
       "firstRecalledAt": "2026-05-17T06:31:36.946Z",
-      "lastRecalledAt": "2026-05-18T02:47:44.454Z",
+      "lastRecalledAt": "2026-05-21T03:41:34.554Z",
       "queryHashes": [
         "be692d38369c",
-        "0a25ba599131"
+        "0a25ba599131",
+        "be6b110f37f0",
+        "5fa8888dc22f",
+        "22e9730b1dd7",
+        "903eac226902",
+        "c4671f182ef4",
+        "4b93dda25f54"
       ],
       "recallDays": [
         "2026-05-17",
-        "2026-05-18"
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-21"
       ],
       "conceptTags": [
         "1.48m",
@@ -279,19 +308,21 @@
       "endLine": 116,
       "source": "memory",
       "snippet": "- Fixed regex: `\\s*Properties` → `\\s+Properties` (require space to avoid false matches) - Fixed Bayut slugs: Town Square → town-square, Dubai South → dubai-south - Removed non-existent Bayut communities: Emaar Beachfront, Emaar South, Residential District, District One, Port de La Mer (nested under parent communities on Bayut) - Added 35+ new community slugs to market_scraper.py - Re-enriched both 2026-05-15 and 2026-05-16 snapshots with corrected market data - Added by_type (property types) to supabase_sync.py output ## Market Share — Key Fix - Market share now calculated per type: rent listings at huspy / rent listings on market, same for sale - Previously was combined (all huspy / all ma",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.7314404038449425,
+      "totalScore": 2.657588119678125,
       "maxScore": 0.9375688198403703,
       "firstRecalledAt": "2026-05-17T18:58:07.035Z",
-      "lastRecalledAt": "2026-05-18T02:47:44.454Z",
+      "lastRecalledAt": "2026-05-19T02:45:24.984Z",
       "queryHashes": [
         "f17d9ae5fcb9",
-        "0a25ba599131"
+        "0a25ba599131",
+        "5fa8888dc22f"
       ],
       "recallDays": [
-        "2026-05-18"
+        "2026-05-18",
+        "2026-05-19"
       ],
       "conceptTags": [
         "town-square",
@@ -342,18 +373,21 @@
       "endLine": 40,
       "source": "memory",
       "snippet": "## Key: Mark's Telegram 6499001671 ## Late Night Batch — All Completed (~11 PM Dubai) - **Listing scrape (wild-kel)**: 1573/1712 listings captured, agent recovery for 331 agents done - **Sub-community scrape (grand-haven)**: 192 sub-communities processed - **Promo cross-check (mellow-c)**: 326 promos found across 632 search groups (Phase 2 complete) - **Supabase sync**: Ran successfully multiple times — 678-691 sale, 895 rent, 79-80 sale comms, 68-69 rent comms - **Amaranta deep-dive**: Scraped townhouse/apartment breakdowns, 411 entries upgraded with type-specific data - **ZaZEN Ivy**: 23 cards scraped with bedroom breakdowns - **fresh-ri FAILED**: Tried to read data/2026-05-18.json (doesn",
-      "recallCount": 1,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.6318029776082722,
-      "maxScore": 0.6318029776082722,
+      "totalScore": 1.8954089584581846,
+      "maxScore": 0.6318029965810267,
       "firstRecalledAt": "2026-05-18T04:21:16.259Z",
-      "lastRecalledAt": "2026-05-18T04:21:16.259Z",
+      "lastRecalledAt": "2026-05-20T02:57:57.062Z",
       "queryHashes": [
-        "7937e812a75a"
+        "7937e812a75a",
+        "be6b110f37f0",
+        "33e93fde151f"
       ],
       "recallDays": [
-        "2026-05-18"
+        "2026-05-18",
+        "2026-05-20"
       ],
       "conceptTags": [
         "wild-kel",
@@ -364,6 +398,209 @@
         "cross-check",
         "mellow-c",
         "678-691"
+      ]
+    },
+    "memory:memory/2026-05-18.md:40:49": {
+      "key": "memory:memory/2026-05-18.md:40:49",
+      "path": "memory/2026-05-18.md",
+      "startLine": 40,
+      "endLine": 49,
+      "source": "memory",
+      "snippet": "2. Merges previous day's market data for communities not in today's scrape 3. Better fuzzy matching for sub-community names - Result: 0 community-level benchmarks. All sub-community. Sale: 134 underpriced, 132 overpriced. - Also reverted the earlier bad change that accepted community-level benchmarks (Mark was clear: community = trash) ## Key Lesson - Community-level market benchmarks are NOT acceptable for Huspy dashboard — ONLY sub-community level - Mark's point: even sub-communities with count=1 in our data usually have 100-150 real listings on Bayut - Our \"count\" is just what we scraped from page 1, not the real total",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.898454804984675,
+      "maxScore": 0.6328184910773101,
+      "firstRecalledAt": "2026-05-18T17:09:32.402Z",
+      "lastRecalledAt": "2026-05-20T02:57:57.062Z",
+      "queryHashes": [
+        "be6b110f37f0",
+        "22e9730b1dd7",
+        "33e93fde151f"
+      ],
+      "recallDays": [
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "sub-community",
+        "community-level",
+        "sub-communities",
+        "100-150",
+        "merges",
+        "previous",
+        "day's",
+        "market"
+      ]
+    },
+    "memory:memory/2026-05-18.md:1:28": {
+      "key": "memory:memory/2026-05-18.md:1:28",
+      "path": "memory/2026-05-18.md",
+      "startLine": 1,
+      "endLine": 28,
+      "source": "memory",
+      "snippet": "## Daily Run Pipeline Change - Market scrape no longer runs daily — now every other day (even-numbered days) - Only scrapes market data for communities with NEW listings (compared to previous snapshot) - Huspy listing scrape still runs daily - On non-market days, Supabase enrichment uses the most recent market data file - Massively reduces ScrapingBee credit burn (~140 calls → only new-listing communities × 2) - Updated daily_run.py and cron job payload ## Daily Run Pipeline Change - Market scrape no longer runs daily — now every other day (even-numbered days) - Only scrapes market data for communities with NEW listings (compared to previous snapshot) - Huspy listing scrape still runs daily",
+      "recallCount": 9,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 8.181873042809555,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-18T17:09:32.402Z",
+      "lastRecalledAt": "2026-05-22T04:27:14.371Z",
+      "queryHashes": [
+        "be6b110f37f0",
+        "5fa8888dc22f",
+        "22e9730b1dd7",
+        "d75418cf057e",
+        "33e93fde151f",
+        "903eac226902",
+        "4b93dda25f54",
+        "65baf741e991",
+        "9512f66c7541"
+      ],
+      "recallDays": [
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22"
+      ],
+      "conceptTags": [
+        "even-numbered",
+        "non-market",
+        "new-listing",
+        "daily-run.py",
+        "run",
+        "pipeline",
+        "change",
+        "market"
+      ]
+    },
+    "memory:memory/2026-05-17.md:1:34": {
+      "key": "memory:memory/2026-05-17.md:1:34",
+      "path": "memory/2026-05-17.md",
+      "startLine": 1,
+      "endLine": 34,
+      "source": "memory",
+      "snippet": "# 2026-05-17 — Integrity Layer Started ## Critical Discovery: Systematic Data Issues - Bayut company page doesn't show promo badges → search pages do (via aria-label) - Only found 35 promos from company page → 375 after cross-checking 593 search pages - Community-level data was being injected as sub-community data (12,435 fake entries) - Bayut URL paths are nested for 7+ communities (dubailand/villanova not just villanova) - Type-specific URLs needed for townhouses/villas (/for-sale/townhouses/ not /for-sale/property/) ## Integrity Layer v1 Shipped - INTEGRITY.md spec: schema contract, 25 rules, migration plan, 5-day timeline - validator.py: 15 listing rules + 4 comp rules, validation engi",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-21T03:40:35.747Z",
+      "lastRecalledAt": "2026-05-21T18:28:48.852Z",
+      "queryHashes": [
+        "c4671f182ef4",
+        "b8c48d892712"
+      ],
+      "recallDays": [
+        "2026-05-21"
+      ],
+      "conceptTags": [
+        "aria-label",
+        "cross-checking",
+        "community-level",
+        "sub-community",
+        "dubailand/villanova",
+        "type-specific",
+        "townhouses/villas",
+        "for-sale/townhouses"
+      ]
+    },
+    "memory:memory/2026-05-16.md:109:127": {
+      "key": "memory:memory/2026-05-16.md:109:127",
+      "path": "memory/2026-05-16.md",
+      "startLine": 109,
+      "endLine": 127,
+      "source": "memory",
+      "snippet": "- Moved routes out of _authenticated (removed auth gate), updated routeTree.gen.ts - BUT Lovable doesn't auto-deploy from GitHub pushes — needs manual \"Update\" click - No Lovable API for triggering deploys - Decision: built new dashboard from scratch on GitHub Pages for full autonomy - Lovable Vite config uses TanStack Start SSR + Cloudflare Workers — too complex for static hosting ## Scraper v2 — Extended Fields - Added: listing_id, url, agent, listed_date, dom, promo (Signature/Hot), price_sqft - Coverage: agents 80%, DOM 45% (date not always on card), psqft 100%, promo detection works - 37 Hot + 9 Signature = 46 promoted listings found - DOM gap: need to scrape individual listing pages f",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-21T18:28:48.852Z",
+      "lastRecalledAt": "2026-05-21T18:28:48.852Z",
+      "queryHashes": [
+        "b8c48d892712"
+      ],
+      "recallDays": [
+        "2026-05-21"
+      ],
+      "conceptTags": [
+        "routetree.gen.ts",
+        "auto-deploy",
+        "listing-id",
+        "listed-date",
+        "signature/hot",
+        "price-sqft",
+        "moved",
+        "routes"
+      ]
+    },
+    "memory:memory/2026-05-18.md:23:43": {
+      "key": "memory:memory/2026-05-18.md:23:43",
+      "path": "memory/2026-05-18.md",
+      "startLine": 23,
+      "endLine": 43,
+      "source": "memory",
+      "snippet": "- **Coverage Gaps view** — built by subagent, shows high market count / zero Huspy share communities - **Spread view** (was Concentration) — simplified from HHI jargon to plain English \"Where's the stock?\" - Added community filter + agent filter dropdowns - 4 charts: by area, by bedrooms, by price range, by property type - Split by sale/rent toggle - Filters stack and are reactive - **Opportunities page** — added area filter at top, filters summary cards + all tabs below - **Fresh Deals table** — added Bayut \"View ↗\" links to each row - **Spend Advisor** — added Property Finder URL rejection (only Bayut supported), validation for parsed data - **Comparables table** — added \"View ↗\" l",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-21T18:28:48.852Z",
+      "lastRecalledAt": "2026-05-21T18:28:48.852Z",
+      "queryHashes": [
+        "b8c48d892712"
+      ],
+      "recallDays": [
+        "2026-05-21"
+      ],
+      "conceptTags": [
+        "sale/rent",
+        "coverage",
+        "gaps",
+        "view",
+        "built",
+        "shows",
+        "high",
+        "market"
+      ]
+    },
+    "memory:memory/2026-05-21.md:1:26": {
+      "key": "memory:memory/2026-05-21.md:1:26",
+      "path": "memory/2026-05-21.md",
+      "startLine": 1,
+      "endLine": 26,
+      "source": "memory",
+      "snippet": "# 2026-05-21 — Dashboard v4 + XML Feed Migration ## Dashboard v4 — Complete Rebuild - Stripped down from overcomplicated market intelligence dashboard to focused stock tracker - Three views: Summary, All Stock, New Listings - Filters: Sale/Rent chips, area typeahead (alphabetical), agent typeahead (alphabetical), agent level, property type, spend status - All filters apply everywhere: KPI cards, charts, tables all react - Bedroom breakdown with % (scoped to market type) - Price band breakdown with % (scoped to market type) - Bayut links on 89% of listings - Spend column: ⭐ Signature (9), 🔥 Hot (24) - Sortable columns, \"Show more\" pagination - Back arrow when drilling down, clear all filte",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-22T04:27:14.371Z",
+      "lastRecalledAt": "2026-05-22T04:27:14.371Z",
+      "queryHashes": [
+        "9512f66c7541"
+      ],
+      "recallDays": [
+        "2026-05-22"
+      ],
+      "conceptTags": [
+        "sale/rent",
+        "dashboard",
+        "xml",
+        "feed",
+        "migration",
+        "complete",
+        "rebuild",
+        "stripped"
       ]
     }
   }
