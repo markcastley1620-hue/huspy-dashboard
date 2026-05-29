@@ -694,7 +694,8 @@
             if (!this.pledgeWeek) this.pledgeWeek = this.getDubaiWeekStartISO();
             const base = 'https://bwzrbneskvvddukivphk.supabase.co/functions/v1/huspy-pledges-read';
             const qs = new URLSearchParams();
-            qs.set('week_start', this.pledgeWeek);
+            const weekStart = this.pledgeWeek || this.getDubaiWeekStartISO();
+            qs.set('week_start', weekStart);
             if (this.pledgeManagerId) qs.set('manager_id', this.pledgeManagerId);
             const url = base + '?' + qs.toString();
             const res = await fetch(url);
