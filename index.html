@@ -722,7 +722,7 @@
 
         onAssign(agentId, managerId) {
           if (!agentId || !managerId) return;
-          const bot = 'huspy_mgmt_bot';
+          const bot = 'mc_operator_bot';
           const startParam = `assign_agent:${agentId}:${managerId}`;
           const url = `https://t.me/${bot}?start=${encodeURIComponent(startParam)}`;
           window.open(url, '_blank');
