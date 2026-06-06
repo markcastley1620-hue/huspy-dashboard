@@ -4,14 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dubai Hair Extensions Leads</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js" defer></script>
-  <style>
-    body { background:#f8fafc; font-family: Inter, system-ui, sans-serif; }
-    [x-cloak] { display:none !important; }
-    .card { transition: border-color .15s ease; }
-  </style>
+  <style>body{background:#f8fafc;font-family:Inter,system-ui,sans-serif;}[x-cloak]{display:none!important;}.card{transition:border-color .15s ease;}</style>
 </head>
 <body>
   <div class="min-h-screen" x-data="leadsApp()" x-cloak>
@@ -19,7 +15,7 @@
       <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 class="text-2xl font-bold">Dubai Hair Extensions Leads</h1>
-          <p class="text-sm text-gray-600 mt-1">Dubai Hair Extensions Leads (name + phone + source)</p>
+          <p class="text-sm text-gray-600 mt-1">Name + unmasked phone + source</p>
         </div>
         <div class="flex gap-2 flex-wrap">
           <button class="px-3 py-2 rounded bg-blue-600 text-white text-sm font-semibold" @click="setCategory('all')">All</button>
@@ -42,7 +38,7 @@
                 <div class="font-semibold text-gray-900 mt-1" x-text="lead.name"></div>
                 <div class="mt-2 text-sm text-gray-700">
                   <span class="text-gray-500">Phone:</span>
-                  <a class="font-semibold text-blue-700" :href="'tel:'+lead.phone" x-text="lead.phone"></a>
+                  <a class="font-semibold text-blue-700" :href="'tel:' + lead.phone" x-text="lead.phone"></a>
                 </div>
               </div>
               <a class="text-sm font-semibold text-blue-700 hover:underline" :href="lead.source_url" target="_blank" rel="noreferrer">Source ↗</a>
@@ -50,44 +46,41 @@
           </div>
         </template>
       </div>
-
-      <div class="mt-6 text-xs text-gray-500">
-        Phones are taken from source pages. Many providers mask digits; toggle “Real phones only” to hide masked.
-      </div>
     </div>
   </div>
 
   <script>
-    function leadsApp() {
+    function leadsApp(){
       return {
         leads: [],
         q: '',
         category: 'all',
-        async init() {
+        async init(){
           const res = await fetch('./hair-leads.json');
           const data = await res.json();
-          this.leads = (data || []).map(l => ({
-            ...l,
-            phone: (l.phone || '').trim(),
+          this.leads = (data||[]).map(l => ({
+            category: l.category,
+            name: (l.name||'').trim(),
+            phone: (l.phone||'').trim(),
+            source_url: (l.source_url||'').trim(),
           }));
         },
-        setCategory(c) { this.category = c; },
-        get filtered() {
-          const qq = (this.q || '').toLowerCase().trim();
-          return this.leads.filter(l => {
-            const catOk = (this.category === 'all') || (l.category === this.category);
-            if (!catOk) return false;
-            if (!qq) return true;
-            return (l.name || '').toLowerCase().includes(qq) || (l.phone || '').toLowerCase().includes(qq) || (l.source_url || '').toLowerCase().includes(qq);
+        setCategory(c){ this.category=c; },
+        get filtered(){
+          const qq=(this.q||'').toLowerCase().trim();
+          return this.leads.filter(l=>{
+            const catOk=(this.category==='all')||(l.category===this.category);
+            if(!catOk) return false;
+            if(!qq) return true;
+            return (l.name||'').toLowerCase().includes(qq) || (l.phone||'').toLowerCase().includes(qq) || (l.source_url||'').toLowerCase().includes(qq);
           });
         }
       }
     }
-
-    document.addEventListener('alpine:init', () => {
-      queueMicrotask(() => {
-        const root = document.querySelector('[x-data="leadsApp()"]');
-        if (root && root.__x) root.__x.$data.init();
+    document.addEventListener('alpine:init', ()=>{
+      queueMicrotask(()=>{
+        const root=document.querySelector('[x-data="leadsApp()"]');
+        if(root && root.__x) root.__x.$data.init();
       });
     });
   </script>
