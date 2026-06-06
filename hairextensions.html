@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dubai Hair Extensions Leads</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js" defer></script>
+  <style>
+    body { background:#f8fafc; font-family: Inter, system-ui, sans-serif; }
+    [x-cloak] { display:none !important; }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen" x-data="leadsApp()" x-cloak>
+    <div class="max-w-6xl mx-auto p-4 sm:p-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="text-2xl font-bold">Dubai Hair Extensions Leads</h1>
+          <p class="text-sm text-gray-600 mt-1">Sanitized seed list (category + phone as published on source pages).</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="px-3 py-2 rounded bg-blue-600 text-white text-sm font-semibold" @click="setCategory('all')">All</button>
+          <button class="px-3 py-2 rounded bg-white border text-sm font-semibold" :class="category==='salon' ? 'border-blue-400 ring-2 ring-blue-100' : 'border-gray-200'" @click="setCategory('salon')">Salons</button>
+          <button class="px-3 py-2 rounded bg-white border text-sm font-semibold" :class="category==='independent_mobile' ? 'border-blue-400 ring-2 ring-blue-100' : 'border-gray-200'" @click="setCategory('independent_mobile')">Independent Mobile</button>
+        </div>
+      </div>
+
+      <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <input class="w-full sm:flex-1 px-3 py-2 rounded border border-gray-200 bg-white" type="text" placeholder="Search by name or phone..." x-model="q" />
+        <div class="text-sm text-gray-600">Showing <span class="font-semibold" x-text="filtered.length"></span> / <span x-text="leads.length"></span></div>
+      </div>
+
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+        <template x-for="lead in filtered" :key="lead.source_url">
+          <div class="bg-white rounded-lg border border-gray-200 p-4 hover:border-blue-200">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <div class="text-sm text-gray-500" x-text="lead.category"></div>
+                <div class="font-semibold text-gray-900 mt-1" x-text="lead.name"></div>
+                <div class="text-sm text-gray-700 mt-2">
+                  <span class="text-gray-500">Phone:</span>
+                  <a class="font-semibold text-blue-700" :href="'tel:'+lead.phone" x-text="lead.phone"></a>
+                </div>
+              </div>
+              <a class="text-sm font-semibold text-blue-700 hover:underline" :href="lead.source_url" target="_blank" rel="noreferrer">Source ↗</a>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <div class="mt-6 text-xs text-gray-500">
+        Note: numbers are displayed exactly as found publicly on source pages. Some sources mask digits.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function leadsApp() {
+      return {
+        leads: [],
+        q: '',
+        category: 'all',
+        async init() {
+          const res = await fetch('./hair-leads.json');
+          this.leads = await res.json();
+        },
+        setCategory(c) { this.category = c; },
+        get filtered() {
+          const qq = (this.q || '').toLowerCase();
+          return this.leads.filter(l => {
+            const catOk = (this.category === 'all') || (l.category === this.category);
+            if (!catOk) return false;
+            if (!qq) return true;
+            return (l.name || '').toLowerCase().includes(qq) || (l.phone || '').toLowerCase().includes(qq) || (l.source_url || '').toLowerCase().includes(qq);
+          });
+        }
+      }
+    }
+  </script>
+
+  <script>
+    // kick init after alpine boot
+    document.addEventListener('alpine:init', () => {
+      queueMicrotask(() => {
+        const root = document.querySelector('[x-data="leadsApp()"]');
+        if (root && root.__x) root.__x.$data.init();
+      });
+    });
+  </script>
+</body>
+</html>
